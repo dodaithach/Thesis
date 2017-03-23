@@ -5,4 +5,15 @@ package k2013.fit.hcmus.thesis.id539621.sound;
  */
 
 public class BinauralSound {
+
+    static {
+        System.loadLibrary("native-lib");
+    }
+
+    public native void openDevice();
+    public native int addSource(String filename);
+    public native void setPosition(int source, float x, float y, float z);
+    public native void playSound(int source);
+    public native void pauseSound(int source);
+    public native void closeDevice();
 }
