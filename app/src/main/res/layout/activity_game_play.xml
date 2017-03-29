@@ -10,4 +10,10 @@
         android:id="@+id/gameplay_glview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <View
+        android:layout_width="@dimen/pointerWidth"
+        android:layout_height="@dimen/pointerWidth"
+        android:background="@drawable/circle_stroke"
+        android:layout_gravity="center"/>
 </FrameLayout>

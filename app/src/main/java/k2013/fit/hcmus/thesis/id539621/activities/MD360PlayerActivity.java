@@ -82,10 +82,6 @@ public abstract class MD360PlayerActivity extends Activity {
 
     private MDVRLibrary mVRLibrary;
 
-    private List<MDAbsPlugin> plugins = new LinkedList<>();
-
-    private MDPosition logoPosition = MDPosition.newInstance().setY(-8.0f).setYaw(-90.0f);
-
     private MDPosition[] positions = new MDPosition[]{
             MDPosition.newInstance().setZ(-8.0f).setYaw(-45.0f),
             MDPosition.newInstance().setZ(-18.0f).setYaw(15.0f).setAngleX(15),
