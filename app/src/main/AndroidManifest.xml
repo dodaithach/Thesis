@@ -14,7 +14,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDrNfzyyl2jrOlO5R1i0U6c2ysy69MZ0PM"/>
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.GamePlayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
