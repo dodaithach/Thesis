@@ -5,5 +5,5 @@ package k2013.fit.hcmus.thesis.id539621.sensor;
  */
 
 public interface OrientationCallback {
-    void onOrientationChanged();
+    void onOrientationChanged(float azimuth, float pitch, float roll);
 }

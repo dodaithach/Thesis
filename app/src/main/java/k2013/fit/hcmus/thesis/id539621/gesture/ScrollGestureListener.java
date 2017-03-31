@@ -12,8 +12,9 @@ public class ScrollGestureListener extends GestureDetector.SimpleOnGestureListen
     private static final String DEBUG_TAG = "Gestures";
 
     private float scale = 1000;
-    private float azimuth = 0.0f;
     private float pitch = 0.0f;
+    private float roll = 0.0f;
+    public ScrollGestureCallback callback;
 
     @Override
     public boolean onScroll(MotionEvent event1, MotionEvent event2,
@@ -21,8 +22,25 @@ public class ScrollGestureListener extends GestureDetector.SimpleOnGestureListen
         Log.d(DEBUG_TAG, "onScroll: " + event1.toString()+event2.toString());
         Log.d(DEBUG_TAG, "X: " + velocityX + " Y: " + velocityY);
 
-        azimuth = azimuth - velocityX/scale;
+        roll = roll - velocityX/scale;
         pitch = pitch - velocityY/scale;
+        if (roll > Math.PI){
+            roll = (float)(roll - Math.PI);
+        }
+        if (roll < - Math.PI){
+            roll = (float)(roll + Math.PI);
+        }
+
+        if (pitch > Math.PI/2){
+            pitch = (float)(pitch - Math.PI/2);
+        }
+        if (pitch < - Math.PI/2){
+            pitch = (float)(pitch + Math.PI/2);
+        }
+
+        if(callback!=null){
+            callback.onScrollGestureChanged(pitch,roll);
+        }
 
         return true;
     }
@@ -35,12 +53,12 @@ public class ScrollGestureListener extends GestureDetector.SimpleOnGestureListen
         this.scale = scale;
     }
 
-    public float getAzimuth() {
-        return azimuth;
+    public float getRoll() {
+        return roll;
     }
 
-    public void setAzimuth(float azimuth) {
-        this.azimuth = azimuth;
+    public void setRoll(float roll) {
+        this.roll = roll;
     }
 
     public float getPitch() {
