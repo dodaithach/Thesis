@@ -16,25 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
-import com.google.android.gms.maps.StreetViewPanorama;
-import com.google.android.gms.maps.StreetViewPanoramaFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
-
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
-public class MainActivity extends FragmentActivity implements OnStreetViewPanoramaReadyCallback {
+public class MainActivity extends FragmentActivity {
     private TextView textView;
     private float[] mAngles = new float[3];
     private OrientationListener mOrientationListener;
 
     private GestureDetectorCompat mDetector;
-
-    private StreetViewPanorama mStreetViewPanorama;
 
     private BinauralSound binauralSound;
     private int sound1;
@@ -60,10 +52,6 @@ public class MainActivity extends FragmentActivity implements OnStreetViewPanora
 
 //        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
-        StreetViewPanoramaFragment streetViewPanoramaFragment =
-                (StreetViewPanoramaFragment) getFragmentManager()
-                        .findFragmentById(R.id.streetviewpanorama);
-        streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
         binauralSound = new BinauralSound();
 
@@ -99,54 +87,6 @@ public class MainActivity extends FragmentActivity implements OnStreetViewPanora
         super.onResume();
         if(mOrientationListener != null){
             mOrientationListener.registerListener();
-        }
-    }
-
-    @Override
-    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        streetViewPanorama.setPosition(new LatLng(69.2079432310335, -51.16300681512197));
-        streetViewPanorama.setUserNavigationEnabled(false);
-        streetViewPanorama.setZoomGesturesEnabled(false);
-        streetViewPanorama.setStreetNamesEnabled(false);
-
-        mStreetViewPanorama = streetViewPanorama;
-
-        mOrientationListener = new OrientationListener(this);
-        mOrientationListener.registerListener();
-
-        mOrientationListener.callback = new OrientationCallback() {
-            @Override
-            public void onOrientationChanged(float x, float y, float z) {
-                textView.setText("azimuth: " + Math.toDegrees(x) + " pitch: " + Math.toDegrees(y) + " roll: " + Math.toDegrees(z));
-
-                float a = (float) (y * 180 / Math.PI);
-                float b = (float) (z * 180 / Math.PI);
-
-                StreetViewPanoramaCamera camera = StreetViewPanoramaCamera.builder()
-                        .bearing(-b)
-                        .tilt(-a)
-                        .build();
-
-                mStreetViewPanorama.animateTo(camera, 0);
-            }
-        };
-    }
-
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        private static final String DEBUG_TAG = "Gestures";
-
-        @Override
-        public boolean onDown(MotionEvent event) {
-            Log.d(DEBUG_TAG,"onDown: " + event.toString());
-            return true;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent event1, MotionEvent event2,
-                               float velocityX, float velocityY) {
-            Log.d(DEBUG_TAG, "onScroll: " + event1.toString()+event2.toString());
-            Log.d(DEBUG_TAG, "X: " + velocityX + " Y: " + velocityY);
-            return true;
         }
     }
 }
