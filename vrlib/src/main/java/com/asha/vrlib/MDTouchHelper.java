@@ -1,10 +1,13 @@
 package com.asha.vrlib;
 
 import android.content.Context;
+import android.os.Message;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.asha.vrlib.model.MDPinchConfig;
+import com.custom.CustomHandler;
+import com.custom.HandlerSingleton;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +51,10 @@ public class MDTouchHelper {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (mCurrentMode == MODE_PINCH) return false;
+
+                CustomHandler handler = HandlerSingleton.getHandler();
+                Message m = handler.obtainMessage();
+                handler.sendMessage(m);
 
                 if (mAdvanceGestureListener != null)
                     mAdvanceGestureListener.onDrag(distanceX / mGlobalScale, distanceY / mGlobalScale);
