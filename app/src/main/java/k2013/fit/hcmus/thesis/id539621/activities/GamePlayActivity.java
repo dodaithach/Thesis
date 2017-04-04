@@ -1,6 +1,5 @@
 package k2013.fit.hcmus.thesis.id539621.activities;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,13 +22,15 @@ public class GamePlayActivity extends MD360PlayerActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mVRLibrary = createVRLibrary();
     }
 
     @Override
     protected MDVRLibrary createVRLibrary() {
         return MDVRLibrary.with(this)
                 .displayMode(MDVRLibrary.DISPLAY_MODE_NORMAL)
-                .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
+                .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH)
                 .asBitmap(new MDVRLibrary.IBitmapProvider() {
                     @Override
                     public void onProvideBitmap(final MD360BitmapTexture.Callback callback) {

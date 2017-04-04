@@ -80,7 +80,7 @@ public abstract class MD360PlayerActivity extends Activity {
         context.startActivity(i);
     }
 
-    private MDVRLibrary mVRLibrary;
+    protected MDVRLibrary mVRLibrary;
 
     private MDPosition[] positions = new MDPosition[]{
             MDPosition.newInstance().setZ(-8.0f).setYaw(-45.0f),
@@ -109,7 +109,7 @@ public abstract class MD360PlayerActivity extends Activity {
         setContentView(R.layout.activity_game_play);
 
         // init VR Library
-        mVRLibrary = createVRLibrary();
+//        mVRLibrary = createVRLibrary();
     }
 
     abstract protected MDVRLibrary createVRLibrary();
