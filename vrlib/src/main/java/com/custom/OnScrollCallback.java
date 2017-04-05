@@ -5,5 +5,5 @@ package com.custom;
  */
 
 public interface OnScrollCallback {
-    public void customOnScroll();
+    public void customOnScroll(float x, float y);
 }

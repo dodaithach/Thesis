@@ -1,6 +1,7 @@
 package com.asha.vrlib;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Message;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -54,6 +55,16 @@ public class MDTouchHelper {
 
                 CustomHandler handler = HandlerSingleton.getHandler();
                 Message m = handler.obtainMessage();
+                m.what = CustomHandler.TOUCH;
+
+                double params[] = new double[2];
+                params[0] = distanceX;
+                params[1] = distanceY;
+
+                Bundle data = new Bundle();
+                data.putDoubleArray(CustomHandler.TOUCH_PARAMS, params);
+                m.setData(data);
+
                 handler.sendMessage(m);
 
                 if (mAdvanceGestureListener != null)

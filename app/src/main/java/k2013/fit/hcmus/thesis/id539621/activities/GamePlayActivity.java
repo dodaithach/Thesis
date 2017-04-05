@@ -89,7 +89,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     }
 
     @Override
-    public void customOnScroll() {
-        Log.d("mylog", "customOnScroll() called");
+    public void customOnScroll(float velocityX, float velocityY) {
+        Log.d("mylog", "customOnScroll() called with velocityX: " + velocityX + " - velocityY: " + velocityY);
     }
 }
