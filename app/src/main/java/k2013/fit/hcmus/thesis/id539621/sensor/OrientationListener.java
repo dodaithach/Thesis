@@ -65,7 +65,7 @@ public class OrientationListener implements SensorEventListener {
         if (mySensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             System.arraycopy(event.values, 0, mOrientationReading, 0, mOrientationReading.length);
 
-            //Log.d("Trieu", "x: " + event.values[0] + "y: " + event.values[1] + "z: " + event.values[2] );
+            Log.d("Trieu", "x: " + event.values[0] + "y: " + event.values[1] + "z: " + event.values[2] );
 
             if(callback!=null){
                 float[] angles = getOrientationAngles();

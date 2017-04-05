@@ -117,6 +117,20 @@ void BinauralSound::playSound(ALuint source){
 void BinauralSound::pauseSound(ALuint source){
     alSourcePause(source);
 }
+
+void BinauralSound::setListenerOrientation(float atX, float atY, float atZ, float upX, float upY,
+                                           float upZ) {
+    float listenerOri[6];
+    listenerOri[0] = atX;
+    listenerOri[1] = atY;
+    listenerOri[2] = atZ;
+    listenerOri[3] = upX;
+    listenerOri[4] = upY;
+    listenerOri[5] = upZ;
+
+    alListenerfv(AL_ORIENTATION, listenerOri);
+}
+
 void BinauralSound::closeDevice(){
     device = alcGetContextsDevice(context);
     alcMakeContextCurrent(NULL);

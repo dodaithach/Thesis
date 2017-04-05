@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
@@ -12,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
+import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -19,9 +23,21 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 public class GamePlayActivity extends MD360PlayerActivity {
     private Uri mCurrentUri;
     private Target mTarget;
+    private OrientationListener mOrientationListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mOrientationListener = new OrientationListener(this);
+        mOrientationListener.registerListener();
+
+        mOrientationListener.callback = new OrientationCallback() {
+            @Override
+            public void onOrientationChanged(float x, float y, float z) {
+                Log.d("Callback","x: " + x + " y: " + y + " z: " + z);
+            }
+        };
+
+
         super.onCreate(savedInstanceState);
     }
 
@@ -79,4 +95,19 @@ public class GamePlayActivity extends MD360PlayerActivity {
             return null;
         }
     }
+
+    protected void onPause() {
+        super.onPause();
+        if(mOrientationListener != null) {
+            mOrientationListener.unregisterListener();
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if(mOrientationListener != null){
+            mOrientationListener.registerListener();
+        }
+    }
+
 }

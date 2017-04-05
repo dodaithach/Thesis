@@ -24,6 +24,7 @@ public:
     void setPosition(ALuint source,float x, float y, float z);
     void playSound(ALuint source);
     void pauseSound(ALuint source);
+    void setListenerOrientation(float atX, float atY, float atZ, float upX, float upY, float upZ);
     void closeDevice();
 
     static BinauralSound& getInstance()
