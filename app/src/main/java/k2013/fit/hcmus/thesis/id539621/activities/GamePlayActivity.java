@@ -1,5 +1,6 @@
 package k2013.fit.hcmus.thesis.id539621.activities;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -49,7 +50,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     protected MDVRLibrary createVRLibrary() {
         return MDVRLibrary.with(this)
                 .displayMode(MDVRLibrary.DISPLAY_MODE_NORMAL)
-                .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH)
+                .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
                 .asBitmap(new MDVRLibrary.IBitmapProvider() {
                     @Override
                     public void onProvideBitmap(final MD360BitmapTexture.Callback callback) {
@@ -116,8 +117,19 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         }
     }
 
+    float roll = 0.0f, pitch = 0.0f;
+    float delX = 0.0f, delY = 0.0f;
+    float scale = 1000.0f;
+
     @Override
     public void customOnScroll(float velocityX, float velocityY) {
-        Log.d("mylog", "customOnScroll() called with velocityX: " + velocityX + " - velocityY: " + velocityY);
+
+        delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
+        delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
+
+        roll = delX - ((int)(delX/360))*360;
+        pitch = delY - ((int)(delY/360))*360;
+
+        Log.d("mylog", "customOnSroll() with roll: " + roll);
     }
 }
