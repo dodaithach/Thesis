@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
@@ -15,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
@@ -26,23 +26,23 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     private Target mTarget;
     private OrientationListener mOrientationListener;
 
+    private View mPointer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mOrientationListener = new OrientationListener(this);
-        mOrientationListener.registerListener();
-
-        mOrientationListener.callback = new OrientationCallback() {
-            @Override
-            public void onOrientationChanged(float x, float y, float z) {
-                Log.d("Callback","x: " + x + " y: " + y + " z: " + z);
-            }
-        };
-
-
         super.onCreate(savedInstanceState);
 
-        HandlerSingleton.init(this, null);
+        mPointer = findViewById(R.id.gameplay_pointer);
+        mPointer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("mylog", "you selected this position");
 
+                return false;
+            }
+        });
+
+        HandlerSingleton.init(this, null);
         mVRLibrary = createVRLibrary();
     }
 
@@ -119,7 +119,6 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
     float roll = 0.0f, pitch = 0.0f;
     float delX = 0.0f, delY = 0.0f;
-    float scale = 1000.0f;
 
     @Override
     public void customOnScroll(float velocityX, float velocityY) {
@@ -129,7 +128,5 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         roll = delX - ((int)(delX/360))*360;
         pitch = delY - ((int)(delY/360))*360;
-
-        Log.d("mylog", "customOnSroll() with roll: " + roll);
     }
 }
