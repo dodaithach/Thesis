@@ -5,39 +5,39 @@ package k2013.fit.hcmus.thesis.id539621.model;
  */
 
 public class Position {
-    private int mX;
-    private int mY;
-    private int mZ;
+    private double mX;
+    private double mY;
+    private double mZ;
 
     public Position() {}
 
-    public Position(int x, int y, int z) {
+    public Position(double x, double y, double z) {
         mX = x;
         mY = y;
         mZ = z;
     }
 
-    public int getX() {
+    public double getX() {
         return mX;
     }
 
-    public void setX(int mX) {
+    public void setX(double mX) {
         this.mX = mX;
     }
 
-    public int getY() {
+    public double getY() {
         return mY;
     }
 
-    public void setY(int mY) {
+    public void setY(double mY) {
         this.mY = mY;
     }
 
-    public int getZ() {
+    public double getZ() {
         return mZ;
     }
 
-    public void setZ(int mZ) {
+    public void setZ(double mZ) {
         this.mZ = mZ;
     }
 }

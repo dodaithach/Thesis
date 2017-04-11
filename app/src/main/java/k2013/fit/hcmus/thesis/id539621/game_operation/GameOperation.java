@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
@@ -14,6 +16,7 @@ import java.lang.ref.WeakReference;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activities.GamePlayActivity;
+import k2013.fit.hcmus.thesis.id539621.model.Position;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -23,17 +26,23 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
  */
 
 public class GameOperation {
-    private GamePlayParams mParams;
+    private final int TIME_TICK = 500;
 
+    private GamePlayParams mParams;
     private WeakReference<GamePlayActivity> mWeakReference;
     private Target mTarget;
     private MDVRLibrary mVRLibrary;
+
+    private CountDownTimer mTimer;
+    private long mRemainingTime = 0;
+    private Position mCurPos = new Position(0,0,0);
 
     public GameOperation() {}
 
     public GameOperation(GamePlayActivity activity, GamePlayParams params) {
         mWeakReference = new WeakReference<GamePlayActivity>(activity);
         mParams = params;
+        mRemainingTime = mParams.getTime();
     }
 
     /************************************* GAME STATE FUNCTIONS ***********************************/
@@ -43,18 +52,36 @@ public class GameOperation {
 
     public void pause(Context context) {
         mVRLibrary.onPause(context);
+        mTimer.cancel();
     }
 
     public void resume(Context context) {
         mVRLibrary.onResume(context);
+
+        mTimer = new CountDownTimer(mRemainingTime, TIME_TICK) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mRemainingTime = millisUntilFinished / 1000;
+                getActivity().timeTick();
+            }
+
+            @Override
+            public void onFinish() {
+                getActivity().timeFinish();
+            }
+        }.start();
     }
 
-    public void stop() {
-
+    public void stop(Context context) {
+        mVRLibrary.onPause(context);
+        mVRLibrary.onDestroy();
     }
 
-    public void finish() {
+    public void finish(Context context) {
+        Log.d("mylog", "finish game");
+        mTimer.cancel();
 
+        stop(context);
     }
 
     public void destroy() {
@@ -117,5 +144,11 @@ public class GameOperation {
 
     public GamePlayActivity getActivity() {
         return mWeakReference.get();
+    }
+
+    public void updatePostion(double x, double y, double z) {
+        mCurPos.setX(x);
+        mCurPos.setY(y);
+        mCurPos.setZ(z);
     }
 }

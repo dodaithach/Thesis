@@ -10,6 +10,7 @@ import com.custom.OnScrollCallback;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
+import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 
 public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback{
     private View mPointer;
@@ -24,33 +25,38 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mPointer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("mylog", "you selected this position");
-
+                mGame.finish(GamePlayActivity.this);
                 return false;
             }
         });
 
         HandlerSingleton.init(this, null);
-        mGame = new GameOperation(this, null);
+
+        GamePlayParams params = new GamePlayParams();
+        params.setTime(5000);
+        mGame = new GameOperation(this, params);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         mGame.init();
     }
 
     protected void onResume() {
         super.onResume();
-
         mGame.resume(this);
     }
 
     protected void onPause() {
         super.onPause();
-
         mGame.pause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGame.destroy();
     }
 
     float roll = 0.0f, pitch = 0.0f;
@@ -63,5 +69,15 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         roll = delX - ((int)(delX/360))*360;
         pitch = delY - ((int)(delY/360))*360;
+    }
+
+    /*************************************** GAMEPLAY FUNCTIONS ***********************************/
+    public void timeTick() {
+        Log.d("mylog", "timeTick()");
+    }
+
+    public void timeFinish() {
+        Log.d("mylog", "timeFinish()");
+        mGame.stop(this);
     }
 }
