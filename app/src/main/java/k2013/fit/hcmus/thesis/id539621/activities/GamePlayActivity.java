@@ -24,7 +24,6 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback{
     private Uri mCurrentUri;
     private Target mTarget;
-    private OrientationListener mOrientationListener;
 
     private View mPointer;
 
@@ -46,6 +45,14 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mVRLibrary = createVRLibrary();
     }
 
+    protected void onResume() {
+        super.onResume();
+    }
+
+    protected void onPause() {
+        super.onPause();
+    }
+
     @Override
     protected MDVRLibrary createVRLibrary() {
         return MDVRLibrary.with(this)
@@ -57,6 +64,18 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
                         loadImage(currentUri(), callback);
                     }
                 }).build(R.id.gameplay_glview);
+    }
+
+    float roll = 0.0f, pitch = 0.0f;
+    float delX = 0.0f, delY = 0.0f;
+    @Override
+    public void customOnScroll(float velocityX, float velocityY) {
+
+        delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
+        delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
+
+        roll = delX - ((int)(delX/360))*360;
+        pitch = delY - ((int)(delY/360))*360;
     }
 
     private void loadImage(Uri uri, final MD360BitmapTexture.Callback callback) {
@@ -101,32 +120,5 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
             ex.printStackTrace();
             return null;
         }
-    }
-
-    protected void onPause() {
-        super.onPause();
-        if(mOrientationListener != null) {
-            mOrientationListener.unregisterListener();
-        }
-    }
-
-    protected void onResume() {
-        super.onResume();
-        if(mOrientationListener != null){
-            mOrientationListener.registerListener();
-        }
-    }
-
-    float roll = 0.0f, pitch = 0.0f;
-    float delX = 0.0f, delY = 0.0f;
-
-    @Override
-    public void customOnScroll(float velocityX, float velocityY) {
-
-        delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
-        delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
-
-        roll = delX - ((int)(delX/360))*360;
-        pitch = delY - ((int)(delY/360))*360;
     }
 }
