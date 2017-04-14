@@ -22,10 +22,13 @@ public:
     void openDevice();
     ALuint addSource(std::string filename);
     void setPosition(ALuint source,float x, float y, float z);
+    void setLoop(ALuint source, bool isLoop);
     void playSound(ALuint source);
     void pauseSound(ALuint source);
     void setListenerOrientation(float atX, float atY, float atZ, float upX, float upY, float upZ);
     void closeDevice();
+
+    void testSound();
 
     static BinauralSound& getInstance()
     {

@@ -168,6 +168,8 @@ public class MD360Director {
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
+
+
         Matrix.setIdentityM(mCurrentRotation, 0);
         Matrix.rotateM(mCurrentRotation, 0, -mDeltaY, 1.0f, 0.0f, 0.0f);
         Matrix.setIdentityM(mCurrentRotationPost, 0);

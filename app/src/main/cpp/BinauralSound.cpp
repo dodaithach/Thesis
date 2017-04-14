@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <memory.h>
+#include <android/log.h>
+
 #include "BinauralSound.h"
 
 
@@ -80,6 +82,10 @@ void BinauralSound::openDevice() {
     device = alcOpenDevice(0);
     context = alcCreateContext(device, context_attribs);
     alcMakeContextCurrent(context);
+
+    // set listener to (0,0,0)
+    alListener3f(AL_POSITION, 0.0, 0.0, 0.0);
+    alListener3f(AL_VELOCITY, 0.0, 0.0, 0.0);
 }
 
 ALuint BinauralSound::addSource(std::string filename) {
@@ -107,7 +113,16 @@ ALuint BinauralSound::addSource(std::string filename) {
 }
 
 void BinauralSound::setPosition(ALuint source,float x, float y, float z){
+    __android_log_print(ANDROID_LOG_DEBUG, "setPosition", "source: %d", source);
     alSource3f(source, AL_POSITION, x, y, z);
+}
+
+void BinauralSound::setLoop(ALuint source, bool isLoop){
+    if(isLoop){
+        alSourcei(source, AL_LOOPING, AL_TRUE);
+    } else {
+        alSourcei(source, AL_LOOPING, AL_FALSE);
+    }
 }
 
 void BinauralSound::playSound(ALuint source){
@@ -136,5 +151,34 @@ void BinauralSound::closeDevice(){
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     alcCloseDevice(device);
+
+}
+
+bool isX = true;
+
+void BinauralSound::testSound(){
+    ALint context_attribs[] = { ALC_FREQUENCY, 22050, 0 };
+
+    // Initialization
+    ALCdevice* myDevice = alcOpenDevice(0);
+    ALCcontext* myContext = alcCreateContext(myDevice, context_attribs);
+    alcMakeContextCurrent(myContext);
+
+    // set listener to (0,0,0)
+    alListener3f(AL_POSITION, 0.0, 0.0, 0.0);
+    alListener3f(AL_VELOCITY, 0.0, 0.0, 0.0);
+
+    ALuint sound = addSource("/sdcard/tone.wav");
+
+
+    if(isX){
+        alSource3f(sound, AL_POSITION, 10, 0, 0);
+    }
+    else {
+        alSource3f(sound, AL_POSITION, -10, 0, 0);
+    }
+    isX = !isX;
+    alSourcePlay(sound);
+
 
 }
