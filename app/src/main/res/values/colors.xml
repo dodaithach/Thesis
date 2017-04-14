@@ -5,5 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorCircleStroke">#FF5722</color>
-    <color name="colorCircleSolid">#96ffccbc</color>
+    <color name="colorCircleSolidLight">#96ffccbc</color>
+    <color name="colorCircleSolidDark">#dcffccbc</color>
 </resources>
