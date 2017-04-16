@@ -80,8 +80,6 @@ public abstract class MD360PlayerActivity extends Activity {
         context.startActivity(i);
     }
 
-    protected MDVRLibrary mVRLibrary;
-
     private MDPosition[] positions = new MDPosition[]{
             MDPosition.newInstance().setZ(-8.0f).setYaw(-45.0f),
             MDPosition.newInstance().setZ(-18.0f).setYaw(15.0f).setAngleX(15),
@@ -107,38 +105,5 @@ public abstract class MD360PlayerActivity extends Activity {
 
         // et content view
         setContentView(R.layout.activity_game_play);
-
-        // init VR Library
-//        mVRLibrary = createVRLibrary();
-    }
-
-    abstract protected MDVRLibrary createVRLibrary();
-
-    public MDVRLibrary getVRLibrary() {
-        return mVRLibrary;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mVRLibrary.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mVRLibrary.onPause(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mVRLibrary.onDestroy();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mVRLibrary.onOrientationChanged(this);
     }
 }

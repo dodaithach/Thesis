@@ -1,6 +1,8 @@
-package k2013.fit.hcmus.thesis.id539621.model;
+package k2013.fit.hcmus.thesis.id539621.game_operation;
 
 import java.util.ArrayList;
+
+import k2013.fit.hcmus.thesis.id539621.model.Sound;
 
 /**
  * Created by cpu60011-local on 10/04/2017.
