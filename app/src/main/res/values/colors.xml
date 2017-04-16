@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#1687FD</color>
+    <color name="colorPrimaryDark">#3798FE</color>
+    <color name="colorAccent">#FD1744</color>
 
-    <color name="colorCircleStroke">#FF5722</color>
-    <color name="colorCircleSolidLight">#96ffccbc</color>
-    <color name="colorCircleSolidDark">#dcffccbc</color>
+    <color name="themePrimary">#1687FD</color>
+    <color name="themeLight">#FEFFFF</color>
+    <color name="themeDark">#3798FE</color>
+    <color name="themeAccent">#FD1744</color>
+    <color name="themeAccentLight">#FE849E</color>
 </resources>
