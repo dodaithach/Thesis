@@ -39,6 +39,16 @@ Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setPosition(
 
 extern "C"
 JNIEXPORT void JNICALL
+Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setLoop(
+        JNIEnv *env,
+        jobject /* this */, int source, jboolean isLoop) {
+
+    BinauralSound::getInstance().setLoop(source,(bool)(isLoop == JNI_TRUE));
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_playSound(
         JNIEnv *env,
         jobject /* this */, int source) {
@@ -68,4 +78,13 @@ Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_closeDevice(
         JNIEnv *env,
         jobject /* this */) {
     BinauralSound::getInstance().closeDevice();
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_testSound(
+        JNIEnv *env,
+        jobject /* this */) {
+    BinauralSound::getInstance().testSound();
 }
