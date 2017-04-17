@@ -37,6 +37,8 @@ public class GameOperation {
     private long mRemainingTime = 0;
     private Position mCurPos = new Position(0,0,0);
 
+    private boolean mIsInited = false;
+
     public GameOperation() {}
 
     public GameOperation(GamePlayActivity activity, GamePlayParams params) {
@@ -48,6 +50,7 @@ public class GameOperation {
     /************************************* GAME STATE FUNCTIONS ***********************************/
     public void init() {
         mVRLibrary = createVRLibrary();
+        mIsInited = true;
     }
 
     public void pause(Context context) {
@@ -74,7 +77,6 @@ public class GameOperation {
 
     public void stop(Context context) {
         mVRLibrary.onPause(context);
-        mVRLibrary.onDestroy();
     }
 
     public void finish(Context context) {
@@ -150,5 +152,9 @@ public class GameOperation {
         mCurPos.setX(x);
         mCurPos.setY(y);
         mCurPos.setZ(z);
+    }
+
+    public boolean isInited() {
+        return mIsInited;
     }
 }

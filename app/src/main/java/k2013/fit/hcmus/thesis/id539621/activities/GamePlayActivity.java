@@ -40,7 +40,9 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     @Override
     protected void onStart() {
         super.onStart();
-        mGame.init();
+        if (!mGame.isInited()) {
+            mGame.init();
+        }
     }
 
     protected void onResume() {
