@@ -64,7 +64,7 @@ public class GameOperation {
         mTimer = new CountDownTimer(mRemainingTime, TIME_TICK) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mRemainingTime = millisUntilFinished / 1000;
+                mRemainingTime = millisUntilFinished;
                 getActivity().timeTick();
             }
 
