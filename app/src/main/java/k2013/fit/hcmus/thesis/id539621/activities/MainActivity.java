@@ -22,8 +22,6 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
  */
 
 public class MainActivity extends FragmentActivity {
-    private TextView textView;
-    private float[] mAngles = new float[3];
     private OrientationListener mOrientationListener;
     private float[] mViewMatrix = new float[16];
     private float[] mCurrentRotation = new float[16];
@@ -31,18 +29,12 @@ public class MainActivity extends FragmentActivity {
     private float[] mTempMatrix = new float[16];
 
     private BinauralSound binauralSound;
-    private int sound1;
     private int sound2;
-
-    int  temp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        textView = (TextView)findViewById(R.id.textView);
-
         mOrientationListener = new OrientationListener(this);
         mOrientationListener.registerListener();
 
@@ -92,13 +84,9 @@ public class MainActivity extends FragmentActivity {
         binauralSound.openDevice();
 
         binauralSound.setListenerOrientation(0,0,-1,0,1,0);
-
-        //sound1 = binauralSound.addSource("/sdcard/pcm.wav");
         sound2 = binauralSound.addSource("/sdcard/tone.wav");
 
         binauralSound.setLoop(sound2, false);
-
-       // binauralSound.setPosition(sound2, 0, 10, 0);
 
 
 

@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activities.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
+import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -32,6 +33,8 @@ public class GameOperation {
     private WeakReference<GamePlayActivity> mWeakReference;
     private Target mTarget;
     private MDVRLibrary mVRLibrary;
+    private OrientationListener mOrientationListener;
+    private int mMode;
 
     private CountDownTimer mTimer;
     private long mRemainingTime = 0;
@@ -45,6 +48,15 @@ public class GameOperation {
         mWeakReference = new WeakReference<GamePlayActivity>(activity);
         mParams = params;
         mRemainingTime = mParams.getTime();
+
+        if (params.getMode() == GamePlayParams.MODE_SENSOR) {
+            mMode = MDVRLibrary.INTERACTIVE_MODE_MOTION;
+        } else {
+            mMode = MDVRLibrary.INTERACTIVE_MODE_TOUCH;
+        }
+
+        mOrientationListener = new OrientationListener(activity);
+        mOrientationListener.callback = activity;
     }
 
     /************************************* GAME STATE FUNCTIONS ***********************************/
@@ -56,10 +68,22 @@ public class GameOperation {
     public void pause(Context context) {
         mVRLibrary.onPause(context);
         mTimer.cancel();
+
+        if (mMode == MDVRLibrary.INTERACTIVE_MODE_MOTION) {
+            if(mOrientationListener != null) {
+                mOrientationListener.unregisterListener();
+            }
+        }
     }
 
     public void resume(Context context) {
         mVRLibrary.onResume(context);
+
+        if (mMode == MDVRLibrary.INTERACTIVE_MODE_MOTION) {
+            if(mOrientationListener != null){
+                mOrientationListener.registerListener();
+            }
+        }
 
         mTimer = new CountDownTimer(mRemainingTime, TIME_TICK) {
             @Override
@@ -94,7 +118,7 @@ public class GameOperation {
     public MDVRLibrary createVRLibrary() {
         return MDVRLibrary.with(getActivity())
                 .displayMode(MDVRLibrary.DISPLAY_MODE_NORMAL)
-                .interactiveMode(MDVRLibrary.INTERACTIVE_MODE_TOUCH)
+                .interactiveMode(mMode)
                 .asBitmap(new MDVRLibrary.IBitmapProvider() {
                     @Override
                     public void onProvideBitmap(final MD360BitmapTexture.Callback callback) {

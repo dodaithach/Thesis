@@ -9,11 +9,15 @@ import k2013.fit.hcmus.thesis.id539621.model.Sound;
  */
 
 public class GamePlayParams {
+    public static final int MODE_TOUCH = 0;
+    public static final int MODE_SENSOR = 1;
+
     private int mTime;
     private String mBackgroundImg;
     private String mTargetImg;
     private Sound mTargetSound;
     private ArrayList<Sound> mDistractSounds;
+    private int mMode;
 
     public GamePlayParams() {
         mTime = 0;
@@ -21,18 +25,21 @@ public class GamePlayParams {
         mTargetImg = "";
         mTargetSound = null;
         mDistractSounds = null;
+        mMode = MODE_TOUCH;
     }
 
     public GamePlayParams(int time,
                           String backgroundImg,
                           String targetImg,
                           Sound targetSound,
-                          ArrayList<Sound> distractSounds) {
+                          ArrayList<Sound> distractSounds,
+                          int mode) {
         mTime = time;
         mBackgroundImg = backgroundImg;
         mTargetImg = targetImg;
         mTargetSound = targetSound;
         mDistractSounds = distractSounds;
+        mMode = mode;
     }
 
     public int getTime() {
@@ -73,5 +80,13 @@ public class GamePlayParams {
 
     public void setDistractSounds(ArrayList<Sound> mDistractSounds) {
         this.mDistractSounds = mDistractSounds;
+    }
+
+    public void setMode(int mode) {
+        mMode = mode;
+    }
+
+    public int getMode() {
+        return mMode;
     }
 }

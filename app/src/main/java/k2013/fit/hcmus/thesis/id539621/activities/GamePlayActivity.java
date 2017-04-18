@@ -1,6 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activities;
 
 import android.content.res.Resources;
+import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +12,9 @@ import com.custom.OnScrollCallback;
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
+import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 
-public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback{
+public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback, OrientationCallback {
     private View mPointer;
 
     private GameOperation mGame;
@@ -34,6 +36,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         GamePlayParams params = new GamePlayParams();
         params.setTime(5000);
+        params.setMode(GamePlayParams.MODE_SENSOR);
         mGame = new GameOperation(this, params);
     }
 
@@ -71,6 +74,44 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         roll = delX - ((int)(delX/360))*360;
         pitch = delY - ((int)(delY/360))*360;
+    }
+
+    private float[] mViewMatrix = new float[16];
+    private float[] mCurrentRotation = new float[16];
+    private float[] mCurrentRotationPost = new float[16];
+    private float[] mTempMatrix = new float[16];
+    @Override
+    public void onOrientationChanged(float azimuth, float pitch, float roll) {
+        Log.d("Orient sensor: ", "azimuth: " + Math.toDegrees(azimuth) + " pitch: " + Math.toDegrees(pitch) + " roll: " + Math.toDegrees(roll) );
+
+        final float eyeX = 0;
+        final float eyeY = 0;
+        final float eyeZ = 0;
+        final float lookX = 0;
+        final float lookY = 0;
+        final float lookZ = -1.0f;
+        final float upX = 0.0f;
+        final float upY = 1.0f;
+        final float upZ = 0.0f;
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+
+        Log.d("test A&R" , String.format("azimuth: %f roll: %f", (float)(azimuth/Math.PI*180), (float)(roll/Math.PI*180) + 90));
+
+        Matrix.setIdentityM(mCurrentRotation, 0);
+        Matrix.rotateM(mCurrentRotation, 0, (float)(azimuth/Math.PI*180), 1.0f, 0.0f, 0.0f);
+        Matrix.setIdentityM(mCurrentRotationPost, 0);
+        Matrix.rotateM(mCurrentRotationPost, 0, (float)(roll/Math.PI*180) + 90, 0.0f, 1.0f, 0.0f);
+
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
+        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
+
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
+        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
