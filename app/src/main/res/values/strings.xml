@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Thesis</string>
+
+    <!-- GamePlay PopUp -->
+    <string name="gameplay_popup_msg_failed">Sorry! You are wrong.</string>
+    <string name="gameplay_popup_msg_success">Congrats! Good job.</string>
+    <string name="gameplay_popup_btn_replay">Replay</string>
+    <string name="gameplay_popup_btn_next">Next</string>
 </resources>

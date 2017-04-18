@@ -1,6 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.game_operation;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -29,6 +30,8 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 public class GameOperation {
     private final int TIME_TICK = 500;
 
+    public static final String SP_IS_CORRECT = "IS_CORRECT";
+
     private GamePlayParams mParams;
     private WeakReference<GamePlayActivity> mWeakReference;
     private Target mTarget;
@@ -41,6 +44,9 @@ public class GameOperation {
     private Position mCurPos = new Position(0,0,0);
 
     private boolean mIsInited = false;
+
+    private double mRoll = 0f;
+    private double mPitch = 0f;
 
     public GameOperation() {}
 
@@ -103,11 +109,25 @@ public class GameOperation {
         mVRLibrary.onPause(context);
     }
 
-    public void finish(Context context) {
-        Log.d("mylog", "finish game");
+    public void finish(Context context, boolean isTimeUp) {
         mTimer.cancel();
 
+        boolean isCorrect = false;
+
+        if (!isTimeUp) {
+            // calculate result
+            isCorrect = calcResult();
+        }
+
+        scrollToRightPosition();
         stop(context);
+
+        storeGameResult(isCorrect);
+
+        GamePlayActivity activity = getActivity();
+        if (!activity.isDestroyed() && !activity.isFinishing()) {
+            activity.showPopUp(true);
+        }
     }
 
     public void destroy() {
@@ -178,7 +198,32 @@ public class GameOperation {
         mCurPos.setZ(z);
     }
 
+    public void updatePoistion(double roll, double pitch) {
+        mRoll = roll;
+        mPitch = pitch;
+    }
+
     public boolean isInited() {
         return mIsInited;
+    }
+
+    private boolean calcResult() {
+
+        return true;
+    }
+
+    private void storeGameResult(boolean isCorrect) {
+        GamePlayActivity activity = getActivity();
+        if (!activity.isDestroyed() && !activity.isFinishing()) {
+            SharedPreferences.Editor editor = activity.getPreferences(Context.MODE_PRIVATE).edit();
+
+            editor.putBoolean(SP_IS_CORRECT, isCorrect);
+            editor.commit();
+
+        }
+    }
+
+    private void scrollToRightPosition() {
+
     }
 }

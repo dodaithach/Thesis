@@ -1,5 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.opengl.Matrix;
 import android.os.Bundle;
@@ -36,7 +38,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mPointer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mGame.finish(GamePlayActivity.this);
+                mGame.finish(GamePlayActivity.this, false);
                 return false;
             }
         });
@@ -64,7 +66,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         HandlerSingleton.init(this, null);
 
         GamePlayParams params = new GamePlayParams();
-        params.setTime(10000);
+        params.setTime(5000);
         params.setMode(GamePlayParams.MODE_SENSOR);
         mGame = new GameOperation(this, params);
     }
@@ -103,6 +105,8 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         roll = delX - ((int)(delX/360))*360;
         pitch = delY - ((int)(delY/360))*360;
+
+        mGame.updatePoistion(roll, pitch);
     }
 
     private float[] mViewMatrix = new float[16];
@@ -112,6 +116,8 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     @Override
     public void onOrientationChanged(float azimuth, float pitch, float roll) {
         Log.d("Orient sensor: ", "azimuth: " + Math.toDegrees(azimuth) + " pitch: " + Math.toDegrees(pitch) + " roll: " + Math.toDegrees(roll) );
+
+        mGame.updatePoistion(roll, pitch);
 
         final float eyeX = 0;
         final float eyeY = 0;
@@ -150,15 +156,30 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
     public void timeFinish() {
         Log.d("mylog", "timeFinish()");
-        mGame.stop(this);
-        showPopUp(true);
+        mGame.finish(this, true);
     }
 
     public void showPopUp(boolean mode) {
+        // Retrieve data from GameOperation
+        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+
+        updatePopUp(isCorrect);
+
         if (mode) {
             mPopUpLayout.setVisibility(View.VISIBLE);
         } else {
             mPopUpLayout.setVisibility(View.GONE);
+        }
+    }
+
+    public void updatePopUp(boolean isCorrect) {
+        if (isCorrect) {
+            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
+            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
+        } else {
+            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_failed));
+            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_replay));
         }
     }
 
@@ -167,6 +188,29 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     }
 
     public void nextAction() {
+        // Retrieve data from GameOperation
+        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+        clearSharedPreference();
 
+        if (isCorrect) {
+            nextGame();
+        } else {
+            replay();
+        }
+    }
+
+    public void nextGame() {
+
+    }
+
+    public void replay() {
+
+    }
+
+    public void clearSharedPreference() {
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
     }
 }
