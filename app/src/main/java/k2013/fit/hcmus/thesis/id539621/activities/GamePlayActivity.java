@@ -5,6 +5,10 @@ import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
@@ -16,8 +20,13 @@ import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 
 public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback, OrientationCallback {
     private View mPointer;
-
     private GameOperation mGame;
+
+    private RelativeLayout mPopUpLayout;
+    private ImageView mPopUpImage;
+    private TextView mPopUpMessage;
+    private Button mPopUpBtnCancel;
+    private Button mPopUpBtnAction;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,10 +41,30 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
             }
         });
 
+        mPopUpLayout = (RelativeLayout) findViewById(R.id.gameplay_finishPopUp);
+        mPopUpImage = (ImageView) findViewById(R.id.gameplay_finishPopUp_img);
+        mPopUpMessage = (TextView) findViewById(R.id.gameplay_finishPopUp_msg);
+        mPopUpBtnCancel = (Button) findViewById(R.id.gameplay_finishPopUp_btnCancel);
+        mPopUpBtnAction = (Button) findViewById(R.id.gameplay_finishPopUp_btnAction);
+
+        mPopUpBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelGame();
+            }
+        });
+
+        mPopUpBtnAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextAction();
+            }
+        });
+
         HandlerSingleton.init(this, null);
 
         GamePlayParams params = new GamePlayParams();
-        params.setTime(5000);
+        params.setTime(10000);
         params.setMode(GamePlayParams.MODE_SENSOR);
         mGame = new GameOperation(this, params);
     }
@@ -122,5 +151,22 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     public void timeFinish() {
         Log.d("mylog", "timeFinish()");
         mGame.stop(this);
+        showPopUp(true);
+    }
+
+    public void showPopUp(boolean mode) {
+        if (mode) {
+            mPopUpLayout.setVisibility(View.VISIBLE);
+        } else {
+            mPopUpLayout.setVisibility(View.GONE);
+        }
+    }
+
+    public void cancelGame() {
+        finish();
+    }
+
+    public void nextAction() {
+
     }
 }

@@ -26,7 +26,8 @@
         android:layout_gravity="center"
         android:background="@drawable/popup_rounded_background"
         android:elevation="3dp"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/gameplay_finishPopUp_img"
