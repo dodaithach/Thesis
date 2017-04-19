@@ -44,9 +44,6 @@ public class GameOperation {
 
     private boolean mIsInited = false;
 
-    private double mDeltaX = 0f;
-    private double mDeltaY = 0f;
-
     public GameOperation() {}
 
     public GameOperation(GamePlayActivity activity, GamePlayParams params) {
@@ -118,7 +115,7 @@ public class GameOperation {
             isCorrect = calcResult();
         }
 
-        scrollToRightPosition();
+        scrollToPosition(0,0);
         stop(context);
 
         storeGameResult(isCorrect);
@@ -217,7 +214,7 @@ public class GameOperation {
         }
     }
 
-    private void scrollToRightPosition() {
-
+    public void scrollToPosition(double delX, double delY) {
+        mVRLibrary.testScroll(delX, delY);
     }
 }

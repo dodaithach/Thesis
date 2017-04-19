@@ -48,7 +48,8 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mPointer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mGame.finish(GamePlayActivity.this, false);
+                mGame.scrollToPosition(500,500);
+//                mGame.finish(GamePlayActivity.this, false);
                 return false;
             }
         });
@@ -76,7 +77,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         HandlerSingleton.init(this, null);
 
         GamePlayParams params = new GamePlayParams();
-        params.setTime(5000);
+        params.setTime(180000);
         params.setMode(GamePlayParams.MODE_TOUCH);
         mGame = new GameOperation(this, params);
     }
@@ -91,6 +92,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
     protected void onResume() {
         super.onResume();
+
         mGame.resume(this);
     }
 

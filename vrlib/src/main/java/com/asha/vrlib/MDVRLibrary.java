@@ -2,6 +2,7 @@ package com.asha.vrlib;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.RectF;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -656,5 +657,12 @@ public class MDVRLibrary {
         int VIDEO = 0;
         int BITMAP = 1;
         int DEFAULT = VIDEO;
+    }
+
+    public void testScroll(double delX, double delY) {
+        for (MD360Director director : mProjectionModeManager.getDirectors()){
+            director.setDeltaX(director.getDeltaX() - (int) delX / Resources.getSystem().getDisplayMetrics().density * 0.2f);
+            director.setDeltaY(director.getDeltaY() - (int) delY/ Resources.getSystem().getDisplayMetrics().density * 0.2f);
+        }
     }
 }
