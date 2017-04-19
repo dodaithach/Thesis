@@ -45,8 +45,8 @@ public class GameOperation {
 
     private boolean mIsInited = false;
 
-    private double mRoll = 0f;
-    private double mPitch = 0f;
+    private double mDeltaX = 0f;
+    private double mDeltaY = 0f;
 
     public GameOperation() {}
 
@@ -198,9 +198,9 @@ public class GameOperation {
         mCurPos.setZ(z);
     }
 
-    public void updatePoistion(double roll, double pitch) {
-        mRoll = roll;
-        mPitch = pitch;
+    public void updatePosition(double deltaX, double deltaY) {
+        mDeltaX = mDeltaY;
+        mDeltaY = deltaY;
     }
 
     public boolean isInited() {

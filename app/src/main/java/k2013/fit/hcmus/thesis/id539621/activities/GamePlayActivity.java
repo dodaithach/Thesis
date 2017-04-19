@@ -30,6 +30,16 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     private Button mPopUpBtnCancel;
     private Button mPopUpBtnAction;
 
+    private final float eyeX = 0;
+    private final float eyeY = 0;
+    private final float eyeZ = 0;
+    private final float lookX = 0;
+    private final float lookY = 0;
+    private final float lookZ = -1.0f;
+    private final float upX = 0.0f;
+    private final float upY = 1.0f;
+    private final float upZ = 0.0f;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +77,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
 
         GamePlayParams params = new GamePlayParams();
         params.setTime(5000);
-        params.setMode(GamePlayParams.MODE_SENSOR);
+        params.setMode(GamePlayParams.MODE_TOUCH);
         mGame = new GameOperation(this, params);
     }
 
@@ -95,18 +105,35 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mGame.destroy();
     }
 
-    float roll = 0.0f, pitch = 0.0f;
     float delX = 0.0f, delY = 0.0f;
+
     @Override
     public void customOnScroll(float velocityX, float velocityY) {
 
         delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
         delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-        roll = delX - ((int)(delX/360))*360;
-        pitch = delY - ((int)(delY/360))*360;
+        Log.d("customOnScroll","delX: " + delX + " delY: " + delY);
 
-        mGame.updatePoistion(roll, pitch);
+        mGame.updatePosition(delX, delY);
+
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+
+        Matrix.setIdentityM(mCurrentRotation, 0);
+        Matrix.rotateM(mCurrentRotation, 0, delX, 1.0f, 0.0f, 0.0f);
+        Matrix.setIdentityM(mCurrentRotationPost, 0);
+        Matrix.rotateM(mCurrentRotationPost, 0, delY, 0.0f, 1.0f, 0.0f);
+
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
+        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
+
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
+        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
     }
 
     private float[] mViewMatrix = new float[16];
@@ -117,21 +144,14 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     public void onOrientationChanged(float azimuth, float pitch, float roll) {
         Log.d("Orient sensor: ", "azimuth: " + Math.toDegrees(azimuth) + " pitch: " + Math.toDegrees(pitch) + " roll: " + Math.toDegrees(roll) );
 
-        mGame.updatePoistion(roll, pitch);
+        //delX = (float)(azimuth/Math.PI*180);
+        //delY = (float)(roll/Math.PI*180) + 90;
 
-        final float eyeX = 0;
-        final float eyeY = 0;
-        final float eyeZ = 0;
-        final float lookX = 0;
-        final float lookY = 0;
-        final float lookZ = -1.0f;
-        final float upX = 0.0f;
-        final float upY = 1.0f;
-        final float upZ = 0.0f;
+        mGame.updatePosition((float)(azimuth/Math.PI*180),  (float)(roll/Math.PI*180) + 90);
+
+
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
-
-        Log.d("test A&R" , String.format("azimuth: %f roll: %f", (float)(azimuth/Math.PI*180), (float)(roll/Math.PI*180) + 90));
 
         Matrix.setIdentityM(mCurrentRotation, 0);
         Matrix.rotateM(mCurrentRotation, 0, (float)(azimuth/Math.PI*180), 1.0f, 0.0f, 0.0f);
