@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
@@ -41,7 +40,7 @@ public class GameOperation {
 
     private CountDownTimer mTimer;
     private long mRemainingTime = 0;
-    private Position mCurPos = new Position(0,0,0);
+    private Position mCurLookAt = new Position(0,0,0);
 
     private boolean mIsInited = false;
 
@@ -192,15 +191,10 @@ public class GameOperation {
         return mWeakReference.get();
     }
 
-    public void updatePostion(double x, double y, double z) {
-        mCurPos.setX(x);
-        mCurPos.setY(y);
-        mCurPos.setZ(z);
-    }
-
-    public void updatePosition(double deltaX, double deltaY) {
-        mDeltaX = mDeltaY;
-        mDeltaY = deltaY;
+    public void updateLookAt(double x, double y, double z) {
+        mCurLookAt.setX(x);
+        mCurLookAt.setY(y);
+        mCurLookAt.setZ(z);
     }
 
     public boolean isInited() {
