@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.Matrix;
 import android.os.CountDownTimer;
+import android.os.Debug;
 import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
@@ -42,7 +43,7 @@ public class GameOperation {
 
     private CountDownTimer mTimer;
     private long mRemainingTime = 0;
-    private Position mCurPos = new Position(0,0,0);
+    private Position mCurLookAt = new Position(0,0,0);
 
     private boolean mIsInited = false;
 
@@ -134,7 +135,7 @@ public class GameOperation {
             isCorrect = calcResult();
         }
 
-        scrollToRightPosition();
+        scrollToPosition(0,0);
         stop(context);
 
         storeGameResult(isCorrect);
@@ -207,15 +208,11 @@ public class GameOperation {
         return mWeakReference.get();
     }
 
-    public void updatePostion(double x, double y, double z) {
-        mCurPos.setX(x);
-        mCurPos.setY(y);
-        mCurPos.setZ(z);
-    }
 
-    public void updatePosition(double delX, double delY) {
-        mDeltaX = delX;
-        mDeltaY = delY;
+    public void updateLookAt(double x, double y, double z) {
+        mCurLookAt.setX(x);
+        mCurLookAt.setY(y);
+        mCurLookAt.setZ(z);
     }
 
     public boolean isInited() {
@@ -224,29 +221,14 @@ public class GameOperation {
 
     private boolean calcResult() {
 
-        //mCurPos.getX();
+        double a1 = 0;
+        double a2 = 0;
+        double a3 = 10;
+        double b1 = -mCurLookAt.getX();
+        double b2 = -mCurLookAt.getY();
+        double b3 = -mCurLookAt.getZ();
 
-        Matrix.setIdentityM(mViewMatrix, 0);
-        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
-
-        Matrix.setIdentityM(mCurrentRotation, 0);
-        Matrix.rotateM(mCurrentRotation, 0, (float)mDeltaX, 1.0f, 0.0f, 0.0f);
-        Matrix.setIdentityM(mCurrentRotationPost, 0);
-        Matrix.rotateM(mCurrentRotationPost, 0, (float)mDeltaY, 0.0f, 1.0f, 0.0f);
-
-        Matrix.setIdentityM(mTempMatrix, 0);
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
-        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
-
-        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
-
-        double a1 = mCurPos.getX();
-        double a2 = mCurPos.getY();
-        double a3 = mCurPos.getZ();
-        double b1 = -mViewMatrix[8];
-        double b2 = -mViewMatrix[9];
-        double b3 = -mViewMatrix[10];
+        Log.d("calcResult",String.format("a1: %f, a2: %f, a3: %f, b1: %f, b2: %f, b3: %f", a1,a2,a3,b1,b2,b3));
 
         double alpha = Math.acos((a1*b1 + a2*b2 + a3*b3)/(Math.sqrt(a1*a1 + a2*a2 + a3*a3)*Math.sqrt(b1*b1 + b2*b2 + b3*b3)));
         if(alpha < -10.0/180*Math.PI && alpha > 10.0/180*Math.PI) {
@@ -266,7 +248,7 @@ public class GameOperation {
         }
     }
 
-    private void scrollToRightPosition() {
-
+    public void scrollToPosition(double delX, double delY) {
+        mVRLibrary.testScroll(delX, delY);
     }
 }
