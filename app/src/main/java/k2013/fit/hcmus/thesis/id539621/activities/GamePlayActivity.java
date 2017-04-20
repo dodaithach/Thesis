@@ -86,7 +86,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     protected void onStart() {
         super.onStart();
         if (!mGame.isInited()) {
-            mGame.init();
+            mGame.initGame();
         }
     }
 
@@ -162,7 +162,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
-        //mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/

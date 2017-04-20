@@ -26,7 +26,7 @@ public class OrientationListener implements SensorEventListener {
     public OrientationListener(Context context){
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senOrientation = senSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        senSensorManager.registerListener(this, senOrientation, SensorManager.SENSOR_DELAY_NORMAL);
+        //senSensorManager.registerListener(this, senOrientation, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
+import java.util.Random;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activities.GamePlayActivity;
@@ -30,7 +31,14 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
  */
 
 public class GameOperation {
-    private final int TIME_TICK = 5000;
+
+    private final String[] backgroundResource = {"android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen", "android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bitmap360"};
+    private Random randomElement;
+    private int backgroundIndex = 0;
+    private int targetSoundIndex = 0;
+    private Position targetSoundPosition;
+
+    private final int TIME_TICK = 500;
 
     public static final String SP_IS_CORRECT = "IS_CORRECT";
 
@@ -43,30 +51,14 @@ public class GameOperation {
 
     private CountDownTimer mTimer;
     private long mRemainingTime = 0;
-    private Position mCurLookAt = new Position(0,0,0);
+    private Position mCurLookAt = new Position(0,0,-1);
 
     private boolean mIsInited = false;
-
-    private double mDeltaX = 0f;
-    private double mDeltaY = 0f;
-
-    private float[] mViewMatrix = new float[16];
-    private float[] mCurrentRotation = new float[16];
-    private float[] mCurrentRotationPost = new float[16];
-    private float[] mTempMatrix = new float[16];
-    private final float eyeX = 0;
-    private final float eyeY = 0;
-    private final float eyeZ = 0;
-    private final float lookX = 0;
-    private final float lookY = 0;
-    private final float lookZ = -1.0f;
-    private final float upX = 0.0f;
-    private final float upY = 1.0f;
-    private final float upZ = 0.0f;
 
     public GameOperation() {}
 
     public GameOperation(GamePlayActivity activity, GamePlayParams params) {
+
         mWeakReference = new WeakReference<GamePlayActivity>(activity);
         mParams = params;
         mRemainingTime = mParams.getTime();
@@ -82,9 +74,17 @@ public class GameOperation {
     }
 
     /************************************* GAME STATE FUNCTIONS ***********************************/
-    public void init() {
+    public void initGame() {
+
+        Log.d("init","initGame()");
+        randomElement = new Random();
+        backgroundIndex = (randomElement.nextInt()%backgroundResource.length + backgroundResource.length)%backgroundResource.length;
+
+
         mVRLibrary = createVRLibrary();
         mIsInited = true;
+
+
     }
 
     public void pause(Context context) {
@@ -196,7 +196,7 @@ public class GameOperation {
 
     private Uri getUri() {
         try {
-            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+            Uri res = Uri.parse(backgroundResource[backgroundIndex]);
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
