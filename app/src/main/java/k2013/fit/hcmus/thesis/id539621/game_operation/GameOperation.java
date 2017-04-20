@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.Matrix;
 import android.os.CountDownTimer;
 import android.util.Log;
 
@@ -28,7 +29,7 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
  */
 
 public class GameOperation {
-    private final int TIME_TICK = 500;
+    private final int TIME_TICK = 5000;
 
     public static final String SP_IS_CORRECT = "IS_CORRECT";
 
@@ -47,6 +48,20 @@ public class GameOperation {
 
     private double mDeltaX = 0f;
     private double mDeltaY = 0f;
+
+    private float[] mViewMatrix = new float[16];
+    private float[] mCurrentRotation = new float[16];
+    private float[] mCurrentRotationPost = new float[16];
+    private float[] mTempMatrix = new float[16];
+    private final float eyeX = 0;
+    private final float eyeY = 0;
+    private final float eyeZ = 0;
+    private final float lookX = 0;
+    private final float lookY = 0;
+    private final float lookZ = -1.0f;
+    private final float upX = 0.0f;
+    private final float upY = 1.0f;
+    private final float upZ = 0.0f;
 
     public GameOperation() {}
 
@@ -180,7 +195,7 @@ public class GameOperation {
 
     private Uri getUri() {
         try {
-            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bitmap360");
+            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/md100811705851170500");
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -198,9 +213,9 @@ public class GameOperation {
         mCurPos.setZ(z);
     }
 
-    public void updatePosition(double deltaX, double deltaY) {
-        mDeltaX = mDeltaY;
-        mDeltaY = deltaY;
+    public void updatePosition(double delX, double delY) {
+        mDeltaX = delX;
+        mDeltaY = delY;
     }
 
     public boolean isInited() {
@@ -209,7 +224,35 @@ public class GameOperation {
 
     private boolean calcResult() {
 
-        return true;
+        //mCurPos.getX();
+
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+
+        Matrix.setIdentityM(mCurrentRotation, 0);
+        Matrix.rotateM(mCurrentRotation, 0, (float)mDeltaX, 1.0f, 0.0f, 0.0f);
+        Matrix.setIdentityM(mCurrentRotationPost, 0);
+        Matrix.rotateM(mCurrentRotationPost, 0, (float)mDeltaY, 0.0f, 1.0f, 0.0f);
+
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
+        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
+
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
+        double a1 = mCurPos.getX();
+        double a2 = mCurPos.getY();
+        double a3 = mCurPos.getZ();
+        double b1 = -mViewMatrix[8];
+        double b2 = -mViewMatrix[9];
+        double b3 = -mViewMatrix[10];
+
+        double alpha = Math.acos((a1*b1 + a2*b2 + a3*b3)/(Math.sqrt(a1*a1 + a2*a2 + a3*a3)*Math.sqrt(b1*b1 + b2*b2 + b3*b3)));
+        if(alpha < -10.0/180*Math.PI && alpha > 10.0/180*Math.PI) {
+            return true;
+        }
+        return false;
     }
 
     private void storeGameResult(boolean isCorrect) {
