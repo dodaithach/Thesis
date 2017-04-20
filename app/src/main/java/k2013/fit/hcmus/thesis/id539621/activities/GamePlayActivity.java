@@ -48,8 +48,8 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         mPointer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mGame.scrollToPosition(500,500);
-//                mGame.finish(GamePlayActivity.this, false);
+                //mGame.scrollToPosition(500,500);
+                mGame.finish(GamePlayActivity.this, false);
                 return false;
             }
         });
@@ -113,13 +113,15 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
         delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
+        Log.d("", "dX: " + delX + " dY: " + delY);
+
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
         Matrix.setIdentityM(mCurrentRotation, 0);
-        Matrix.rotateM(mCurrentRotation, 0, delX, 1.0f, 0.0f, 0.0f);
+        Matrix.rotateM(mCurrentRotation, 0, delY, 1.0f, 0.0f, 0.0f);
         Matrix.setIdentityM(mCurrentRotationPost, 0);
-        Matrix.rotateM(mCurrentRotationPost, 0, delY, 0.0f, 1.0f, 0.0f);
+        Matrix.rotateM(mCurrentRotationPost, 0, delX, 0.0f, 1.0f, 0.0f);
 
         Matrix.setIdentityM(mTempMatrix, 0);
         Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
@@ -160,7 +162,7 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
-        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+        //mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/

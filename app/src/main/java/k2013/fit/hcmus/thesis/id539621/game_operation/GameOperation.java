@@ -196,7 +196,7 @@ public class GameOperation {
 
     private Uri getUri() {
         try {
-            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/md100811705851170500");
+            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -224,16 +224,22 @@ public class GameOperation {
         double a1 = 0;
         double a2 = 0;
         double a3 = 10;
-        double b1 = -mCurLookAt.getX();
-        double b2 = -mCurLookAt.getY();
-        double b3 = -mCurLookAt.getZ();
+        double b1 = mCurLookAt.getX();
+        double b2 = mCurLookAt.getY();
+        double b3 = mCurLookAt.getZ();
 
         Log.d("calcResult",String.format("a1: %f, a2: %f, a3: %f, b1: %f, b2: %f, b3: %f", a1,a2,a3,b1,b2,b3));
 
         double alpha = Math.acos((a1*b1 + a2*b2 + a3*b3)/(Math.sqrt(a1*a1 + a2*a2 + a3*a3)*Math.sqrt(b1*b1 + b2*b2 + b3*b3)));
-        if(alpha < -10.0/180*Math.PI && alpha > 10.0/180*Math.PI) {
+
+        Log.d("calcResult",String.format("alpha: %f", alpha));
+
+
+        if(Math.toDegrees(alpha) >= -20 && Math.toDegrees(alpha) <= 20) {
+            Log.d("calResult", "true");
             return true;
         }
+        Log.d("calResult", "false");
         return false;
     }
 
