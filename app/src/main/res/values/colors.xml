@@ -5,8 +5,13 @@
     <color name="colorAccent">#FD1744</color>
 
     <color name="themePrimary">#1687FD</color>
+    <color name="themePrimaryDark">#3798FE</color>
+    <color name="themeDark">#1260B2</color>
     <color name="themeLight">#FEFFFF</color>
-    <color name="themeDark">#3798FE</color>
     <color name="themeAccent">#FD1744</color>
     <color name="themeAccentLight">#FE849E</color>
+    <color name="themeLightGrey">#D4E1F7</color>
+    <color name="themeDarkGrey">#91A4BE</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

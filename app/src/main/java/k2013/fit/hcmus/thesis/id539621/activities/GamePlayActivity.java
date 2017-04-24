@@ -20,7 +20,7 @@ import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 
-public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback, OrientationCallback {
+public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private View mPointer;
     private GameOperation mGame;
 
@@ -130,9 +130,6 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
-        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
-
         mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
     }
 
@@ -159,15 +156,12 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
-        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
-
         mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
-        Log.d("mylog", "timeTick()");
+//        Log.d("mylog", "timeTick()");
     }
 
     public void timeFinish() {

@@ -1,9 +1,19 @@
 <resources>
-    <string name="app_name">Thesis</string>
+    <string name="app_name">Find It</string>
+
+    <!-- MainActivity -->
+    <string name="main_title">FIND . it</string>
+    <string name="main_btn_play">Play</string>
+    <string name="main_btn_help">Help</string>
+    <string name="main_hint">Take a tour how to play!</string>
 
     <!-- GamePlay PopUp -->
     <string name="gameplay_popup_msg_failed">Sorry! You are wrong.</string>
     <string name="gameplay_popup_msg_success">Congrats! Good job.</string>
     <string name="gameplay_popup_btn_replay">Replay</string>
     <string name="gameplay_popup_btn_next">Next</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

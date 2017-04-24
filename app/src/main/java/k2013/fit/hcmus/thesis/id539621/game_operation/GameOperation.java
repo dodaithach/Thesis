@@ -76,10 +76,9 @@ public class GameOperation {
     /************************************* GAME STATE FUNCTIONS ***********************************/
     public void initGame() {
 
-        Log.d("init","initGame()");
+        Log.d("mylog","initGame()");
         randomElement = new Random();
         backgroundIndex = (randomElement.nextInt()%backgroundResource.length + backgroundResource.length)%backgroundResource.length;
-
 
         mVRLibrary = createVRLibrary();
         mIsInited = true;
@@ -196,7 +195,7 @@ public class GameOperation {
 
     private Uri getUri() {
         try {
-            Uri res = Uri.parse(backgroundResource[backgroundIndex]);
+            Uri res = Uri.parse("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();

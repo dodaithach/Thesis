@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="k2013.fit.hcmus.thesis.id539621.activities.MainActivity">
+    tools:context="k2013.fit.hcmus.thesis.id539621.activities.MainActivity"
+    android:background="@color/themePrimary">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp" />
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-</FrameLayout>
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/main_title"
+            android:textAllCaps="false"
+            android:textColor="@color/themeLight"
+            android:textSize="34sp"/>
+
+        <Button
+            android:id="@+id/main_btn_play"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="48dp"
+            android:text="@string/main_btn_play"
+            android:textAllCaps="false"
+            android:textColor="@drawable/text_play"
+            android:textSize="16sp"
+            android:background="@drawable/btn_rounded_normal_solid"
+            android:stateListAnimator="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/main_hint"
+            android:textColor="@color/themeLight"
+            android:textSize="12sp"/>
+
+        <Button
+            android:id="@+id/main_btn_help"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/main_btn_help"
+            android:textAllCaps="false"
+            android:textColor="@color/themeLight"
+            android:textSize="16sp"
+            android:background="@drawable/btn_rounded_normal_stroke"
+            android:stateListAnimator="@null"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
