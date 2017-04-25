@@ -76,9 +76,6 @@ public class GameOperation {
     /************************************* GAME STATE FUNCTIONS ***********************************/
     public void initGame() {
 
-
-
-
         mVRLibrary = createVRLibrary();
         mIsInited = true;
 

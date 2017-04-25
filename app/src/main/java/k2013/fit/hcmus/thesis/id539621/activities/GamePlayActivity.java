@@ -25,7 +25,7 @@ import k2013.fit.hcmus.thesis.id539621.model.Sound;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
-public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCallback, OrientationCallback {
+public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private View mPointer;
     private GameOperation mGame;
     private int modeGame;
@@ -180,34 +180,17 @@ public class GamePlayActivity extends MD360PlayerActivity implements OnScrollCal
     }
 
     private void changeListenerOrientation(double horizontal, double vertical){
-
-        Matrix.setIdentityM(mViewMatrix, 0);
-        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
-
-        Matrix.setIdentityM(mCurrentRotation, 0);
-        Matrix.rotateM(mCurrentRotation, 0, (float)horizontal, 1.0f, 0.0f, 0.0f);
-        Matrix.setIdentityM(mCurrentRotationPost, 0);
-        Matrix.rotateM(mCurrentRotationPost, 0, (float)vertical, 0.0f, 1.0f, 0.0f);
-
-        Matrix.setIdentityM(mTempMatrix, 0);
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
-        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
-
-        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
-
         Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
         BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
 
-        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
-        Log.d("mylog", "timeTick()");
+//        Log.d("mylog", "timeTick()");
     }
 
     public void timeFinish() {
