@@ -49,6 +49,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private float[] mViewMatrix = new float[16];
     private float[] mCurrentRotation = new float[16];
     private float[] mCurrentRotationPost = new float[16];
+    private float[] mCurrentRotationZ = new float[16];
     private float[] mTempMatrix = new float[16];
 
 
@@ -58,6 +59,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_play);
 
         mPointer = findViewById(R.id.gameplay_pointer);
         mPointer.setOnLongClickListener(new View.OnLongClickListener() {
@@ -169,20 +171,53 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
             Log.d("", "dX: " + delX + " dY: " + delY);
 
-            changeListenerOrientation(-delY, -delX);
+            changeListenerOrientation(-delY, -delX, 0);
         }
     }
 
     @Override
-    public void onOrientationChanged(float azimuth, float pitch, float roll) {
-        Log.d("Orient sensor: ", "azimuth: " + Math.toDegrees(azimuth) + " pitch: " + Math.toDegrees(pitch) + " roll: " + Math.toDegrees(roll) );
-        changeListenerOrientation((azimuth/Math.PI*180), (roll/Math.PI*180) + 90);
-    }
+    public void onOrientationChanged(float[] rotationMatrix) {
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
-    private void changeListenerOrientation(double horizontal, double vertical){
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, rotationMatrix, 0);
+
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
         Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
+        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+        BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
+    }
+
+    private void changeListenerOrientation(double horizontal, double vertical, double z){
+
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+        Matrix.setIdentityM(mCurrentRotation, 0);
+        Matrix.rotateM(mCurrentRotation, 0, (float)horizontal, 1.0f, 0.0f, 0.0f);
+        Matrix.setIdentityM(mCurrentRotationPost, 0);
+        Matrix.rotateM(mCurrentRotationPost, 0, (float)vertical, 0.0f, 1.0f, 0.0f);
+
+        Matrix.setIdentityM(mCurrentRotationZ, 0);
+        Matrix.rotateM(mCurrentRotationZ, 0, (float)z, 0.0f, 0.0f, 1.0f);
+
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
+
+        Matrix.multiplyMM(mCurrentRotation, 0, mTempMatrix, 0, mCurrentRotationZ, 0);
+        //System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
+
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
+        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
+
+        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
 
