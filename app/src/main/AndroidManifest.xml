@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="k2013.fit.hcmus.thesis.id539621">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".activities.GamePlayActivity"
+            android:name=".activity.GamePlayActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".activities.MainActivity"
+        <activity android:name=".activity.MainActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.GameSelectionActivity"
+        <activity android:name=".activity.GameSelectionActivity"
             android:screenOrientation="landscape"></activity>
     </application>
 

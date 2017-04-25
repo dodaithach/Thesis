@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Level"
+            android:textColor="@color/themePrimary"
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/gameselection_recycleritem_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="1"
+            android:textSize="34sp"
+            android:textColor="@color/themePrimary"
+            android:textAlignment="center"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time (s) "
+                android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/gameselection_recycleritem_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:textAlignment="textStart"
+                android:textColor="@color/themePrimary"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Background Sound "
+                android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/gameselection_recycleritem_backgroundsound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textAlignment="textStart"
+                android:textColor="@color/themePrimary"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distracting Sound "
+                android:textAlignment="textEnd"/>
+
+            <TextView
+                android:id="@+id/gameselection_recycleritem_distractingsound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textAlignment="textStart"
+                android:textColor="@color/themePrimary"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/gameselection_recycleritem_btn"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_play_recycleritem_gameselection"
+            android:text="Play"
+            android:textAllCaps="false"
+            android:textColor="@drawable/text_play_recycleritem_gameselection"
+            android:stateListAnimator="@null"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

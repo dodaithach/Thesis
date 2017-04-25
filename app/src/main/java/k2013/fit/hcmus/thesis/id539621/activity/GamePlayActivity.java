@@ -1,4 +1,4 @@
-package k2013.fit.hcmus.thesis.id539621.activities;
+package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;

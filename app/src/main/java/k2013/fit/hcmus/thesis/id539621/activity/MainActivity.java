@@ -1,11 +1,9 @@
-package k2013.fit.hcmus.thesis.id539621.activities;
+package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import k2013.fit.hcmus.thesis.id539621.R;
@@ -24,7 +22,7 @@ public class MainActivity extends BaseActivity {
     public void mainOnClick(View v) {
         switch (v.getId()) {
             case R.id.main_btn_play: {
-                Intent intent = new Intent(this, GamePlayActivity.class);
+                Intent intent = new Intent(this, GameSelectionActivity.class);
                 startActivity(intent);
                 break;
             }

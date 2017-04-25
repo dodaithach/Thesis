@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.opengl.Matrix;
 import android.os.CountDownTimer;
-import android.os.Debug;
 import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
@@ -19,7 +17,7 @@ import java.lang.ref.WeakReference;
 import java.util.Random;
 
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.activities.GamePlayActivity;
+import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 
