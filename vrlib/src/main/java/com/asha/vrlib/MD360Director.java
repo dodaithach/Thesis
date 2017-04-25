@@ -183,6 +183,7 @@ public class MD360Director {
 
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
     }
 
     // call in gl thread
@@ -195,6 +196,7 @@ public class MD360Director {
     public void reset(){
         mDeltaX = mDeltaY = 0;
         Matrix.setIdentityM(mSensorMatrix,0);
+
         mViewMatrixInvalidate = true;
     }
 

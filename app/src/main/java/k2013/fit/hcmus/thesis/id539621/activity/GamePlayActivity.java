@@ -15,14 +15,20 @@ import android.widget.TextView;
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 
+import java.util.Vector;
+
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
+import k2013.fit.hcmus.thesis.id539621.model.Position;
+import k2013.fit.hcmus.thesis.id539621.model.Sound;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private View mPointer;
     private GameOperation mGame;
+    private int modeGame;
 
     private RelativeLayout mPopUpLayout;
     private ImageView mPopUpImage;
@@ -39,6 +45,16 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private final float upX = 0.0f;
     private final float upY = 1.0f;
     private final float upZ = 0.0f;
+
+    private float[] mViewMatrix = new float[16];
+    private float[] mCurrentRotation = new float[16];
+    private float[] mCurrentRotationPost = new float[16];
+    private float[] mCurrentRotationZ = new float[16];
+    private float[] mTempMatrix = new float[16];
+
+
+    private int mTargetSound;
+    private Vector<Integer> mDistractSounds;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,8 +95,44 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         GamePlayParams params = new GamePlayParams();
         params.setTime(180000);
-        params.setMode(GamePlayParams.MODE_TOUCH);
+        params.setMode(GamePlayParams.MODE_SENSOR);
+        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+        params.setTargetSound(new Sound("/sdcard/pcm.wav", 20, Sound.TYPE_REPEAT ,new Position(0,0,10)));
+
         mGame = new GameOperation(this, params);
+
+        modeGame = GamePlayParams.MODE_SENSOR;
+        //Sound
+        BinauralSound.openDevice();
+        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
+
+
+        if(params.getTargetSound() != null){
+            mTargetSound = BinauralSound.addSource(params.getTargetSound().getSoundPath());
+            BinauralSound.setPosition(mTargetSound, params.getTargetSound().getPosition() );
+            if(params.getTargetSound().getType() == Sound.TYPE_REPEAT){
+                BinauralSound.setLoop(mTargetSound, true);
+            }
+            else {
+                BinauralSound.setLoop(mTargetSound, false);
+            }
+            BinauralSound.playSound(mTargetSound);
+        }
+        if(params.getDistractSounds() != null){
+            for (Sound sound: params.getDistractSounds()) {
+                int soundTemp = BinauralSound.addSource(sound.getSoundPath());
+                BinauralSound.setPosition(soundTemp, sound.getPosition());
+                mDistractSounds.add(soundTemp);
+                if(sound.getType() == Sound.TYPE_REPEAT){
+                    BinauralSound.setLoop(soundTemp, true);
+                }
+                else {
+                    BinauralSound.setLoop(soundTemp, false);
+                }
+                BinauralSound.playSound(soundTemp);
+            }
+        }
+
     }
 
     @Override
@@ -106,58 +158,69 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onDestroy() {
         super.onDestroy();
         mGame.destroy();
+        BinauralSound.closeDevice();
     }
 
     float delX = 0.0f, delY = 0.0f;
     @Override
     public void customOnScroll(float velocityX, float velocityY) {
-        delX = delX - ((int)velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
-        delY = delY - ((int)velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-        Log.d("", "dX: " + delX + " dY: " + delY);
+        if(modeGame == GamePlayParams.MODE_TOUCH) {
+            delX = delX - ((int) velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
+            delY = delY - ((int) velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-        Matrix.setIdentityM(mViewMatrix, 0);
-        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+            Log.d("", "dX: " + delX + " dY: " + delY);
 
-        Matrix.setIdentityM(mCurrentRotation, 0);
-        Matrix.rotateM(mCurrentRotation, 0, delY, 1.0f, 0.0f, 0.0f);
-        Matrix.setIdentityM(mCurrentRotationPost, 0);
-        Matrix.rotateM(mCurrentRotationPost, 0, delX, 0.0f, 1.0f, 0.0f);
-
-        Matrix.setIdentityM(mTempMatrix, 0);
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
-        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
-
-        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
-
-        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+            changeListenerOrientation(-delY, -delX, 0);
+        }
     }
 
-    private float[] mViewMatrix = new float[16];
-    private float[] mCurrentRotation = new float[16];
-    private float[] mCurrentRotationPost = new float[16];
-    private float[] mTempMatrix = new float[16];
     @Override
-    public void onOrientationChanged(float azimuth, float pitch, float roll) {
-        Log.d("Orient sensor: ", "azimuth: " + Math.toDegrees(azimuth) + " pitch: " + Math.toDegrees(pitch) + " roll: " + Math.toDegrees(roll) );
-
+    public void onOrientationChanged(float[] rotationMatrix) {
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
+        Matrix.setIdentityM(mTempMatrix, 0);
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, rotationMatrix, 0);
+
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+
+        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
+
+        mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+        BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
+    }
+
+    private void changeListenerOrientation(double horizontal, double vertical, double z){
+
+        Matrix.setIdentityM(mViewMatrix, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
         Matrix.setIdentityM(mCurrentRotation, 0);
-        Matrix.rotateM(mCurrentRotation, 0, (float)(azimuth/Math.PI*180), 1.0f, 0.0f, 0.0f);
+        Matrix.rotateM(mCurrentRotation, 0, (float)horizontal, 1.0f, 0.0f, 0.0f);
         Matrix.setIdentityM(mCurrentRotationPost, 0);
-        Matrix.rotateM(mCurrentRotationPost, 0, (float)(roll/Math.PI*180) + 90, 0.0f, 1.0f, 0.0f);
+        Matrix.rotateM(mCurrentRotationPost, 0, (float)vertical, 0.0f, 1.0f, 0.0f);
+
+        Matrix.setIdentityM(mCurrentRotationZ, 0);
+        Matrix.rotateM(mCurrentRotationZ, 0, (float)z, 0.0f, 0.0f, 1.0f);
 
         Matrix.setIdentityM(mTempMatrix, 0);
         Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
-        System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
+
+        Matrix.multiplyMM(mCurrentRotation, 0, mTempMatrix, 0, mCurrentRotationZ, 0);
+        //System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
 
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
+        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
+
         mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
+        BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
+
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
