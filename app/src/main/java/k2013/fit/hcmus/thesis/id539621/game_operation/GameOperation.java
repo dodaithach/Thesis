@@ -17,11 +17,14 @@ import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
 import java.util.Random;
+import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activities.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
+import k2013.fit.hcmus.thesis.id539621.model.Sound;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -32,11 +35,8 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 
 public class GameOperation {
 
-    private final String[] backgroundResource = {"android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen", "android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bitmap360"};
-    private Random randomElement;
-    private int backgroundIndex = 0;
-    private int targetSoundIndex = 0;
-    private Position targetSoundPosition;
+    int mTargetSound;
+    Vector<Integer> mDistractSounds;
 
     private final int TIME_TICK = 500;
 
@@ -76,9 +76,7 @@ public class GameOperation {
     /************************************* GAME STATE FUNCTIONS ***********************************/
     public void initGame() {
 
-        Log.d("init","initGame()");
-        randomElement = new Random();
-        backgroundIndex = (randomElement.nextInt()%backgroundResource.length + backgroundResource.length)%backgroundResource.length;
+
 
 
         mVRLibrary = createVRLibrary();
@@ -196,7 +194,7 @@ public class GameOperation {
 
     private Uri getUri() {
         try {
-            Uri res = Uri.parse(backgroundResource[backgroundIndex]);
+            Uri res = Uri.parse(mParams.getBackgroundImg());
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -221,9 +219,9 @@ public class GameOperation {
 
     private boolean calcResult() {
 
-        double a1 = 0;
-        double a2 = 0;
-        double a3 = 10;
+        double a1 = mParams.getTargetSound().getPosition().getX();
+        double a2 = mParams.getTargetSound().getPosition().getY();
+        double a3 = mParams.getTargetSound().getPosition().getZ();
         double b1 = mCurLookAt.getX();
         double b2 = mCurLookAt.getY();
         double b3 = mCurLookAt.getZ();

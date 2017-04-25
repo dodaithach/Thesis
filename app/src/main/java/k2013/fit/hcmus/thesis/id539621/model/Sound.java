@@ -5,8 +5,8 @@ package k2013.fit.hcmus.thesis.id539621.model;
  */
 
 public class Sound {
-    public final int TYPE_INFINITE = 0;
-    public final int TYPE_REPEAT = 1;
+    public static final int TYPE_INFINITE = 0;
+    public static final int TYPE_REPEAT = 1;
 
     private String mSoundPath;
     private int mRepeatTime;
