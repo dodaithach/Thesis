@@ -30,6 +30,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        hideSystemUI();
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
@@ -57,7 +64,7 @@ public class BaseActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     private final int DEFAULT_DELAY = 2000;
