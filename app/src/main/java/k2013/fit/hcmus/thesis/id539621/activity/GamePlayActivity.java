@@ -101,7 +101,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
         String path = Environment.getExternalStorageDirectory() + "/FindItData/0.wav";
         Log.d("File path: ",path);
-        params.setTargetSound(new Sound("/sdcard/pcm.wav", 20, Sound.TYPE_REPEAT ,new Position(0,0,10)));
+        params.setTargetSound(new Sound(Environment.getExternalStorageDirectory() + "/FindItData/0.wav", 20, Sound.TYPE_REPEAT ,new Position(0,0,10)));
 
         mGame = new GameOperation(this, params);
 
