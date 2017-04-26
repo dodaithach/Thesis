@@ -23,6 +23,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
         public TextView mBackgroundSound;
         public TextView mDistractingSound;
         public Button mButton;
+        public View mDivider;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -32,6 +33,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             mBackgroundSound = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_backgroundsound);
             mDistractingSound = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_distractingsound);
             mButton = (Button) itemView.findViewById(R.id.gameselection_recycleritem_btn);
+            mDivider = itemView.findViewById(R.id.gameselection_recycleritem_divider);
         }
     }
 
@@ -47,6 +49,12 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
         Context context = holder.mLevel.getContext();
         Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/pacifico-regular.ttf");
         holder.mLevel.setTypeface(tf);
+
+        if (position == 4) {
+            holder.mDivider.setVisibility(View.GONE);
+        }
+
+        holder.mLevel.setText("" + (position + 1));
     }
 
     @Override
