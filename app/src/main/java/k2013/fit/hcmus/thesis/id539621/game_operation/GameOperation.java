@@ -206,11 +206,6 @@ public class GameOperation {
         mCurLookAt.setX(x);
         mCurLookAt.setY(y);
         mCurLookAt.setZ(z);
-        double b1 = mCurLookAt.getX();
-        double b2 = mCurLookAt.getY();
-        double b3 = mCurLookAt.getZ();
-
-        Log.d("updateLookAt",String.format(" b1: %f, b2: %f, b3: %f", b1,b2,b3));
     }
 
     public boolean isInited() {

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.opengl.Matrix;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 
+import java.io.File;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
@@ -97,6 +99,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         params.setTime(180000);
         params.setMode(GamePlayParams.MODE_SENSOR);
         params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+        String path = Environment.getExternalStorageDirectory() + "/FindItData/0.wav";
+        Log.d("File path: ",path);
         params.setTargetSound(new Sound("/sdcard/pcm.wav", 20, Sound.TYPE_REPEAT ,new Position(0,0,10)));
 
         mGame = new GameOperation(this, params);
@@ -117,6 +121,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 BinauralSound.setLoop(mTargetSound, false);
             }
             BinauralSound.playSound(mTargetSound);
+            Log.d("","sound " + mTargetSound + " is playing");
         }
         if(params.getDistractSounds() != null){
             for (Sound sound: params.getDistractSounds()) {
@@ -214,8 +219,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
-        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
+        //Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+        //        mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
         mGame.updateLookAt(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(-mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
