@@ -33,7 +33,7 @@ public class GameSelectionActivity extends BaseActivity {
     public void gameSelectionOnClick(View v) {
         switch (v.getId()) {
             case R.id.gameselection_btn_close: {
-                this.onBackPressed();
+                finish();
                 break;
             }
         }
