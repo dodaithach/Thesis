@@ -30,7 +30,7 @@ public class GameSelectionActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
     }
-    public void mainOnClick(View v) {
+    public void gameSelectionOnClick(View v) {
         switch (v.getId()) {
             case R.id.gameselection_btn_close: {
                 this.onBackPressed();

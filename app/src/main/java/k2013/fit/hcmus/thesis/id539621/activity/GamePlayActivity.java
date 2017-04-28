@@ -66,13 +66,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
 
-        mPointer = findViewById(R.id.gameplay_pointer);
-        mPointer.setOnLongClickListener(new View.OnLongClickListener() {
+        mPointer = findViewById(R.id.gameplay_btnShoot);
+        mPointer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 //mGame.scrollToPosition(500,500);
                 mGame.finish(GamePlayActivity.this, false);
-                return false;
             }
         });
 
