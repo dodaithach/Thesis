@@ -33,7 +33,7 @@
             android:src="@drawable/btn_back"
             android:scaleType="fitCenter"
             android:background="@null"
-            android:onClick="onClick"
+            android:onClick="gameSelectionOnClick"
             android:stateListAnimator="@null" />
 
     </LinearLayout>
