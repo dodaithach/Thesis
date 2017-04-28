@@ -3,6 +3,7 @@ package k2013.fit.hcmus.thesis.id539621.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionAdapter;
@@ -25,6 +26,16 @@ public class GameSelectionActivity extends BaseActivity {
         mRecyclerView.setHasFixedSize(false);
 
         mAdapter = new GameSelectionAdapter();
+
         mRecyclerView.setAdapter(mAdapter);
+
+    }
+    public void mainOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.gameselection_btn_close: {
+                this.onBackPressed();
+                break;
+            }
+        }
     }
 }

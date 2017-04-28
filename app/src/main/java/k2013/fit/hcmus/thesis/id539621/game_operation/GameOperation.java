@@ -36,7 +36,7 @@ public class GameOperation {
     int mTargetSound;
     Vector<Integer> mDistractSounds;
 
-    private final int TIME_TICK = 500;
+    private final int TIME_TICK = 1000;
 
     public static final String SP_IS_CORRECT = "IS_CORRECT";
 
@@ -104,6 +104,7 @@ public class GameOperation {
             @Override
             public void onTick(long millisUntilFinished) {
                 mRemainingTime = millisUntilFinished;
+                Log.d("mRemainingTime", String.format("remaining: %d", mRemainingTime));
                 getActivity().timeTick();
             }
 

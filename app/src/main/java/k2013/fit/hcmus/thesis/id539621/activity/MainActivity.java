@@ -1,13 +1,18 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 
 public class MainActivity extends BaseActivity {
 
@@ -31,16 +37,57 @@ public class MainActivity extends BaseActivity {
         Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/pacifico-regular.ttf");
         title.setTypeface(tf);
 
+        loadGameSetting();
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+    }
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-        } else {
 
+    private void loadGameSetting()  {
+        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        if(sharedPreferences != null)  {
+            int gameMode = sharedPreferences.getInt("gameMode", -1);
+            if(gameMode == -1) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+                if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+                    gameMode = GamePlayParams.MODE_SENSOR;
+                } else {
+                    gameMode = GamePlayParams.MODE_TOUCH;
+                }
+                editor.apply();
+            }
+            boolean hasData = sharedPreferences.getBoolean("gameData", false);
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            } else {
+                if(hasData == false){
+                    final int[] mDatas = new int[] { R.raw.pcm };
+                    for (int i = 0; i < mDatas.length; i++) {
+                        try {
+                            String path = Environment.getExternalStorageDirectory() + "/FindItData";
+                            File dir = new File(path);
+                            if (dir.mkdirs() || dir.isDirectory()) {
+                                String str_song_name = i + ".wav";
+                                CopyRAWtoSDCard(mDatas[i], path + File.separator + str_song_name);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                hasData = true;
+            }
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("gameMode", gameMode);
+            editor.putBoolean("gameData", hasData);
+            editor.apply();
         }
 
     }
@@ -58,7 +105,7 @@ public class MainActivity extends BaseActivity {
                             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 } else {
 
-                    Intent intent = new Intent(this, GamePlayActivity.class);
+                    Intent intent = new Intent(this, GameSelectionActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -95,7 +142,6 @@ public class MainActivity extends BaseActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    //TODO: Xử lý khi người dùng ko cấp phép lần đầu.
                     final int[] mDatas = new int[] { R.raw.pcm };
                     for (int i = 0; i < mDatas.length; i++) {
                         try {
@@ -109,6 +155,13 @@ public class MainActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                     }
+                    SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putBoolean("gameData", true);
+                    editor.apply();
+
                 } else {
 
                 }

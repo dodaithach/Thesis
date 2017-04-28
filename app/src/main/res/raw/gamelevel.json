@@ -1,0 +1,22 @@
+[
+  {
+    "level": 1,
+    "repeat_time": 20,
+    "distract_sound": 0,
+    "background_sound": false
+  },
+  {
+    "level": 2,
+    "sound": 1,
+    "repeat_time": 20,
+    "distract_sound": 0,
+    "background_sound": false
+  },
+  {
+  "level": 3,
+  "sound": 1,
+  "repeat_time": 20,
+  "distract_sound": 0,
+  "background_sound": false
+  }
+]

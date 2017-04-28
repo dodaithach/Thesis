@@ -33,6 +33,7 @@
             android:src="@drawable/btn_back"
             android:scaleType="fitCenter"
             android:background="@null"
+            android:onClick="onClick"
             android:stateListAnimator="@null" />
 
     </LinearLayout>
