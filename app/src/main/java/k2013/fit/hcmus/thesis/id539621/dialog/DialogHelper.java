@@ -5,6 +5,8 @@ package k2013.fit.hcmus.thesis.id539621.dialog;
  */
 
 public class DialogHelper {
+    public static final String RES_TITLE = "RESULT";
+
     public static final int REQ_CODE_DIALOG_SUCCESS = 0;
     public static final int REQ_CODE_DIALOG_FAILED = 1;
     public static final int REQ_CODE_DIALOG_PAUSE = 2;

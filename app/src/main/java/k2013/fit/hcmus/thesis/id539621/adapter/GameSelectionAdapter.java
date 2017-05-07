@@ -17,6 +17,8 @@ import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.GameSelectionActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.MainActivity;
 import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameSuccess;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 
 /**
  * Created by cpu60011-local on 25/04/2017.
@@ -79,8 +81,8 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             public void onClick(View view) {
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
-                    Intent intent = new Intent(activity, BaseDialog.class);
-                    activity.startActivity(intent);
+                    Intent intent = new Intent(activity, DialogGameSuccess.class);
+                    activity.startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_SUCCESS);
                 }
             }
         });
