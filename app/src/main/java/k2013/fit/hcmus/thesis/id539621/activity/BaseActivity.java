@@ -41,8 +41,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus) {
-            Log.d("mylog", "hasFocus");
-
             mDecorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -51,8 +49,6 @@ public class BaseActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         } else {
-            Log.d("mylog", "do not hasFocus");
-
             mHideSystemUiHandler.removeMessages(0);
         }
     }
@@ -76,8 +72,6 @@ public class BaseActivity extends AppCompatActivity {
     };
 
     private void delayHide(int delayMilis) {
-        Log.d("mylog", "delayHide");
-
         mHideSystemUiHandler.removeMessages(0);
         mHideSystemUiHandler.sendEmptyMessageDelayed(0, delayMilis);
     }

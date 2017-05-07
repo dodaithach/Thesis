@@ -1,6 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.opengl.Matrix;
@@ -16,11 +17,11 @@ import android.widget.TextView;
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 
-import java.io.File;
 import java.util.Random;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
@@ -165,11 +166,14 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onResume() {
         super.onResume();
 
+        Log.d("mylog", "GamePlayActivity.onResume()");
         mGame.resume(this);
     }
 
     protected void onPause() {
         super.onPause();
+
+        Log.d("mylog", "GamePlayActivity.onPause()");
         mGame.pause(this);
     }
 
@@ -246,26 +250,27 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     public void timeTick() {
         totalTime++;
         Log.d("timeTick", String.format("time: %d", totalTime));
-//        Log.d("mylog", "timeTick()");
     }
 
     public void timeFinish() {
-        Log.d("mylog", "timeFinish()");
         mGame.finish(this, true);
     }
 
     public void showPopUp(boolean mode) {
         // Retrieve data from GameOperation
-        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+//        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+//        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+//
+//        updatePopUp(isCorrect);
+//
+//        if (mode) {
+//            mPopUpLayout.setVisibility(View.VISIBLE);
+//        } else {
+//            mPopUpLayout.setVisibility(View.GONE);
+//        }
 
-        updatePopUp(isCorrect);
-
-        if (mode) {
-            mPopUpLayout.setVisibility(View.VISIBLE);
-        } else {
-            mPopUpLayout.setVisibility(View.GONE);
-        }
+        Intent intent = new Intent(this, BaseDialog.class);
+        startActivity(intent);
     }
 
     public void updatePopUp(boolean isCorrect) {

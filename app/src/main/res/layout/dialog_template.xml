@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+    <RelativeLayout
+        android:id="@+id/dialog_rootView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_background"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/dialog_img"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/unicorn"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/dialog_img"
+            android:layout_marginTop="16dp"
+            android:text="Sorry! You are wrong."
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/dialog_btn_cancel"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@drawable/text_failed"
+            android:background="@drawable/btn_rounded_failed"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:stateListAnimator="@null"/>
+
+        <Button
+            android:id="@+id/dialog_btn_action"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
+            android:text="Action"
+            android:textAllCaps="false"
+            android:textColor="@drawable/text_success"
+            android:background="@drawable/btn_rounded_success"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:stateListAnimator="@null"/>
+
+    </RelativeLayout>
+</RelativeLayout>

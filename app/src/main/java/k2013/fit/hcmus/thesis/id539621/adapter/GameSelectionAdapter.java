@@ -16,6 +16,7 @@ import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.GameSelectionActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.MainActivity;
+import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
 
 /**
  * Created by cpu60011-local on 25/04/2017.
@@ -25,9 +26,6 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mLevel;
-        public TextView mTime;
-        public TextView mBackgroundSound;
-        public TextView mDistractingSound;
         public Button mButton;
         public View mDivider;
 
@@ -37,9 +35,6 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             super(itemView);
 
             mLevel = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_level);
-            mTime = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_time);
-            mBackgroundSound = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_backgroundsound);
-            mDistractingSound = (TextView) itemView.findViewById(R.id.gameselection_recycleritem_distractingsound);
             mButton = (Button) itemView.findViewById(R.id.gameselection_recycleritem_btn);
             mDivider = itemView.findViewById(R.id.gameselection_recycleritem_divider);
         }
@@ -84,7 +79,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             public void onClick(View view) {
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
-                    Intent intent = new Intent(activity, GamePlayActivity.class);
+                    Intent intent = new Intent(activity, BaseDialog.class);
                     activity.startActivity(intent);
                 }
             }
