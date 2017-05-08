@@ -46,7 +46,7 @@ public class GameSelectionActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case DialogHelper.REQ_CODE_DIALOG_SUCCESS:
+                case DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS:
                     int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
                     if (res == RESULT_CANCELED) {
                         finish();

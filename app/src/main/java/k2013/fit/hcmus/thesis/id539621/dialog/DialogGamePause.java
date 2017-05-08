@@ -36,6 +36,11 @@ public class DialogGamePause extends BaseDialog {
 
     @Override
     protected View.OnClickListener getAction() {
-        return null;
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        };
     }
 }

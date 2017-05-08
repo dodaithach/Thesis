@@ -1,5 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +24,8 @@ import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGamePause;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
@@ -33,12 +37,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private View mPointer;
     private GameOperation mGame;
     private int modeGame;
-
-    private RelativeLayout mPopUpLayout;
-    private ImageView mPopUpImage;
-    private TextView mPopUpMessage;
-    private Button mPopUpBtnCancel;
-    private Button mPopUpBtnAction;
 
     private final float eyeX = 0;
     private final float eyeY = 0;
@@ -76,26 +74,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
         });
 
-        mPopUpLayout = (RelativeLayout) findViewById(R.id.gameplay_finishPopUp);
-        mPopUpImage = (ImageView) findViewById(R.id.gameplay_finishPopUp_img);
-        mPopUpMessage = (TextView) findViewById(R.id.gameplay_finishPopUp_msg);
-        mPopUpBtnCancel = (Button) findViewById(R.id.gameplay_finishPopUp_btnCancel);
-        mPopUpBtnAction = (Button) findViewById(R.id.gameplay_finishPopUp_btnAction);
-
-        mPopUpBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelGame();
-            }
-        });
-
-        mPopUpBtnAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextAction();
-            }
-        });
-
 
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
         if (sharedPreferences != null){
@@ -103,7 +81,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
 
         //modeGame = GamePlayParams.MODE_TOUCH;
-
 
         HandlerSingleton.init(this, null);
 
@@ -244,6 +221,64 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         BinauralSound.setListenerOrientation(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
 
+    }
+
+    public void gamePlayOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.gameplay_btnPause: {
+                Intent intent = new Intent(this, DialogGamePause.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE);
+                break;
+            }
+
+            case R.id.gameplay_btnShoot: {
+
+                break;
+            }
+
+            case R.id.gameplay_btnSwitch: {
+
+            }
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE: {
+                if (requestCode != Activity.RESULT_OK) {
+                    break;
+                }
+
+                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+                if (res == DialogHelper.RES_CODE_CANCEL) {
+                    finish();
+                }
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS: {
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_FAILED: {
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
+
+                break;
+            }
+
+            default:
+                break;
+        }
     }
 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/

@@ -7,13 +7,13 @@ package com.custom;
 public class HandlerSingleton {
     private static CustomHandler mHandler;
 
-    public static void init(OnScrollCallback scrollCallback, OnSensorChangedCallback sensorChangedCallback) {
+    synchronized public static void init(OnScrollCallback scrollCallback, OnSensorChangedCallback sensorChangedCallback) {
         mHandler = new CustomHandler();
         mHandler.setScrollCallback(scrollCallback);
         mHandler.setSensorChangedCallback(sensorChangedCallback);
     }
 
-    public static CustomHandler getHandler() {
+    synchronized public static CustomHandler getHandler() {
         return mHandler;
     }
 }

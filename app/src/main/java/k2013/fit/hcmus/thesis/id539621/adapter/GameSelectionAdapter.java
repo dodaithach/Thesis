@@ -13,10 +13,8 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.GameSelectionActivity;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameSuccess;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
-
 /**
  * Created by cpu60011-local on 25/04/2017.
  */
@@ -78,7 +76,8 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             public void onClick(View view) {
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
-
+                    Intent intent = new Intent(activity, GamePlayActivity.class);
+                    activity.startActivity(intent);
                 }
             }
         });

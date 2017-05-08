@@ -67,10 +67,20 @@ public abstract class BaseDialog extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
-                setResult(Activity.RESULT_OK, intent);
+
+                if (getParent() == null) {
+                    setResult(Activity.RESULT_OK, intent);
+                } else {
+                    getParent().setResult(Activity.RESULT_OK, intent);
+                }
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // discard onBackPressed
     }
 
     protected abstract int getBackground();

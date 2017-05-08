@@ -7,13 +7,11 @@ package k2013.fit.hcmus.thesis.id539621.dialog;
 public class DialogHelper {
     public static final String RES_TITLE = "RESULT";
 
-    public static final int REQ_CODE_DIALOG_SUCCESS = 0;
-    public static final int REQ_CODE_DIALOG_FAILED = 1;
-    public static final int REQ_CODE_DIALOG_PAUSE = 2;
+    public static final int REQ_CODE_DIALOG_GAME_SUCCESS = 0;
+    public static final int REQ_CODE_DIALOG_GAME_FAILED = 1;
+    public static final int REQ_CODE_DIALOG_GAME_PAUSE = 2;
     public static final int REQ_CODE_DIALOG_PREGAME = 3;
 
     public static final int RES_CODE_CANCEL = 0;
-    public static final int RES_CODE_DIALOG_FAILED_REPLAY = 1;
-    public static final int RES_CODE_DIALOG_SUCCESS_NEXT = 2;
-    public static final int RES_CODE_DIALOG_PREGAME_REPLAY = 3;
+    public static final int RES_CODE_ACTION = 1;
 }
