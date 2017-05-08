@@ -37,11 +37,29 @@ public abstract class BaseDialog extends BaseActivity {
         mBtnCancel = (Button) findViewById(R.id.dialog_btn_cancel);
         mBtnAction = (Button) findViewById(R.id.dialog_btn_action);
 
-        mBackground.setBackgroundResource(getBackground());
-        Glide.with(this).load(getImg()).bitmapTransform(new CropCircleTransformation(this)).into(mImg);
-        mMsg.setText(getMsg());
-        mBtnAction.setText(getBtnActionText());
-        mBtnAction.setOnClickListener(getAction());
+        if (getBackground() != 0) {
+            mBackground.setBackgroundResource(getBackground());
+        }
+
+        if (getImg() != 0) {
+            Glide.with(this).load(getImg()).bitmapTransform(new CropCircleTransformation(this)).into(mImg);
+        }
+
+        if (getMsg() != 0) {
+            mMsg.setText(getMsg());
+        }
+
+        if (getBtnActionText() != 0) {
+            mBtnAction.setText(getBtnActionText());
+        }
+
+        if (getAction() != null) {
+            mBtnAction.setOnClickListener(getAction());
+        }
+
+        if (getBtnCancelText() != 0) {
+            mBtnCancel.setText(getBtnCancelText());
+        }
 
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,5 +76,6 @@ public abstract class BaseDialog extends BaseActivity {
     protected abstract int getImg();
     protected abstract int getMsg();
     protected abstract int getBtnActionText();
+    protected abstract int getBtnCancelText();
     protected abstract View.OnClickListener getAction();
 }
