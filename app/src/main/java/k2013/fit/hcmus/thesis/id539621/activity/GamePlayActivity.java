@@ -17,12 +17,15 @@ import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
+import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
 import k2013.fit.hcmus.thesis.id539621.model.Sound;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
@@ -57,6 +60,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
 
     private int mTargetSound;
+    private int mBackgroundSound;
     private Vector<Integer> mDistractSounds;
 
     private int totalTime = 0;
@@ -106,25 +110,50 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         HandlerSingleton.init(this, null);
 
+
+        GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
+
+        Log.d("GameData", "Level: " + level.getLevel() + " , distract sound: " + level.getDistract_sound());
+
         GamePlayParams params = new GamePlayParams();
         params.setTime(20000);
         params.setMode(modeGame);
         params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
-        String path = Environment.getExternalStorageDirectory() + "/FindItData/0.wav";
 
+
+        //Set target sound
         Random r = new Random();
         int targetDistance = r.nextInt(11) + 5;
         int targetAlpha = r.nextInt(361);
 
-        params.setTargetSound(new Sound(Environment.getExternalStorageDirectory() + "/FindItData/0.wav", 20, Sound.TYPE_REPEAT ,
-                new Position(targetDistance*Math.sin(Math.toRadians(targetAlpha)),0,targetDistance*Math.cos(Math.toRadians(targetAlpha)))));
+        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
+                targetDistance * Math.cos(Math.toRadians(targetAlpha)));
+
+        if(level.isHas_horizontal()) {
+            float y = r.nextFloat()*2 - 1;
+            targetPosition.setY(y);
+        }
+
+        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
+        int targetSoundPosition = r.nextInt(files.size());
+
+        params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, targetPosition));
+
+        //SET background sound
+        if(level.isHas_background_sound()){
+            Log.d("621Sound", "has backgroundSound");
+            List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
+            Log.d("621Sound", "has backgroundSound size: " + backgroundSoundFiles.size());
+            int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
+            params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
+        }
 
         mGame = new GameOperation(this, params);
         //Sound
         BinauralSound.openDevice();
         BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
 
-
+        //Load target sound
         if(params.getTargetSound() != null){
             mTargetSound = BinauralSound.addSource(params.getTargetSound().getSoundPath());
             BinauralSound.setPosition(mTargetSound, params.getTargetSound().getPosition() );
@@ -137,6 +166,18 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             BinauralSound.playSound(mTargetSound);
             Log.d("","sound " + mTargetSound + " is playing");
         }
+
+        //Load background sound
+        if(params.getBackgroundSound() != null){
+            mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
+            Log.d("621Sound", "path: " + params.getBackgroundSound().getSoundPath());
+            //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
+            BinauralSound.setLoop(mBackgroundSound, true);
+            BinauralSound.playSound(mBackgroundSound);
+        }
+
+        //Load distract sound
+        mDistractSounds = new Vector<>();
         if(params.getDistractSounds() != null){
             for (Sound sound: params.getDistractSounds()) {
                 int soundTemp = BinauralSound.addSource(sound.getSoundPath());
@@ -166,11 +207,26 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         super.onResume();
 
         mGame.resume(this);
+
+        BinauralSound.playSound(mTargetSound);
+        BinauralSound.playSound(mBackgroundSound);
+        for (int distractsound: mDistractSounds){
+            BinauralSound.playSound(distractsound);
+        }
     }
 
     protected void onPause() {
         super.onPause();
+
+        BinauralSound.pauseSound(mTargetSound);
+        BinauralSound.pauseSound(mBackgroundSound);
+        for (int distractsound: mDistractSounds){
+            BinauralSound.pauseSound(distractsound);
+        }
+
         mGame.pause(this);
+
+
     }
 
     @Override
@@ -204,8 +260,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
-        Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-                mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
+        //Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
+        //        mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
         mGame.updateLookAt(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
@@ -308,4 +364,20 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         editor.clear();
         editor.commit();
     }
+
+    private List<File> getListFiles(File parentDir) {
+        ArrayList<File> inFiles = new ArrayList<File>();
+        File[] files = parentDir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                inFiles.addAll(getListFiles(file));
+            } else {
+                if(file.getName().endsWith(".wav")){
+                    inFiles.add(file);
+                }
+            }
+        }
+        return inFiles;
+    }
+
 }

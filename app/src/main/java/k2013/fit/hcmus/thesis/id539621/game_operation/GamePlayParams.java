@@ -16,6 +16,7 @@ public class GamePlayParams {
     private String mBackgroundImg;
     private String mTargetImg;
     private Sound mTargetSound;
+    private Sound mBackgroundSound;
     private ArrayList<Sound> mDistractSounds;
     private int mMode;
 
@@ -32,12 +33,14 @@ public class GamePlayParams {
                           String backgroundImg,
                           String targetImg,
                           Sound targetSound,
+                          Sound backgroundSound,
                           ArrayList<Sound> distractSounds,
                           int mode) {
         mTime = time;
         mBackgroundImg = backgroundImg;
         mTargetImg = targetImg;
         mTargetSound = targetSound;
+        mBackgroundSound = backgroundSound;
         mDistractSounds = distractSounds;
         mMode = mode;
     }
@@ -72,6 +75,14 @@ public class GamePlayParams {
 
     public void setTargetSound(Sound mTargetSound) {
         this.mTargetSound = mTargetSound;
+    }
+
+    public Sound getBackgroundSound() {
+        return mBackgroundSound;
+    }
+
+    public void setBackgroundSound(Sound mBackgroundSound) {
+        this.mBackgroundSound = mBackgroundSound;
     }
 
     public ArrayList<Sound> getDistractSounds() {

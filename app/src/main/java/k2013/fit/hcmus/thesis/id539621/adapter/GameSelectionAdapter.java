@@ -16,12 +16,17 @@ import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.GameSelectionActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.MainActivity;
+import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 
 /**
  * Created by cpu60011-local on 25/04/2017.
  */
 
 public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdapter.ViewHolder> {
+    private GameLevel[] levels;
+    public GameSelectionAdapter(GameLevel[] levels){
+        this.levels = levels;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mLevel;
@@ -68,12 +73,12 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Context context = holder.mLevel.getContext();
         Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/pacifico-regular.ttf");
         holder.mLevel.setTypeface(tf);
 
-        if (position == 4) {
+        if (position == levels.length - 1) {
             holder.mDivider.setVisibility(View.GONE);
         }
 
@@ -85,6 +90,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
                     Intent intent = new Intent(activity, GamePlayActivity.class);
+                    intent.putExtra("Level",levels[position]);
                     activity.startActivity(intent);
                 }
             }
@@ -98,6 +104,9 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
 
     @Override
     public int getItemCount() {
-        return 5;
+        if(levels != null) {
+            return levels.length;
+        }
+        return 0;
     }
 }

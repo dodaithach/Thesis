@@ -1,12 +1,17 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+
+import com.google.gson.Gson;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionAdapter;
+import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 
 public class GameSelectionActivity extends BaseActivity {
 
@@ -18,6 +23,15 @@ public class GameSelectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_selection);
 
+
+        String intentString = getIntent().getStringExtra("GameLevels");
+        Log.d("GameSelection",intentString);
+
+        Gson gson = new Gson();
+        GameLevel[] levels = gson.fromJson(intentString,GameLevel[].class);
+
+        Log.d("GameSelection","lv count: " + levels.length);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.gameselection_recyclerview);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -25,7 +39,9 @@ public class GameSelectionActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(false);
 
-        mAdapter = new GameSelectionAdapter();
+
+
+        mAdapter = new GameSelectionAdapter(levels);
 
         mRecyclerView.setAdapter(mAdapter);
 

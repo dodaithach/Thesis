@@ -1,22 +1,23 @@
 [
   {
     "level": 1,
-    "repeat_time": 20,
+    "time": 20,
+    "has_background_sound": false,
     "distract_sound": 0,
-    "background_sound": false
+    "has_horizontal": false
   },
   {
     "level": 2,
-    "sound": 1,
-    "repeat_time": 20,
-    "distract_sound": 0,
-    "background_sound": false
+    "time": 20,
+    "has_background_sound": false,
+    "distract_sound": 2,
+    "has_horizontal": false
   },
   {
-  "level": 3,
-  "sound": 1,
-  "repeat_time": 20,
-  "distract_sound": 0,
-  "background_sound": false
+    "level": 3,
+    "time": 20,
+    "has_background_sound": true,
+    "distract_sound": 3,
+    "has_horizontal": true
   }
 ]
