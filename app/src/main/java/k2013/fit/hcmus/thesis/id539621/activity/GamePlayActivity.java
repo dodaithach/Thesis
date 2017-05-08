@@ -1,6 +1,9 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.opengl.Matrix;
@@ -23,6 +26,9 @@ import java.util.Random;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGamePause;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
@@ -35,12 +41,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private View mPointer;
     private GameOperation mGame;
     private int modeGame;
-
-    private RelativeLayout mPopUpLayout;
-    private ImageView mPopUpImage;
-    private TextView mPopUpMessage;
-    private Button mPopUpBtnCancel;
-    private Button mPopUpBtnAction;
 
     private final float eyeX = 0;
     private final float eyeY = 0;
@@ -68,7 +68,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_play);
+        setContentView(R.layout.a_gameplay);
 
         mPointer = findViewById(R.id.gameplay_btnShoot);
         mPointer.setOnClickListener(new View.OnClickListener() {
@@ -79,26 +79,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
         });
 
-        mPopUpLayout = (RelativeLayout) findViewById(R.id.gameplay_finishPopUp);
-        mPopUpImage = (ImageView) findViewById(R.id.gameplay_finishPopUp_img);
-        mPopUpMessage = (TextView) findViewById(R.id.gameplay_finishPopUp_msg);
-        mPopUpBtnCancel = (Button) findViewById(R.id.gameplay_finishPopUp_btnCancel);
-        mPopUpBtnAction = (Button) findViewById(R.id.gameplay_finishPopUp_btnAction);
-
-        mPopUpBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelGame();
-            }
-        });
-
-        mPopUpBtnAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextAction();
-            }
-        });
-
 
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
         if (sharedPreferences != null){
@@ -106,7 +86,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
 
         //modeGame = GamePlayParams.MODE_TOUCH;
-
 
         HandlerSingleton.init(this, null);
 
@@ -206,6 +185,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onResume() {
         super.onResume();
 
+        Log.d("mylog", "GamePlayActivity.onResume()");
         mGame.resume(this);
 
         BinauralSound.playSound(mTargetSound);
@@ -224,6 +204,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             BinauralSound.pauseSound(distractsound);
         }
 
+        Log.d("mylog", "GamePlayActivity.onPause()");
         mGame.pause(this);
 
 
@@ -298,40 +279,99 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     }
 
+    public void gamePlayOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.gameplay_btnPause: {
+                Intent intent = new Intent(this, DialogGamePause.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE);
+                break;
+            }
+
+            case R.id.gameplay_btnShoot: {
+
+                break;
+            }
+
+            case R.id.gameplay_btnSwitch: {
+
+            }
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE: {
+                if (requestCode != Activity.RESULT_OK) {
+                    break;
+                }
+
+                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+                if (res == DialogHelper.RES_CODE_CANCEL) {
+                    finish();
+                }
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS: {
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_FAILED: {
+
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
+
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
         totalTime++;
         Log.d("timeTick", String.format("time: %d", totalTime));
-//        Log.d("mylog", "timeTick()");
     }
 
     public void timeFinish() {
-        Log.d("mylog", "timeFinish()");
         mGame.finish(this, true);
     }
 
     public void showPopUp(boolean mode) {
         // Retrieve data from GameOperation
-        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+//        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+//        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+//
+//        updatePopUp(isCorrect);
+//
+//        if (mode) {
+//            mPopUpLayout.setVisibility(View.VISIBLE);
+//        } else {
+//            mPopUpLayout.setVisibility(View.GONE);
+//        }
 
-        updatePopUp(isCorrect);
-
-        if (mode) {
-            mPopUpLayout.setVisibility(View.VISIBLE);
-        } else {
-            mPopUpLayout.setVisibility(View.GONE);
-        }
+        Intent intent = new Intent(this, BaseDialog.class);
+        startActivity(intent);
     }
 
     public void updatePopUp(boolean isCorrect) {
-        if (isCorrect) {
-            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
-            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
-        } else {
-            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_failed));
-            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_replay));
-        }
+//        if (isCorrect) {
+//            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
+//            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
+//        } else {
+//            mPopUpMessage.setText(getResources().getString(R.string.d_gamefailed_msg));
+//            mPopUpBtnAction.setText(getResources().getString(R.string.d_gamefailed_btn_action));
+//        }
     }
 
     public void cancelGame() {

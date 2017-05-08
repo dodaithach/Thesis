@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity">
+
+    <android.opengl.GLSurfaceView
+        android:id="@+id/gameplay_glview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/gameplay_pointer"
+        android:layout_width="@dimen/pointerWidth"
+        android:layout_height="@dimen/pointerWidth"
+        android:background="@drawable/a_gameplay_shoot_target"
+        android:layout_gravity="center"
+        android:clickable="true"/>
+
+    <RelativeLayout
+        android:layout_width="104dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center_vertical|end"
+        android:background="@drawable/a_gameplay_rounded_container"
+        android:orientation="vertical"
+        android:paddingLeft="24dp">
+
+        <Button
+            android:id="@+id/gameplay_btnShoot"
+            android:onClick="gamePlayOnClick"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/a_gameplay_icon_select"
+            android:stateListAnimator="@null"
+            android:text="Select"
+            android:textAllCaps="false"
+            android:textColor="@drawable/a_gameplay_text_select" />
+
+        <Button
+            android:id="@+id/gameplay_btnSwitch"
+            android:onClick="gamePlayOnClick"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_above="@id/gameplay_btnShoot"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/a_gameplay_icon_touch"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/gameplay_btnPause"
+            android:onClick="gamePlayOnClick"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/gameplay_btnShoot"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/a_gameplay_icon_pause"
+            android:stateListAnimator="@null" />
+    </RelativeLayout>
+</FrameLayout>

@@ -26,6 +26,18 @@
         </activity>
         <activity android:name=".activity.GameSelectionActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".dialog.DialogGameSuccess"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.Transparent"/>
+        <activity android:name=".dialog.DialogGameFailed"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.Transparent"/>
+        <activity android:name=".dialog.DialogGamePause"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.Transparent"/>
+        <activity android:name=".dialog.DialogPregame"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.Transparent"/>
     </application>
 
 </manifest>

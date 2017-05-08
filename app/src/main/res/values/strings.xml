@@ -1,19 +1,24 @@
 <resources>
     <string name="app_name">Find It</string>
 
-    <!-- MainActivity -->
-    <string name="main_title">FIND . it</string>
-    <string name="main_btn_play">Play</string>
-    <string name="main_btn_help">Help</string>
-    <string name="main_hint">Take a tour how to play!</string>
+    <string name="a_main_title">FIND . it</string>
+    <string name="a_main_btn_play">Play</string>
+    <string name="a_main_btn_help">Help</string>
+    <string name="a_main_hint">Take a tour how to play!</string>
 
-    <!-- GamePlay PopUp -->
-    <string name="gameplay_popup_msg_failed">Sorry! You are wrong.</string>
-    <string name="gameplay_popup_msg_success">Congrats! Good job.</string>
-    <string name="gameplay_popup_btn_replay">Replay</string>
-    <string name="gameplay_popup_btn_next">Next</string>
+    <string name="d_btn_cancel">Cancel</string>
 
-    <string name="title_activity_main">MainActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="d_gamefailed_msg">Sorry! You are wrong.</string>
+    <string name="d_gamefailed_btn_action">Replay</string>
+
+    <string name="d_gamesuccess_msg">Congrats! Good job.</string>
+    <string name="d_gamesuccess_btn_action">Next</string>
+
+    <string name="d_gamepause_msg">Game paused.</string>
+    <string name="d_gamepause_btn_action">Resume</string>
+
+    <string name="d_pregame_msg">Remember this sound and find it.</string>
+    <string name="d_pregame_btn_cancel">Close</string>
+    <string name="d_pregame_btn_action">Again</string>
+
 </resources>
