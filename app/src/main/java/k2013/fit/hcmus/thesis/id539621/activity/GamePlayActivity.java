@@ -274,13 +274,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void updatePopUp(boolean isCorrect) {
-        if (isCorrect) {
-            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
-            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
-        } else {
-            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_failed));
-            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_replay));
-        }
+//        if (isCorrect) {
+//            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
+//            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
+//        } else {
+//            mPopUpMessage.setText(getResources().getString(R.string.d_gamefailed_msg));
+//            mPopUpBtnAction.setText(getResources().getString(R.string.d_gamefailed_btn_action));
+//        }
     }
 
     public void cancelGame() {

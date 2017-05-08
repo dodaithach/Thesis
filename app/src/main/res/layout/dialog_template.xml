@@ -9,25 +9,35 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_gravity="center"
-        android:background="@drawable/rounded_background"
+        android:background="@drawable/background_rounded"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/dialog_img"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/unicorn"
-            android:layout_centerHorizontal="true"/>
+        <FrameLayout
+            android:id="@+id/dialog_group_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="129dp"
+                android:layout_height="129dp"
+                android:background="@drawable/background_circle"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/dialog_img"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/dialog_img"
+            android:layout_below="@id/dialog_group_img"
             android:layout_marginTop="16dp"
-            android:text="Sorry! You are wrong."
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -35,7 +45,7 @@
             android:id="@+id/dialog_btn_cancel"
             android:layout_width="72dp"
             android:layout_height="36dp"
-            android:text="Cancel"
+            android:text="@string/d_btn_cancel"
             android:textAllCaps="false"
             android:textColor="@drawable/text_failed"
             android:background="@drawable/btn_rounded_failed"

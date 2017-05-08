@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameSuccess;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 
 public class MainActivity extends BaseActivity {
@@ -111,7 +113,8 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.main_btn_help: {
-
+                Intent intent = new Intent(this, DialogGameSuccess.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_SUCCESS);
                 break;
             }
 

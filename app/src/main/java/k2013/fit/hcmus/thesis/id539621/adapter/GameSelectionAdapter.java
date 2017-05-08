@@ -78,8 +78,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
             public void onClick(View view) {
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
-                    Intent intent = new Intent(activity, DialogGameSuccess.class);
-                    activity.startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_SUCCESS);
+
                 }
             }
         });

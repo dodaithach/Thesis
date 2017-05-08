@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.BaseActivity;
 
@@ -36,8 +38,9 @@ public abstract class BaseDialog extends BaseActivity {
         mBtnAction = (Button) findViewById(R.id.dialog_btn_action);
 
         mBackground.setBackgroundResource(getBackground());
-        mImg.setBackgroundResource(getImg());
+        Glide.with(this).load(getImg()).bitmapTransform(new CropCircleTransformation(this)).into(mImg);
         mMsg.setText(getMsg());
+        mBtnAction.setText(getBtnActionText());
         mBtnAction.setOnClickListener(getAction());
 
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
@@ -54,5 +57,6 @@ public abstract class BaseDialog extends BaseActivity {
     protected abstract int getBackground();
     protected abstract int getImg();
     protected abstract int getMsg();
+    protected abstract int getBtnActionText();
     protected abstract View.OnClickListener getAction();
 }
