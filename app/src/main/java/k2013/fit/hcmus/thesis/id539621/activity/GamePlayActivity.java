@@ -65,7 +65,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_play);
+        setContentView(R.layout.a_gameplay);
 
         mPointer = findViewById(R.id.gameplay_btnShoot);
         mPointer.setOnClickListener(new View.OnClickListener() {

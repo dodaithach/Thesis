@@ -39,9 +39,9 @@
             android:layout_marginTop="64dp"
             android:text="@string/main_btn_play"
             android:textAllCaps="false"
-            android:textColor="@drawable/text_play_main"
+            android:textColor="@drawable/a_main_text_play"
             android:textSize="16sp"
-            android:background="@drawable/btn_play_main"
+            android:background="@drawable/a_main_btn_play"
             android:stateListAnimator="@null"
             android:onClick="mainOnClick"/>
 
@@ -62,7 +62,7 @@
             android:textAllCaps="false"
             android:textColor="@color/themeLight"
             android:textSize="16sp"
-            android:background="@drawable/btn_help_main"
+            android:background="@drawable/a_main_btn_help"
             android:stateListAnimator="@null"
             android:onClick="mainOnClick"/>
 

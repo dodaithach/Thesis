@@ -15,7 +15,7 @@
         android:id="@+id/gameplay_pointer"
         android:layout_width="@dimen/pointerWidth"
         android:layout_height="@dimen/pointerWidth"
-        android:background="@drawable/shoot_target_point"
+        android:background="@drawable/a_gameplay_shoot_target"
         android:layout_gravity="center"
         android:clickable="true"/>
 
@@ -79,7 +79,7 @@
         android:layout_width="104dp"
         android:layout_height="240dp"
         android:layout_gravity="center_vertical|end"
-        android:background="@drawable/rounded_container_gameplay"
+        android:background="@drawable/a_gameplay_rounded_container"
         android:orientation="vertical"
         android:paddingLeft="24dp">
 
@@ -88,11 +88,11 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_shoot"
+            android:background="@drawable/a_gameplay_icon_select"
             android:stateListAnimator="@null"
             android:text="Select"
             android:textAllCaps="false"
-            android:textColor="@drawable/text_select_gameplay" />
+            android:textColor="@drawable/a_gameplay_text_select" />
 
         <Button
             android:id="@+id/gameplay_btnSwitch"
@@ -102,7 +102,7 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="4dp"
-            android:background="@drawable/icon_touch"
+            android:background="@drawable/a_gameplay_icon_touch"
             android:stateListAnimator="@null" />
 
         <Button
@@ -113,7 +113,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/icon_pause"
+            android:background="@drawable/a_gameplay_icon_pause"
             android:stateListAnimator="@null" />
     </RelativeLayout>
 </FrameLayout>

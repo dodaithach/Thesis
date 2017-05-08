@@ -19,7 +19,7 @@ public class GameSelectionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_selection);
+        setContentView(R.layout.a_gameselection);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.gameselection_recyclerview);
 

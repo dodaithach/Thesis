@@ -46,10 +46,10 @@
                 android:layout_width="160dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/btn_play_recycleritem_gameselection"
+                android:background="@drawable/a_gameselection_recycleritem_btn_play"
                 android:text="Play"
                 android:textAllCaps="false"
-                android:textColor="@drawable/text_play_recycleritem_gameselection"
+                android:textColor="@drawable/a_gameselection_recycleritem_text_play"
                 android:stateListAnimator="@null"/>
 
         </LinearLayout>
