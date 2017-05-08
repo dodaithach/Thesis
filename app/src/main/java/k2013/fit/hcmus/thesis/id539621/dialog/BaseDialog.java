@@ -2,6 +2,7 @@ package k2013.fit.hcmus.thesis.id539621.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -78,4 +79,20 @@ public abstract class BaseDialog extends BaseActivity {
     protected abstract int getBtnActionText();
     protected abstract int getBtnCancelText();
     protected abstract View.OnClickListener getAction();
+
+    protected void updateBtnCancelBackground(int backgroundId) {
+        mBtnCancel.setBackgroundResource(backgroundId);
+    }
+
+    protected void updateBtnCancelTextColor(ColorStateList colors) {
+        mBtnCancel.setTextColor(colors);
+    }
+
+    protected void updateBtnActionBackground(int backgroundId) {
+        mBtnAction.setBackgroundResource(backgroundId);
+    }
+
+    protected void updateBtnActionTextColor(ColorStateList colors) {
+        mBtnAction.setTextColor(colors);
+    }
 }

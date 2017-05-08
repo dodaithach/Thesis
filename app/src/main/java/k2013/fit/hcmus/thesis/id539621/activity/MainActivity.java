@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameFailed;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogGamePause;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameSuccess;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.main_btn_help: {
-                Intent intent = new Intent(this, DialogPregame.class);
+                Intent intent = new Intent(this, DialogGameFailed.class);
                 startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_SUCCESS);
                 break;
             }
