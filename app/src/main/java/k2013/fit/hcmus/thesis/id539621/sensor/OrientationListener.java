@@ -42,8 +42,6 @@ public class OrientationListener implements SensorEventListener {
             System.arraycopy(event.values, 0, mOrientationReading, 0, mOrientationReading.length);
 
 
-            Log.d("Trieu", "x: " + event.values[0] + "y: " + event.values[1] + "z: " + event.values[2] );
-
             if(callback!=null){
                 WindowManager windowManager =  (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 

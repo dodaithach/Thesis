@@ -37,6 +37,7 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private GameOperation mGame;
     private int modeGame;
+    private boolean hasSensor;
 
     private final float eyeX = 0;
     private final float eyeY = 0;
@@ -69,6 +70,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
         if (sharedPreferences != null){
             modeGame = sharedPreferences.getInt("gameMode", GamePlayParams.MODE_TOUCH);
+            hasSensor = sharedPreferences.getBoolean("hasSensor", false);
+
         }
 
         //modeGame = GamePlayParams.MODE_TOUCH;
@@ -211,7 +214,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             delX = delX - ((int) velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
             delY = delY - ((int) velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-            Log.d("", "dX: " + delX + " dY: " + delY);
+            //Log.d("", "dX: " + delX + " dY: " + delY);
 
             changeListenerOrientation(-delY, -delX, 0);
         }
@@ -278,7 +281,11 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
 
             case R.id.gameplay_btnSwitch: {
-
+                Log.d("Trieu", "has sensor: " + hasSensor);
+                if(hasSensor){
+                    switchGameMode();
+                }
+                break;
             }
 
             default:
@@ -432,6 +439,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
         }
         return inFiles;
+    }
+
+    private void switchGameMode(){
+        modeGame = (modeGame == GamePlayParams.MODE_TOUCH)?GamePlayParams.MODE_SENSOR:GamePlayParams.MODE_TOUCH;
+        Log.d("gameMode","mode: " + modeGame);
+        mGame.switchMode(modeGame);
     }
 
 }
