@@ -73,6 +73,17 @@ Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setListenerOrientation(
 }
 
 extern "C"
+JNIEXPORT jboolean JNICALL
+Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_isPlayingSound(
+        JNIEnv *env,
+        int source) {
+    if (BinauralSound::getInstance().isPlayingSound(source) == true){
+        return JNI_TRUE;
+    }
+    return JNI_FALSE;
+}
+
+extern "C"
 JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_closeDevice(
         JNIEnv *env,

@@ -26,6 +26,7 @@ public:
     void playSound(ALuint source);
     void pauseSound(ALuint source);
     void setListenerOrientation(float atX, float atY, float atZ, float upX, float upY, float upZ);
+    bool isPlayingSound(ALuint source);
     void closeDevice();
 
     void testSound();
