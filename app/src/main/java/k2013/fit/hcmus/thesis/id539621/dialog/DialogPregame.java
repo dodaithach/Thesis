@@ -1,11 +1,16 @@
 package k2013.fit.hcmus.thesis.id539621.dialog;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
+import java.lang.ref.WeakReference;
+
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 /**
  * Created by cpu60011-local on 08/05/2017.
@@ -27,6 +32,12 @@ public class DialogPregame extends BaseDialog {
     protected void onPostResume() {
         super.onPostResume();
         playSound();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BinauralSound.pauseSound(mTargetSound);
     }
 
     @Override
@@ -72,9 +83,41 @@ public class DialogPregame extends BaseDialog {
         enableBtnCancel(false);
         enableBtnAction(false);
 
-        // PLAY sound...
+        BinauralSound.setLoop(mTargetSound, false);
+        BinauralSound.playSound(mTargetSound);
+        new CheckIsPlayingAsync(this).execute();
+    }
 
-        enableBtnCancel(true);
-        enableBtnAction(true);
+    public int getTargetSound() {
+        return mTargetSound;
+    }
+
+    static class CheckIsPlayingAsync extends AsyncTask<Void, Void, Void> {
+        private WeakReference<DialogPregame> mWeakReference;
+
+        public CheckIsPlayingAsync(DialogPregame dialog) {
+            mWeakReference = new WeakReference<DialogPregame>(dialog);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            while (true) {
+                Log.d("mylog", "CheckIsPlayingAsync...");
+                DialogPregame dialog = mWeakReference.get();
+
+                if (dialog == null || dialog.isDestroyed() || dialog.isFinishing()) {
+                    return null;
+                }
+
+                boolean isPlaying = BinauralSound.isPlayingSound(dialog.getTargetSound());
+                Log.d("mylog", "isPlaying: " + isPlaying);
+                if (!isPlaying) {
+                    dialog.enableBtnAction(true);
+                    dialog.enableBtnCancel(true);
+
+                    return null;
+                }
+            }
+        }
     }
 }
