@@ -248,4 +248,20 @@ public class GameOperation {
     public void scrollToPosition(double delX, double delY) {
         mVRLibrary.testScroll(delX, delY);
     }
+
+    public void switchMode(int mode){
+        mParams.setMode(mode);
+        if (mode == GamePlayParams.MODE_SENSOR) {
+            mMode = MDVRLibrary.INTERACTIVE_MODE_MOTION;
+            if(mOrientationListener != null) {
+                mOrientationListener.registerListener();
+            }
+        } else {
+            mMode = MDVRLibrary.INTERACTIVE_MODE_TOUCH;
+            mOrientationListener.unregisterListener();
+        }
+        mVRLibrary.switchInteractiveMode(getActivity(),mMode);
+
+
+    }
 }

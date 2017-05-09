@@ -97,7 +97,6 @@ public class MainActivity extends BaseActivity {
         if(sharedPreferences != null)  {
             int gameMode = sharedPreferences.getInt("gameMode", -1);
             if(gameMode == -1) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 SensorManager mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
                 if (mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
@@ -105,6 +104,9 @@ public class MainActivity extends BaseActivity {
                 } else {
                     gameMode = GamePlayParams.MODE_TOUCH;
                 }
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("hasSensor", gameMode == GamePlayParams.MODE_SENSOR);
                 editor.apply();
             }
             boolean hasData = sharedPreferences.getBoolean("gameData", false);
