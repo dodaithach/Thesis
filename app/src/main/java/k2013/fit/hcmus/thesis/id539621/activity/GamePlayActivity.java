@@ -1,7 +1,5 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,10 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
@@ -26,9 +20,11 @@ import java.util.Random;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.dialog.BaseDialog;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameFailed;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogGamePause;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameSuccess;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogPregame;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
@@ -38,7 +34,6 @@ import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
-    private View mPointer;
     private GameOperation mGame;
     private int modeGame;
 
@@ -70,16 +65,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameplay);
 
-        mPointer = findViewById(R.id.gameplay_btnShoot);
-        mPointer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mGame.scrollToPosition(500,500);
-                mGame.finish(GamePlayActivity.this, false);
-            }
-        });
-
-
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
         if (sharedPreferences != null){
             modeGame = sharedPreferences.getInt("gameMode", GamePlayParams.MODE_TOUCH);
@@ -88,7 +73,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         //modeGame = GamePlayParams.MODE_TOUCH;
 
         HandlerSingleton.init(this, null);
-
 
         GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
 
@@ -184,8 +168,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     protected void onResume() {
         super.onResume();
-
-        Log.d("mylog", "GamePlayActivity.onResume()");
         mGame.resume(this);
 
         BinauralSound.playSound(mTargetSound);
@@ -204,7 +186,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             BinauralSound.pauseSound(distractsound);
         }
 
-        Log.d("mylog", "GamePlayActivity.onPause()");
         mGame.pause(this);
 
 
@@ -282,13 +263,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     public void gamePlayOnClick(View v) {
         switch (v.getId()) {
             case R.id.gameplay_btnPause: {
-                Intent intent = new Intent(this, DialogGamePause.class);
-                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE);
+                showCustomDialog(DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE);
                 break;
             }
 
-            case R.id.gameplay_btnShoot: {
-
+            case R.id.gameplay_btnSelect: {
+                mGame.finish(this, false);
                 break;
             }
 
@@ -303,16 +283,16 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+
+        if (res == DialogHelper.RES_CODE_CANCEL) {
+            // STORE game state here...
+
+            finish();
+        }
+
         switch (requestCode) {
             case DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE: {
-                if (requestCode != Activity.RESULT_OK) {
-                    break;
-                }
-
-                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
-                if (res == DialogHelper.RES_CODE_CANCEL) {
-                    finish();
-                }
 
                 break;
             }
@@ -337,6 +317,37 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
     }
 
+    public void showCustomDialog(int id) {
+        switch (id) {
+            case DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE: {
+                Intent intent = new Intent(this, DialogGamePause.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE);
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS: {
+                Intent intent = new Intent(this, DialogGameSuccess.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS);
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_GAME_FAILED: {
+                Intent intent = new Intent(this, DialogGameFailed.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_FAILED);
+                break;
+            }
+
+            case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
+                Intent intent = new Intent(this, DialogPregame.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
         totalTime++;
@@ -347,35 +358,16 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         mGame.finish(this, true);
     }
 
-    public void showPopUp(boolean mode) {
+    public void showGameResult() {
         // Retrieve data from GameOperation
-//        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-//        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
-//
-//        updatePopUp(isCorrect);
-//
-//        if (mode) {
-//            mPopUpLayout.setVisibility(View.VISIBLE);
-//        } else {
-//            mPopUpLayout.setVisibility(View.GONE);
-//        }
+        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
 
-        Intent intent = new Intent(this, BaseDialog.class);
-        startActivity(intent);
-    }
-
-    public void updatePopUp(boolean isCorrect) {
-//        if (isCorrect) {
-//            mPopUpMessage.setText(getResources().getString(R.string.gameplay_popup_msg_success));
-//            mPopUpBtnAction.setText(getResources().getString(R.string.gameplay_popup_btn_next));
-//        } else {
-//            mPopUpMessage.setText(getResources().getString(R.string.d_gamefailed_msg));
-//            mPopUpBtnAction.setText(getResources().getString(R.string.d_gamefailed_btn_action));
-//        }
-    }
-
-    public void cancelGame() {
-        finish();
+        if (isCorrect) {
+            showCustomDialog(DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS);
+        } else {
+            showCustomDialog(DialogHelper.REQ_CODE_DIALOG_GAME_FAILED);
+        }
     }
 
     public void nextAction() {

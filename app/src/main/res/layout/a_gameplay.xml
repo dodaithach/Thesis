@@ -28,7 +28,7 @@
         android:paddingLeft="24dp">
 
         <Button
-            android:id="@+id/gameplay_btnShoot"
+            android:id="@+id/gameplay_btnSelect"
             android:onClick="gamePlayOnClick"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -44,7 +44,7 @@
             android:onClick="gamePlayOnClick"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_above="@id/gameplay_btnShoot"
+            android:layout_above="@id/gameplay_btnSelect"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="4dp"
@@ -56,7 +56,7 @@
             android:onClick="gamePlayOnClick"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_below="@id/gameplay_btnShoot"
+            android:layout_below="@id/gameplay_btnSelect"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"

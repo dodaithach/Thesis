@@ -14,15 +14,12 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
-import java.util.Random;
 import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
-import k2013.fit.hcmus.thesis.id539621.model.Sound;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
-import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -136,7 +133,7 @@ public class GameOperation {
 
         GamePlayActivity activity = getActivity();
         if (!activity.isDestroyed() && !activity.isFinishing()) {
-            activity.showPopUp(true);
+            activity.showGameResult();
         }
     }
 
