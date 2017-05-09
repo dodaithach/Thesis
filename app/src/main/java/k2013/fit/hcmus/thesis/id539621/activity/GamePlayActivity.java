@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.opengl.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -155,7 +156,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 BinauralSound.playSound(soundTemp);
             }
         }
+    }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        pregame();
     }
 
     @Override
@@ -187,8 +194,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
 
         mGame.pause(this);
-
-
     }
 
     @Override
@@ -283,32 +288,44 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
-
-        if (res == DialogHelper.RES_CODE_CANCEL) {
-            // STORE game state here...
-
-            finish();
-        }
-
         switch (requestCode) {
             case DialogHelper.REQ_CODE_DIALOG_GAME_PAUSE: {
+                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+
+                if (res == DialogHelper.RES_CODE_CANCEL) {
+                    // STORE game state here...
+
+                    finish();
+                }
 
                 break;
             }
 
             case DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS: {
+                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+
+                if (res == DialogHelper.RES_CODE_CANCEL) {
+                    // STORE game state here...
+
+                    finish();
+                }
 
                 break;
             }
 
             case DialogHelper.REQ_CODE_DIALOG_GAME_FAILED: {
+                int res = data.getIntExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_CANCEL);
+
+                if (res == DialogHelper.RES_CODE_CANCEL) {
+                    // STORE game state here...
+
+                    finish();
+                }
 
                 break;
             }
 
             case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
-
                 break;
             }
 
@@ -389,6 +406,10 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     public void replay() {
 
+    }
+
+    public void pregame() {
+        showCustomDialog(DialogHelper.REQ_CODE_DIALOG_PREGAME);
     }
 
     public void clearSharedPreference() {

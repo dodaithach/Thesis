@@ -59,9 +59,9 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/themeDarkGrey" />
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
+            android:background="@color/themeLightGrey" />
 
     </LinearLayout>
 

@@ -32,6 +32,7 @@ import k2013.fit.hcmus.thesis.id539621.JSONResourceReader;
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameFailed;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
+import k2013.fit.hcmus.thesis.id539621.dialog.DialogPregame;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 
@@ -153,8 +154,8 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.main_btn_help: {
-                Intent intent = new Intent(this, DialogGameFailed.class);
-                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS);
+                Intent intent = new Intent(this, DialogPregame.class);
+                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
                 break;
             }
 

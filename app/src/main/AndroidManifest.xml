@@ -37,7 +37,7 @@
             android:theme="@style/AppTheme.Transparent"/>
         <activity android:name=".dialog.DialogPregame"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.Transparent"/>
+            android:theme="@style/AppTheme.Pregame"/>
     </application>
 
 </manifest>
