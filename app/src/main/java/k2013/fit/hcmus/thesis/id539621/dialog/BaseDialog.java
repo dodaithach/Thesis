@@ -105,4 +105,48 @@ public abstract class BaseDialog extends BaseActivity {
     protected void updateBtnActionTextColor(ColorStateList colors) {
         mBtnAction.setTextColor(colors);
     }
+
+    protected void enableBtnCancel(boolean mode) {
+        if (mode) {
+            mBtnCancel.setClickable(true);
+            mBtnCancel.setBackgroundResource(R.drawable.btn_default_cancel);
+            ColorStateList btnCancelColors = new ColorStateList(
+                    new int[][] {
+                            new int[] {android.R.attr.state_pressed},
+                            new int[] {}
+                    },
+                    new int[] {
+                            getResources().getColor(R.color.themeLight),
+                            getResources().getColor(R.color.themeAccent)
+                    }
+            );
+            mBtnCancel.setTextColor(btnCancelColors);
+        } else {
+            mBtnCancel.setClickable(false);
+            mBtnCancel.setBackgroundResource(R.drawable.btn_disable);
+            mBtnCancel.setTextColor(getResources().getColor(R.color.themeLight));
+        }
+    }
+
+    protected void enableBtnAction(boolean mode) {
+        if (mode) {
+            mBtnAction.setClickable(true);
+            mBtnAction.setBackgroundResource(R.drawable.btn_default_action);
+            ColorStateList btnActionColors = new ColorStateList(
+                    new int[][] {
+                            new int[] {android.R.attr.state_pressed},
+                            new int[] {}
+                    },
+                    new int[] {
+                            getResources().getColor(R.color.themeLight),
+                            getResources().getColor(R.color.themePrimary)
+                    }
+            );
+            mBtnAction.setTextColor(btnActionColors);
+        } else {
+            mBtnAction.setClickable(false);
+            mBtnAction.setBackgroundResource(R.drawable.btn_disable);
+            mBtnAction.setTextColor(getResources().getColor(R.color.themeLight));
+        }
+    }
 }

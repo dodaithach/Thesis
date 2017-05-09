@@ -356,6 +356,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
             case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
                 Intent intent = new Intent(this, DialogPregame.class);
+                intent.putExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID, mTargetSound);
                 startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
                 break;
             }

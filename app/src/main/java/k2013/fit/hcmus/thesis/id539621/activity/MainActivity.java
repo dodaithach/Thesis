@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity {
 
         loadGameSetting();
         loadGameData();
-
     }
 
     private void loadGameData(){
@@ -89,8 +88,6 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
-
 
     private void loadGameSetting()  {
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);

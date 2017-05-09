@@ -12,6 +12,8 @@ public class DialogHelper {
     public static final int REQ_CODE_DIALOG_GAME_PAUSE = 2;
     public static final int REQ_CODE_DIALOG_PREGAME = 3;
 
+    public static final String REQ_TITLE_DIALOG_PREGAME_SOUND_ID = "SOUND_ID";
+
     public static final int RES_CODE_CANCEL = 0;
     public static final int RES_CODE_ACTION = 1;
 }

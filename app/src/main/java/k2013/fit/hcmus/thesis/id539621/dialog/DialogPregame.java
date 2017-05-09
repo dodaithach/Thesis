@@ -1,5 +1,8 @@
 package k2013.fit.hcmus.thesis.id539621.dialog;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import k2013.fit.hcmus.thesis.id539621.R;
@@ -9,6 +12,23 @@ import k2013.fit.hcmus.thesis.id539621.R;
  */
 
 public class DialogPregame extends BaseDialog {
+
+    private int mTargetSound;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        mTargetSound = intent.getIntExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID, -1);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        playSound();
+    }
+
     @Override
     protected int getBackground() {
         return 0;
@@ -36,6 +56,25 @@ public class DialogPregame extends BaseDialog {
 
     @Override
     protected View.OnClickListener getAction() {
-        return null;
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogPregame.this.playSound();
+            }
+        };
+    }
+
+    public void playSound() {
+        if (mTargetSound == -1) {
+            return;
+        }
+
+        enableBtnCancel(false);
+        enableBtnAction(false);
+
+        // PLAY sound...
+
+        enableBtnCancel(true);
+        enableBtnAction(true);
     }
 }
