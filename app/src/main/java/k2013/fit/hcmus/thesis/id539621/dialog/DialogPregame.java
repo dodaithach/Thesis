@@ -19,13 +19,20 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 public class DialogPregame extends BaseDialog {
 
     private int mTargetSound;
+    private String mTargetSoundPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        mTargetSound = intent.getIntExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID, -1);
+        mTargetSoundPath = intent.getStringExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID);
+        //BinauralSound.openDevice();
+        mTargetSound = BinauralSound.addSource(mTargetSoundPath);
+
+
+        this.enableBtnAction(true);
+        this.enableBtnCancel(true);
     }
 
     @Override
@@ -80,12 +87,15 @@ public class DialogPregame extends BaseDialog {
             return;
         }
 
-        enableBtnCancel(false);
-        enableBtnAction(false);
+        Log.d("myLog", "PlaySoundInDialog");
+
+        //enableBtnCancel(false);
+        //enableBtnAction(false);
 
         BinauralSound.setLoop(mTargetSound, false);
         BinauralSound.playSound(mTargetSound);
-        new CheckIsPlayingAsync(this).execute();
+
+        //new CheckIsPlayingAsync(this).execute();
     }
 
     public int getTargetSound() {
@@ -109,6 +119,7 @@ public class DialogPregame extends BaseDialog {
                     return null;
                 }
 
+                Log.d("myLog", "sound: " + dialog.getTargetSound());
                 boolean isPlaying = BinauralSound.isPlayingSound(dialog.getTargetSound());
                 Log.d("mylog", "isPlaying: " + isPlaying);
                 if (!isPlaying) {

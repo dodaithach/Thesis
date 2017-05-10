@@ -59,6 +59,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private int mTargetSound;
     private int mBackgroundSound;
     private Vector<Integer> mDistractSounds;
+    private String targetSoundPath;
 
     private int totalTime = 0;
 
@@ -79,8 +80,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         HandlerSingleton.init(this, null);
 
         GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
-
-        Log.d("GameData", "Level: " + level.getLevel() + " , distract sound: " + level.getDistract_sound());
 
         GamePlayParams params = new GamePlayParams();
         params.setTime(20000);
@@ -104,13 +103,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
         int targetSoundPosition = r.nextInt(files.size());
 
+        targetSoundPath = files.get(targetSoundPosition).getPath();
         params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, targetPosition));
 
         //SET background sound
         if(level.isHas_background_sound()){
-            Log.d("621Sound", "has backgroundSound");
             List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
-            Log.d("621Sound", "has backgroundSound size: " + backgroundSoundFiles.size());
             int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
             params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
         }
@@ -130,8 +128,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             else {
                 BinauralSound.setLoop(mTargetSound, false);
             }
-            BinauralSound.playSound(mTargetSound);
-            Log.d("","sound " + mTargetSound + " is playing");
         }
 
         //Load background sound
@@ -140,7 +136,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             Log.d("621Sound", "path: " + params.getBackgroundSound().getSoundPath());
             //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
             BinauralSound.setLoop(mBackgroundSound, true);
-            BinauralSound.playSound(mBackgroundSound);
         }
 
         //Load distract sound
@@ -156,7 +151,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 else {
                     BinauralSound.setLoop(soundTemp, false);
                 }
-                BinauralSound.playSound(soundTemp);
             }
         }
     }
@@ -363,7 +357,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
             case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
                 Intent intent = new Intent(this, DialogPregame.class);
-                intent.putExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID, mTargetSound);
+                intent.putExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID, targetSoundPath);
                 startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
                 break;
             }
