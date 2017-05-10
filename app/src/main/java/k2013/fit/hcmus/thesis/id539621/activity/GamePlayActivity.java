@@ -78,6 +78,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         //modeGame = GamePlayParams.MODE_TOUCH;
 
+        if (modeGame == GamePlayParams.MODE_SENSOR) {
+            findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
+        } else {
+            findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_touch);
+        }
+
+
         HandlerSingleton.init(this, null);
 
         GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
