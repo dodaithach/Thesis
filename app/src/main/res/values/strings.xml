@@ -21,4 +21,6 @@
     <string name="d_pregame_btn_cancel">Close</string>
     <string name="d_pregame_btn_action">Again</string>
 
+    <string name="a_gameplay_msg_no_sensor">Sorry! Your phone does not have motion sensor.</string>
+
 </resources>

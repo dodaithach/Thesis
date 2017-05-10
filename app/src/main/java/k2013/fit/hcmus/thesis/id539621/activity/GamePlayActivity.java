@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
@@ -277,7 +278,15 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             case R.id.gameplay_btnSwitch: {
                 Log.d("Trieu", "has sensor: " + hasSensor);
                 if(hasSensor){
+                    if (modeGame == GamePlayParams.MODE_TOUCH) {
+                        findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
+                    } else {
+                        findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_touch);
+                    }
+
                     switchGameMode();
+                } else {
+                    Toast.makeText(this, getString(R.string.a_gameplay_msg_no_sensor), Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
