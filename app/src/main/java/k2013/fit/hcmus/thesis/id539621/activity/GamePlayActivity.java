@@ -74,6 +74,11 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             modeGame = sharedPreferences.getInt("gameMode", GamePlayParams.MODE_TOUCH);
             hasSensor = sharedPreferences.getBoolean("hasSensor", false);
 
+            if (modeGame == GamePlayParams.MODE_TOUCH) {
+                findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_touch);
+            } else {
+                findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
+            }
         }
 
         //modeGame = GamePlayParams.MODE_TOUCH;
