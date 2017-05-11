@@ -1,5 +1,6 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -99,6 +101,28 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         levelIndex = getIntent().getIntExtra("LevelIndex",0);
         level = levels[levelIndex];
+
+        GamePlayParams params = new GamePlayParams();
+        params.setTime(20000);
+        params.setMode(modeGame);
+        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+
+
+        //Set target sound
+        Random r = new Random();
+        int targetDistance = r.nextInt(11) + 5;
+        int targetAlpha = r.nextInt(361);
+
+        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
+                targetDistance * Math.cos(Math.toRadians(targetAlpha)));
+
+        if(level.isHas_horizontal()) {
+            float y = r.nextFloat()*2 - 1;
+            targetPosition.setY(y);
+        }
+
+        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
+        int targetSoundPosition = r.nextInt(files.size());
 
         Log.d("onCreate", String.format("Level: %d", levelIndex));
 
@@ -411,17 +435,24 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
     }
 
+    private void updateProgressBar(int progress) {
+        ProgressBar pb = (ProgressBar) findViewById(R.id.gameplay_progressbar);
+        ObjectAnimator animator = ObjectAnimator.ofInt(pb,"progress", progress);
+        animator.setDuration(GameOperation.TIME_TICK);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
+    }
+
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
-        totalTime++;
+        totalTime += GameOperation.TIME_TICK;
+        int progress = totalTime * 100 / (level.getTimeMilis());
 
-        ProgressBar pb = (ProgressBar) findViewById(R.id.gameplay_progressbar);
-        pb.setProgress(totalTime * 10);
-
-        Log.d("timeTick", String.format("time: %d", totalTime));
+        updateProgressBar(progress);
     }
 
     public void timeFinish() {
+        updateProgressBar(100);
         mGame.finish(this, true);
     }
 
