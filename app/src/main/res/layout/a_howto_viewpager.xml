@@ -4,10 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:paddingTop="24dp"
-    android:paddingBottom="72dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
+    android:paddingBottom="50dp"
     android:background="@drawable/background_gradient_lprimary_primary">
 
     <FrameLayout
@@ -15,9 +12,11 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/a_howto_viewpager_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/themeLight"/>
+            android:background="@color/themeLight"
+            android:scaleType="centerCrop"/>
 
         <View
             android:layout_width="match_parent"

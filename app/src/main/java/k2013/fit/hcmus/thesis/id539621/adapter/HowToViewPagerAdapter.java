@@ -4,6 +4,9 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 
@@ -31,6 +34,10 @@ public class HowToViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
 
         View view = inflater.inflate(R.layout.a_howto_viewpager, container, false);
+        ImageView img = (ImageView) view.findViewById(R.id.a_howto_viewpager_img);
+
+        Glide.with(container.getContext()).load(R.drawable.introslider).into(img);
+
         container.addView(view);
 
         return view;
