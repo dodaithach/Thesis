@@ -10,6 +10,7 @@
 #include "openalsoft/include/AL/alc.h"
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 class BinauralSound {
 private:
@@ -18,6 +19,9 @@ private:
     BinauralSound() {}
     BinauralSound(BinauralSound const&);
     void operator=(BinauralSound const&);
+
+    std::vector<ALuint> buffers;
+    std::vector<ALuint> sources;
 public:
     void openDevice();
     ALuint addSource(std::string filename);
@@ -27,6 +31,7 @@ public:
     void pauseSound(ALuint source);
     void setListenerOrientation(float atX, float atY, float atZ, float upX, float upY, float upZ);
     bool isPlayingSound(ALuint source);
+    void clearAll();
     void closeDevice();
 
     void testSound();

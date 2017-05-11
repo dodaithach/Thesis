@@ -29,6 +29,7 @@ import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogPregame;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class MainActivity extends BaseActivity {
 
@@ -46,6 +47,9 @@ public class MainActivity extends BaseActivity {
 
         loadGameSetting();
         loadGameData();
+
+        BinauralSound.openDevice();
+        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
     }
 
     private void loadGameData(){
@@ -219,5 +223,11 @@ public class MainActivity extends BaseActivity {
             in.close();
             out.close();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BinauralSound.closeDevice();
     }
 }
