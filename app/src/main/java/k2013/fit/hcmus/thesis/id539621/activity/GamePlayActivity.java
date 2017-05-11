@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.custom.HandlerSingleton;
@@ -56,7 +57,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private float[] mCurrentRotationPost = new float[16];
     private float[] mCurrentRotationZ = new float[16];
     private float[] mTempMatrix = new float[16];
-
 
     private int mTargetSound;
     private int mBackgroundSound;
@@ -390,6 +390,10 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
         totalTime++;
+
+        ProgressBar pb = (ProgressBar) findViewById(R.id.gameplay_progressbar);
+        pb.setProgress(totalTime * 10);
+
         Log.d("timeTick", String.format("time: %d", totalTime));
     }
 
