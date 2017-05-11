@@ -39,6 +39,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private GameOperation mGame;
     private int modeGame;
     private boolean hasSensor;
+    private boolean hasShowDemo;
 
     private final float eyeX = 0;
     private final float eyeY = 0;
@@ -68,6 +69,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameplay);
+
+        hasShowDemo = false;
 
         SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
         if (sharedPreferences != null){
@@ -140,7 +143,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         //Load background sound
         if(params.getBackgroundSound() != null){
             mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
-            Log.d("621Sound", "path: " + params.getBackgroundSound().getSoundPath());
+            Log.d("621Sound", "background sound: " + mBackgroundSound);
             //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
             BinauralSound.setLoop(mBackgroundSound, true);
         }
@@ -180,11 +183,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onResume() {
         super.onResume();
         mGame.resume(this);
-
-        BinauralSound.playSound(mTargetSound);
-        BinauralSound.playSound(mBackgroundSound);
-        for (int distractsound: mDistractSounds){
-            BinauralSound.playSound(distractsound);
+        if (hasShowDemo) {
+            BinauralSound.playSound(mTargetSound);
+            BinauralSound.playSound(mBackgroundSound);
+            for (int distractsound : mDistractSounds) {
+                BinauralSound.playSound(distractsound);
+            }
         }
     }
 
@@ -342,6 +346,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
 
             case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
+                hasShowDemo = true;
                 break;
             }
 

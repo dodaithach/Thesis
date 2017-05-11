@@ -21,41 +21,74 @@ typedef struct {
     unsigned int bytesPerSec;
     unsigned short blockAlign;
     unsigned short bitsPerSample;
-    char  data[4];//'data'
-    unsigned int dataSize;
 }BasicWAVEHeader;
 
+//Chunks
+struct chunk_t
+{
+    char ID[4]; //"data" = 0x61746164
+    unsigned long size;  //Chunk data bytes
+};
+
 //WARNING: This Doesn't Check To See If These Pointers Are Valid
-char* readWAV(char* filename,BasicWAVEHeader* header){
+char* readWAV(char* filename,BasicWAVEHeader* header, chunk_t &chunk){
     char* buffer = 0;
     FILE* file = fopen(filename,"rb");
     if (!file) {
+        __android_log_print(ANDROID_LOG_DEBUG, "readWav", "can't read file %s", filename);
         return 0;
     }
 
     if (fread(header,sizeof(BasicWAVEHeader),1,file)){
+        __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s checking header", filename);
+
+        if(memcmp("RIFF",header->riff,4)){
+            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header RIFF different: %s", filename, header->riff);
+        }
+        if(memcmp("WAVE",header->wave,4)){
+            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header WAVE different: %s", filename, header->wave);
+        }
+        if(memcmp("fmt ",header->fmt,4)){
+            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header FMT different: %s", filename, header->fmt);
+        }
+//        if(memcmp("data",header->data,4)){
+//            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header DATA different: %s", filename, header->data);
+//        }
+
         if (!(//these things *must* be valid with this basic header
                 memcmp("RIFF",header->riff,4) ||
                 memcmp("WAVE",header->wave,4) ||
-                memcmp("fmt ",header->fmt,4)  ||
-                memcmp("data",header->data,4)
+                memcmp("fmt ",header->fmt,4) // ||
+                //memcmp("data",header->data,4)
         )){
+            while (true)
+            {
+                fread(&chunk, sizeof(chunk), 1, file);
+                printf("%c%c%c%c\t" "%li\n", chunk.ID[0], chunk.ID[1], chunk.ID[2], chunk.ID[3], chunk.size);
+                if (*(unsigned int *)&chunk.ID == 0x61746164)
+                    break;
+                //skip chunk data bytes
+                fseek(file, chunk.size, SEEK_CUR);
+            }
 
-            buffer = (char*)malloc(header->dataSize);
+            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header valid", filename);
+            buffer = (char*)malloc(chunk.size);
             if (buffer){
-                if (fread(buffer,header->dataSize,1,file)){
+                if (fread(buffer,chunk.size,1,file)){
                     fclose(file);
                     return buffer;
                 }
                 free(buffer);
             }
+        } else {
+            __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header invalid", filename);
         }
     }
     fclose(file);
     return 0;
 }
 
-ALuint createBufferFromWave(char* data,BasicWAVEHeader header){
+ALuint createBufferFromWave(char* data,BasicWAVEHeader header, chunk_t chunk){
 
     ALuint buffer = 0;
     ALuint format = 0;
@@ -71,7 +104,7 @@ ALuint createBufferFromWave(char* data,BasicWAVEHeader header){
     }
 
     alGenBuffers(1,&buffer);
-    alBufferData(buffer,format,data,header.dataSize,header.samplesPerSec);
+    alBufferData(buffer,format,data,chunk.size,header.samplesPerSec);
     return buffer;
 }
 
@@ -91,17 +124,21 @@ void BinauralSound::openDevice() {
 ALuint BinauralSound::addSource(std::string filename) {
     ALuint buffer;
     BasicWAVEHeader header;
-    char* data = readWAV(strdup(filename.c_str()),&header);
+    chunk_t chunk;
+    char* data = readWAV(strdup(filename.c_str()),&header, chunk);
 
     if (data){
         //Now We've Got A Wave In Memory, Time To Turn It Into A Usable Buffer
-        buffer = createBufferFromWave(data,header);
+        buffer = createBufferFromWave(data,header, chunk);
         if (!buffer){
+            __android_log_print(ANDROID_LOG_DEBUG, "addSource", "cant creat buffer from wave");
             free(data);
             return 0;
         }
+        __android_log_print(ANDROID_LOG_DEBUG, "addSource", "create ok");
 
     } else {
+        __android_log_print(ANDROID_LOG_DEBUG, "addSource", "no buffer");
         return 0;
     }
 
