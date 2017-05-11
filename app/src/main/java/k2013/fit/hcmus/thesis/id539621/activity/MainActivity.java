@@ -57,6 +57,15 @@ public class MainActivity extends BaseActivity {
     private void loadGameData(){
         JSONResourceReader reader = new JSONResourceReader(getResources(), R.raw.gamelevel);
         levels = reader.constructUsingGson(GameLevel[].class);
+
+        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        if (sharedPreferences != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(levels);
+            editor.putString("gameLevels", jsonString);
+            editor.apply();
+        }
     }
 
     private void storeData(){

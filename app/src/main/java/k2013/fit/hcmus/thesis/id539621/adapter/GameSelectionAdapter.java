@@ -84,7 +84,7 @@ public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdap
                 GameSelectionActivity activity = holder.getContext();
                 if (activity != null) {
                     Intent intent = new Intent(activity, GamePlayActivity.class);
-                    intent.putExtra("Level",levels[position]);
+                    intent.putExtra("LevelIndex",position);
                     activity.startActivity(intent);
                 }
             }

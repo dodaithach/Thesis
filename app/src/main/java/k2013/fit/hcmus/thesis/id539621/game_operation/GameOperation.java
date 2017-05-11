@@ -74,7 +74,6 @@ public class GameOperation {
         mVRLibrary = createVRLibrary();
         mIsInited = true;
 
-
     }
 
     public void pause(Context context) {
@@ -261,7 +260,5 @@ public class GameOperation {
             mOrientationListener.unregisterListener();
         }
         mVRLibrary.switchInteractiveMode(getActivity(),mMode);
-
-
     }
 }

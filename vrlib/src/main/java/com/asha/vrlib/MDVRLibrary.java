@@ -3,6 +3,7 @@ package com.asha.vrlib;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;

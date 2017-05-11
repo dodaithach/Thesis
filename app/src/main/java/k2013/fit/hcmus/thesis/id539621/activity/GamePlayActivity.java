@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private GameOperation mGame;
+    private GameLevel[] levels;
+    private int levelIndex;
+    private GameLevel level;
     private int modeGame;
     private boolean hasSensor;
     private boolean hasShowDemo;
@@ -82,6 +86,10 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             } else {
                 findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
             }
+
+            String gameLevelsString = sharedPreferences.getString("gameLevels", "");
+            Gson gson = new Gson();
+            levels = gson.fromJson(gameLevelsString,GameLevel[].class);
         }
 
         //modeGame = GamePlayParams.MODE_TOUCH;
@@ -89,80 +97,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         HandlerSingleton.init(this, null);
 
-        GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
+        levelIndex = getIntent().getIntExtra("LevelIndex",0);
+        level = levels[levelIndex];
 
-        GamePlayParams params = new GamePlayParams();
-        params.setTime(20000);
-        params.setMode(modeGame);
-        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+        Log.d("onCreate", String.format("Level: %d", levelIndex));
 
-
-        //Set target sound
-        Random r = new Random();
-        int targetDistance = r.nextInt(11) + 5;
-        int targetAlpha = r.nextInt(361);
-
-        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
-                targetDistance * Math.cos(Math.toRadians(targetAlpha)));
-
-        if(level.isHas_horizontal()) {
-            float y = r.nextFloat()*2 - 1;
-            targetPosition.setY(y);
-        }
-
-        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
-        int targetSoundPosition = r.nextInt(files.size());
-
-        targetSoundPath = files.get(targetSoundPosition).getPath();
-        params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, targetPosition));
-
-        //SET background sound
-        if(level.isHas_background_sound()){
-            List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
-            int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
-            params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
-        }
-
-        mGame = new GameOperation(this, params);
-        //Sound
-        BinauralSound.openDevice();
-        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
-
-        //Load target sound
-        if(params.getTargetSound() != null){
-            mTargetSound = BinauralSound.addSource(params.getTargetSound().getSoundPath());
-            BinauralSound.setPosition(mTargetSound, params.getTargetSound().getPosition() );
-            if(params.getTargetSound().getType() == Sound.TYPE_REPEAT){
-                BinauralSound.setLoop(mTargetSound, true);
-            }
-            else {
-                BinauralSound.setLoop(mTargetSound, false);
-            }
-        }
-
-        //Load background sound
-        if(params.getBackgroundSound() != null){
-            mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
-            Log.d("621Sound", "background sound: " + mBackgroundSound);
-            //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
-            BinauralSound.setLoop(mBackgroundSound, true);
-        }
-
-        //Load distract sound
-        mDistractSounds = new Vector<>();
-        if(params.getDistractSounds() != null){
-            for (Sound sound: params.getDistractSounds()) {
-                int soundTemp = BinauralSound.addSource(sound.getSoundPath());
-                BinauralSound.setPosition(soundTemp, sound.getPosition());
-                mDistractSounds.add(soundTemp);
-                if(sound.getType() == Sound.TYPE_REPEAT){
-                    BinauralSound.setLoop(soundTemp, true);
-                }
-                else {
-                    BinauralSound.setLoop(soundTemp, false);
-                }
-            }
-        }
+        setupGameParam();
     }
 
     @Override
@@ -273,6 +213,86 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     }
 
+    private void setupGameParam(){
+        hasShowDemo = false;
+        GamePlayParams params = new GamePlayParams();
+        params.setTime(level.getTime()*1000);
+        params.setMode(modeGame);
+        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
+
+
+        //Set target sound
+        Random r = new Random();
+        int targetDistance = r.nextInt(11) + 5;
+        int targetAlpha = r.nextInt(361);
+
+        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
+                targetDistance * Math.cos(Math.toRadians(targetAlpha)));
+
+        if(level.isHas_horizontal()) {
+            float y = r.nextFloat()*2 - 1;
+            targetPosition.setY(y);
+        }
+
+        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
+        int targetSoundPosition = r.nextInt(files.size());
+
+        targetSoundPath = files.get(targetSoundPosition).getPath();
+        params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, targetPosition));
+
+        //SET background sound
+        if(level.isHas_background_sound()){
+            List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
+            int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
+            params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
+        }
+
+        if (mGame == null) {
+            mGame = new GameOperation(this, params);
+        }
+
+
+        //Sound
+        BinauralSound.openDevice();
+        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
+
+        //Load target sound
+        if(params.getTargetSound() != null){
+            mTargetSound = BinauralSound.addSource(params.getTargetSound().getSoundPath());
+            BinauralSound.setPosition(mTargetSound, params.getTargetSound().getPosition() );
+            if(params.getTargetSound().getType() == Sound.TYPE_REPEAT){
+                BinauralSound.setLoop(mTargetSound, true);
+            }
+            else {
+                BinauralSound.setLoop(mTargetSound, false);
+            }
+        }
+
+        //Load background sound
+        if(params.getBackgroundSound() != null){
+            mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
+            Log.d("621Sound", "background sound: " + mBackgroundSound);
+            //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
+            BinauralSound.setLoop(mBackgroundSound, true);
+        }
+
+        //Load distract sound
+        mDistractSounds = new Vector<>();
+        if(params.getDistractSounds() != null){
+            for (Sound sound: params.getDistractSounds()) {
+                int soundTemp = BinauralSound.addSource(sound.getSoundPath());
+                BinauralSound.setPosition(soundTemp, sound.getPosition());
+                mDistractSounds.add(soundTemp);
+                if(sound.getType() == Sound.TYPE_REPEAT){
+                    BinauralSound.setLoop(soundTemp, true);
+                }
+                else {
+                    BinauralSound.setLoop(soundTemp, false);
+                }
+            }
+        }
+    }
+
     public void gamePlayOnClick(View v) {
         switch (v.getId()) {
             case R.id.gameplay_btnPause: {
@@ -328,6 +348,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                     // STORE game state here...
 
                     finish();
+                } else {
+                    nextAction();
                 }
 
                 break;
@@ -340,6 +362,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                     // STORE game state here...
 
                     finish();
+                } else {
+                    nextAction();
                 }
 
                 break;
@@ -427,11 +451,18 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void nextGame() {
+        if(levelIndex + 1 < levels.length) {
+            finish();
+            Intent i = getIntent();
+            i.putExtra("LevelIndex", levelIndex + 1);
 
+            startActivity(i);
+        }
     }
 
     public void replay() {
-
+        finish();
+        startActivity(getIntent());
     }
 
     public void pregame() {

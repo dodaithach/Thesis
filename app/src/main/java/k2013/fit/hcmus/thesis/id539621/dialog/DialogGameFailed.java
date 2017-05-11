@@ -1,5 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.dialog;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -73,6 +75,19 @@ public class DialogGameFailed extends BaseDialog {
 
     @Override
     protected View.OnClickListener getAction() {
-        return null;
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(DialogHelper.RES_TITLE, DialogHelper.RES_CODE_ACTION);
+
+                if (getParent() == null) {
+                    setResult(Activity.RESULT_OK, intent);
+                } else {
+                    getParent().setResult(Activity.RESULT_OK, intent);
+                }
+                finish();
+            }
+        };
     }
 }
