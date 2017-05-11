@@ -1,5 +1,6 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     private GameOperation mGame;
+    private GameLevel level;
     private int modeGame;
     private boolean hasSensor;
     private boolean hasShowDemo;
@@ -89,7 +92,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         HandlerSingleton.init(this, null);
 
-        GameLevel level = (GameLevel)getIntent().getSerializableExtra("Level");
+        level = (GameLevel)getIntent().getSerializableExtra("Level");
 
         GamePlayParams params = new GamePlayParams();
         params.setTime(20000);
@@ -387,17 +390,24 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
     }
 
+    private void updateProgressBar(int progress) {
+        ProgressBar pb = (ProgressBar) findViewById(R.id.gameplay_progressbar);
+        ObjectAnimator animator = ObjectAnimator.ofInt(pb,"progress", progress);
+        animator.setDuration(GameOperation.TIME_TICK);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
+    }
+
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
-        totalTime++;
+        totalTime += GameOperation.TIME_TICK;
+        int progress = totalTime * 100 / (level.getTimeMilis());
 
-        ProgressBar pb = (ProgressBar) findViewById(R.id.gameplay_progressbar);
-        pb.setProgress(totalTime * 10);
-
-        Log.d("timeTick", String.format("time: %d", totalTime));
+        updateProgressBar(progress);
     }
 
     public void timeFinish() {
+        updateProgressBar(100);
         mGame.finish(this, true);
     }
 

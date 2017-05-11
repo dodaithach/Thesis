@@ -33,7 +33,7 @@ public class GameOperation {
     int mTargetSound;
     Vector<Integer> mDistractSounds;
 
-    private final int TIME_TICK = 1000;
+    public static final int TIME_TICK = 500;
 
     public static final String SP_IS_CORRECT = "IS_CORRECT";
 
@@ -261,7 +261,5 @@ public class GameOperation {
             mOrientationListener.unregisterListener();
         }
         mVRLibrary.switchInteractiveMode(getActivity(),mMode);
-
-
     }
 }

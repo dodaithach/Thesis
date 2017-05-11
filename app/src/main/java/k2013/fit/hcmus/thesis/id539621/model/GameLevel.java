@@ -25,6 +25,10 @@ public class GameLevel implements Serializable {
         return time;
     }
 
+    public int getTimeMilis() {
+        return time * 1000;
+    }
+
     public void setTime(int time) {
         this.time = time;
     }
