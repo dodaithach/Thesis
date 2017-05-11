@@ -27,7 +27,7 @@ typedef struct {
 struct chunk_t
 {
     char ID[4]; //"data" = 0x61746164
-    unsigned long size;  //Chunk data bytes
+    uint32_t size;  //Chunk data bytes
 };
 
 //WARNING: This Doesn't Check To See If These Pointers Are Valid
@@ -61,6 +61,8 @@ char* readWAV(char* filename,BasicWAVEHeader* header, chunk_t &chunk){
                 memcmp("fmt ",header->fmt,4) // ||
                 //memcmp("data",header->data,4)
         )){
+            __android_log_print(ANDROID_LOG_DEBUG, "unsigned long size", "sizeof(unsigned long): %d", sizeof(chunk.size));
+            __android_log_print(ANDROID_LOG_DEBUG, "chunk size", "sizeof(chunk): %d", sizeof(chunk));
             while (true)
             {
                 fread(&chunk, sizeof(chunk), 1, file);
