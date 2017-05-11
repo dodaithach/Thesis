@@ -23,4 +23,6 @@
 
     <string name="a_gameplay_msg_no_sensor">Sorry! Your phone does not have motion sensor.</string>
 
+    <string name="sp_is_opened">IS_OPENED</string>
+
 </resources>

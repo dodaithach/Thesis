@@ -19,7 +19,7 @@
 
     <style name="AppTheme.Pregame" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@drawable/background_gradient</item>
+        <item name="android:windowBackground">@drawable/background_gradient_lprimary_laccent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
     

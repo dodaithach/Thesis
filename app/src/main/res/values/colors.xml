@@ -12,7 +12,7 @@
     <color name="themeLightAccent">#FE849E</color>
     <color name="themeLightGrey">#D4E1F7</color>
     <color name="themeDarkGrey">#91A4BE</color>
-    <color name="themeOverlay">#32000000</color>
+    <color name="themeOverlay">#643798fe</color>
     <color name="themeBlack">#212121</color>
 
     <color name="black_overlay">#66000000</color>
