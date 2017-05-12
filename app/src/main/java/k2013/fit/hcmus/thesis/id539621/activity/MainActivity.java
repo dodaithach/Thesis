@@ -18,19 +18,13 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 
-import k2013.fit.hcmus.thesis.id539621.JSONResourceReader;
+import k2013.fit.hcmus.thesis.id539621.util.JSONResourceReader;
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogGameFailed;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogPregame;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
@@ -189,8 +183,10 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.main_btn_help: {
-                Intent intent = new Intent(this, DialogPregame.class);
-                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
+                Intent intent = new Intent(this, HowToActivity.class);
+                intent.putExtra(getString(R.string.a_howto_intent_from_help), true);
+                startActivity(intent);
+
                 break;
             }
 

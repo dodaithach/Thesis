@@ -18,7 +18,7 @@ public class DialogGamePause extends BaseDialog {
 
     @Override
     protected int getImg() {
-        return R.drawable.d_gamepause_icon_pause_grey;
+        return R.drawable.d_gamepause_icon_pause;
     }
 
     @Override

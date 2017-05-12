@@ -18,9 +18,30 @@
     <string name="d_gamepause_btn_action">Resume</string>
 
     <string name="d_pregame_msg">Remember this sound and find it.</string>
-    <string name="d_pregame_btn_cancel">Close</string>
+    <string name="d_pregame_btn_cancel">Go</string>
     <string name="d_pregame_btn_action">Again</string>
 
-    <string name="a_gameplay_msg_no_sensor">Sorry! Your phone does not have motion sensor.</string>
+    <string name="a_gameplay_msg_no_sensor">Sorry! Your device does not have motion sensor.</string>
+
+    <string name="sp_is_opened">IS_OPENED</string>
+
+    <string name="a_howto_btn_skip">Skip</string>
+    <string name="a_howto_btn_next">Next</string>
+    <string name="a_howto_btn_gotit">Got it</string>
+    <string name="a_howto_intent_from_help">FROM_HELP</string>
+    <string name="a_howto_quote_1">Wear your headphone</string>
+    <string name="a_howto_quote_2">Listen to target sound</string>
+    <string name="a_howto_quote_3">Switch game mode</string>
+    <string name="a_howto_quote_4">Touch mode</string>
+    <string name="a_howto_quote_5">Motion mode</string>
+    <string name="a_howto_quote_6">Select</string>
+    <string name="a_howto_quote_7">Enjoy the game</string>
+    <string name="a_howto_detail_1">You need to wear headphone to locate\nwhere the sound is</string>
+    <string name="a_howto_detail_2">Listen carefully you need to find it</string>
+    <string name="a_howto_detail_3">Tap the button to switch between touch mode\nand motion mode</string>
+    <string name="a_howto_detail_4">Dragging the screen to locate the sound</string>
+    <string name="a_howto_detail_5">Moving your device to locate the sound</string>
+    <string name="a_howto_detail_6">Tap this button to select the sound position</string>
+    <string name="a_howto_detail_7">Now you know how to play. Let\'s play!</string>
 
 </resources>

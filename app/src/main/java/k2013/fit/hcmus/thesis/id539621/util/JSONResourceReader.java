@@ -1,4 +1,4 @@
-package k2013.fit.hcmus.thesis.id539621;
+package k2013.fit.hcmus.thesis.id539621.util;
 
 import android.content.res.Resources;
 import android.util.Log;

@@ -18,12 +18,6 @@
             android:layout_centerHorizontal="true">
 
             <ImageView
-                android:layout_width="129dp"
-                android:layout_height="129dp"
-                android:background="@drawable/background_circle"
-                android:layout_gravity="center"/>
-
-            <ImageView
                 android:id="@+id/dialog_img"
                 android:layout_width="125dp"
                 android:layout_height="125dp"

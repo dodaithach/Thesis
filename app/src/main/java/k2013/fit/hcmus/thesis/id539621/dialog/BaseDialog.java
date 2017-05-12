@@ -43,7 +43,7 @@ public abstract class BaseDialog extends BaseActivity {
         }
 
         if (getImg() != 0) {
-            Glide.with(this).load(getImg()).bitmapTransform(new CropCircleTransformation(this)).into(mImg);
+            mImg.setBackgroundResource(getImg());
         }
 
         if (getMsg() != 0) {
