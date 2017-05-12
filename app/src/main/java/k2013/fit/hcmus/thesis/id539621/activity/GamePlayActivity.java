@@ -482,6 +482,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             i.putExtra("LevelIndex", levelIndex + 1);
 
             startActivity(i);
+        } else {
+            finish();
         }
     }
 
