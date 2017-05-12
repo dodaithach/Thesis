@@ -172,7 +172,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onDestroy() {
         super.onDestroy();
         mGame.destroy();
-        BinauralSound.closeDevice();
     }
 
     float delX = 0.0f, delY = 0.0f;
@@ -277,8 +276,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
 
         //Sound
-        BinauralSound.openDevice();
-        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
 
         //Load target sound
         if(params.getTargetSound() != null){
@@ -482,6 +479,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void nextGame() {
+        BinauralSound.clearAll();
         if(levelIndex + 1 < levels.length) {
             finish();
             Intent i = getIntent();
@@ -492,6 +490,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void replay() {
+        BinauralSound.clearAll();
         finish();
         startActivity(getIntent());
     }

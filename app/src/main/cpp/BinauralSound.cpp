@@ -148,6 +148,10 @@ ALuint BinauralSound::addSource(std::string filename) {
     ALuint source = 0;
     alGenSources(1, &source );
     alSourcei(source, AL_BUFFER, buffer);
+
+    buffers.push_back(buffer);
+    sources.push_back(source);
+
     return source;
 }
 
@@ -191,7 +195,25 @@ bool BinauralSound::isPlayingSound(ALuint source){
     return (sourceState == AL_PLAYING);
 };
 
+void BinauralSound::clearAll() {
+    for(int i = 0; i < sources.size(); i++){
+        alDeleteSources(1, &sources[i]);
+    }
+
+    for(int i = 0; i < buffers.size(); i++){
+        alDeleteBuffers(1, &buffers[i]);
+    }
+}
+
 void BinauralSound::closeDevice(){
+    for(int i = 0; i < sources.size(); i++){
+        alDeleteSources(1, &sources[i]);
+    }
+
+    for(int i = 0; i < buffers.size(); i++){
+        alDeleteBuffers(1, &buffers[i]);
+    }
+
     device = alcGetContextsDevice(context);
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);

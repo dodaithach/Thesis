@@ -85,6 +85,16 @@ Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_isPlayingSound(
 
 extern "C"
 JNIEXPORT void JNICALL
+Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_clearAll(
+        JNIEnv *env,
+        int source) {
+    BinauralSound::getInstance().clearAll();
+}
+
+
+
+extern "C"
+JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_closeDevice(
         JNIEnv *env,
         jobject /* this */) {
