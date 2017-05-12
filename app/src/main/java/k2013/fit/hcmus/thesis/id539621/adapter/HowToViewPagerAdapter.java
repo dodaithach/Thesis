@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
+import android.widget.TextView;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 
@@ -15,12 +14,29 @@ import k2013.fit.hcmus.thesis.id539621.R;
  */
 
 public class HowToViewPagerAdapter extends PagerAdapter {
-    private int[] mImgs = { R.drawable.introslider,
-                            R.drawable.introslider,
-                            R.drawable.introslider,
-                            R.drawable.introslider };
-    private int[] mQuotes;
-    private int[] mDetails;
+    private int[] mImgs = { R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_headphone };
+
+    private int[] mQuotes = { R.string.a_howto_quote_1,
+                                R.string.a_howto_quote_2,
+                                R.string.a_howto_quote_3,
+                                R.string.a_howto_quote_4,
+                                R.string.a_howto_quote_5,
+                                R.string.a_howto_quote_6,
+                                R.string.a_howto_quote_7 };
+
+    private int[] mDetails = { R.string.a_howto_detail_1,
+                                R.string.a_howto_detail_2,
+                                R.string.a_howto_detail_3,
+                                R.string.a_howto_detail_4,
+                                R.string.a_howto_detail_5,
+                                R.string.a_howto_detail_6,
+                                R.string.a_howto_detail_7 };
 
     @Override
     public int getCount() {
@@ -37,9 +53,15 @@ public class HowToViewPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
 
         View view = inflater.inflate(R.layout.a_howto_viewpager, container, false);
-        ImageView img = (ImageView) view.findViewById(R.id.a_howto_viewpager_img);
 
-        Glide.with(container.getContext()).load(R.drawable.introslider).into(img);
+        ImageView img = (ImageView) view.findViewById(R.id.a_howto_viewpager_img);
+        img.setBackgroundResource(mImgs[position]);
+
+        TextView quote = (TextView) view.findViewById(R.id.a_howto_viewpager_quote);
+        quote.setText(mQuotes[position]);
+
+        TextView detail = (TextView) view.findViewById(R.id.a_howto_viewpager_detail);
+        detail.setText(mDetails[position]);
 
         container.addView(view);
 

@@ -18,7 +18,7 @@ public class DialogGameSuccess extends BaseDialog {
 
     @Override
     protected int getImg() {
-        return R.drawable.test;
+        return R.drawable.d_gamesuccess_icon_success;
     }
 
     @Override

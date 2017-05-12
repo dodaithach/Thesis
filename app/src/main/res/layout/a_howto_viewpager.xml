@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:paddingBottom="50dp"
+    android:paddingBottom="52dp"
     android:background="@drawable/background_gradient_default">
 
     <FrameLayout
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/themeLight"
-            android:scaleType="centerCrop"/>
+            android:scaleType="fitCenter"/>
 
         <View
             android:layout_width="match_parent"
@@ -35,21 +35,22 @@
             android:background="@drawable/background_gradient_overlay">
 
             <TextView
+                android:id="@+id/a_howto_viewpager_quote"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="Wear your head phone"
                 android:textAlignment="center"
                 android:textColor="@color/themeLight"
                 android:textStyle="bold"
                 android:textSize="24sp"/>
 
             <TextView
+                android:id="@+id/a_howto_viewpager_detail"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:text="This is the explaination of the image above\nYeah!"
                 android:textAlignment="center"
-                android:textColor="@color/themeLight"/>
+                android:textColor="@color/themeLight"
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
