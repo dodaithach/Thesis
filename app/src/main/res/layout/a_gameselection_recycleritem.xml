@@ -56,11 +56,11 @@
 
         <View
             android:id="@+id/gameselection_recycleritem_divider"
-            android:layout_width="1dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="36dp"
             android:background="@color/themeLightGrey" />
 
     </LinearLayout>
