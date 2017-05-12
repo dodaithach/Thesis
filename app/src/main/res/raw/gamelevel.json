@@ -8,14 +8,28 @@
   },
   {
     "level": 2,
-    "time": 20,
+    "time": 15,
     "has_background_sound": false,
-    "distract_sound": 2,
+    "distract_sound": 1,
     "has_horizontal": false
   },
   {
     "level": 3,
     "time": 20,
+    "has_background_sound": false,
+    "distract_sound": 2,
+    "has_horizontal": true
+  },
+  {
+    "level": 4,
+    "time": 20,
+    "has_background_sound": true,
+    "distract_sound": 0,
+    "has_horizontal": true
+  },
+  {
+    "level": 5,
+    "time": 15,
     "has_background_sound": true,
     "distract_sound": 3,
     "has_horizontal": true

@@ -254,7 +254,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             List<File> distractFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/DistractSound"));
             Collections.shuffle(distractFiles);
             ArrayList<Sound> array = new ArrayList<>();
-            for(int i = 0; i < level.getDistract_sound(); i++) {
+            for(int i = 0; i < level.getDistract_sound() && i < distractFiles.size(); i++) {
                 int distractDistance = r.nextInt(11) + 5;
                 int distractAlpha = r.nextInt(361);
 
@@ -482,6 +482,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             i.putExtra("LevelIndex", levelIndex + 1);
 
             startActivity(i);
+        } else {
+            finish();
         }
     }
 
