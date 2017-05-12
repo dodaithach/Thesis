@@ -18,7 +18,7 @@
     <string name="d_gamepause_btn_action">Resume</string>
 
     <string name="d_pregame_msg">Remember this sound and find it.</string>
-    <string name="d_pregame_btn_cancel">Close</string>
+    <string name="d_pregame_btn_cancel">Go</string>
     <string name="d_pregame_btn_action">Again</string>
 
     <string name="a_gameplay_msg_no_sensor">Sorry! Your device does not have motion sensor.</string>
