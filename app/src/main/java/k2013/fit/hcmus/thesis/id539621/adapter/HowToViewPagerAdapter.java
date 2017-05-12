@@ -16,11 +16,11 @@ import k2013.fit.hcmus.thesis.id539621.R;
 public class HowToViewPagerAdapter extends PagerAdapter {
     private int[] mImgs = { R.drawable.a_howto_headphone,
                             R.drawable.a_howto_listen,
-                            R.drawable.a_howto_headphone,
-                            R.drawable.a_howto_headphone,
-                            R.drawable.a_howto_headphone,
-                            R.drawable.a_howto_headphone,
-                            R.drawable.a_howto_headphone };
+                            R.drawable.a_howto_switchmode,
+                            R.drawable.a_howto_touchmode,
+                            R.drawable.a_howto_motionmode,
+                            R.drawable.a_howto_select,
+                            R.drawable.a_howto_play };
 
     private int[] mQuotes = { R.string.a_howto_quote_1,
                                 R.string.a_howto_quote_2,
