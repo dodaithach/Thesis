@@ -67,7 +67,16 @@ public class MainActivity extends BaseActivity {
     }
 
     private void storeData(){
-        final int[] mDatas = new int[] { R.raw.bird, R.raw.cat, R.raw.dog, R.raw.mosquito };
+
+        File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/FindItData");
+        File output = new File(rootDirApp, ".nomedia");
+        try {
+            boolean fileCreated = output.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final int[] mDatas = new int[] { R.raw.bird, R.raw.cat, R.raw.dog, R.raw.mosquito, R.raw.lion, R.raw.owl, R.raw.pig };
         for (int i = 0; i < mDatas.length; i++) {
             try {
                 String path = Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target";
@@ -89,6 +98,20 @@ public class MainActivity extends BaseActivity {
                 if (dir.mkdirs() || dir.isDirectory()) {
                     String str_song_name = i + ".wav";
                     CopyRAWtoSDCard(mBackgroundSoundDatas[i], path + File.separator + str_song_name);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        final int[] mDistractDatas = new int[] { R.raw.cow, R.raw.bee, R.raw.duck, R.raw.elephant };
+        for (int i = 0; i < mDistractDatas.length; i++) {
+            try {
+                String path = Environment.getExternalStorageDirectory() + "/FindItData/Package1/DistractSound";
+                File dir = new File(path);
+                if (dir.mkdirs() || dir.isDirectory()) {
+                    String str_song_name = i + ".wav";
+                    CopyRAWtoSDCard(mDistractDatas[i], path + File.separator + str_song_name);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

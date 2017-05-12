@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
@@ -47,6 +48,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private int modeGame;
     private boolean hasSensor;
     private boolean hasShowDemo;
+    private String[] backgroundImageList = {"background1", "background6", "md100811705851170500", "bergsjostolen"};
 
     private final float eyeX = 0;
     private final float eyeY = 0;
@@ -101,30 +103,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         levelIndex = getIntent().getIntExtra("LevelIndex",0);
         level = levels[levelIndex];
-
-        GamePlayParams params = new GamePlayParams();
-        params.setTime(20000);
-        params.setMode(modeGame);
-        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
-
-
-        //Set target sound
-        Random r = new Random();
-        int targetDistance = r.nextInt(11) + 5;
-        int targetAlpha = r.nextInt(361);
-
-        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
-                targetDistance * Math.cos(Math.toRadians(targetAlpha)));
-
-        if(level.isHas_horizontal()) {
-            float y = r.nextFloat()*2 - 1;
-            targetPosition.setY(y);
-        }
-
-        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
-        int targetSoundPosition = r.nextInt(files.size());
-
-        Log.d("onCreate", String.format("Level: %d", levelIndex));
 
         setupGameParam();
     }
@@ -241,11 +219,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         GamePlayParams params = new GamePlayParams();
         params.setTime(level.getTime()*1000);
         params.setMode(modeGame);
-        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/bergsjostolen");
 
+        Random r = new Random();
+        int randomPos = r.nextInt(backgroundImageList.length);
+        Log.d("randomPos", "pos: " + randomPos);
+        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/" + backgroundImageList[randomPos]);
 
         //Set target sound
-        Random r = new Random();
         int targetDistance = r.nextInt(11) + 5;
         int targetAlpha = r.nextInt(361);
 
@@ -268,6 +248,22 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
             int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
             params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
+        }
+
+        if(level.getDistract_sound() > 0){
+            List<File> distractFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/DistractSound"));
+            Collections.shuffle(distractFiles);
+            ArrayList<Sound> array = new ArrayList<>();
+            for(int i = 0; i < level.getDistract_sound(); i++) {
+                int distractDistance = r.nextInt(11) + 5;
+                int distractAlpha = r.nextInt(361);
+
+                Position distractPos = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), r.nextFloat()*2 - 1,
+                        targetDistance * Math.cos(Math.toRadians(targetAlpha)));
+
+                array.add(new Sound(distractFiles.get(i).getPath(),20, Sound.TYPE_REPEAT, distractPos));
+            }
+            params.setDistractSounds(array);
         }
 
         if (mGame == null) {
