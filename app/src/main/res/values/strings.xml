@@ -25,4 +25,9 @@
 
     <string name="sp_is_opened">IS_OPENED</string>
 
+    <string name="a_howto_btn_skip">Skip</string>
+    <string name="a_howto_btn_next">Next</string>
+    <string name="a_howto_btn_gotit">Got it</string>
+    <string name="a_howto_intent_from_help">FROM_HELP</string>
+
 </resources>

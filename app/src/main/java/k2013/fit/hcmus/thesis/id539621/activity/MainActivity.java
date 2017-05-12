@@ -160,8 +160,10 @@ public class MainActivity extends BaseActivity {
             }
 
             case R.id.main_btn_help: {
-                Intent intent = new Intent(this, DialogPregame.class);
-                startActivityForResult(intent, DialogHelper.REQ_CODE_DIALOG_PREGAME);
+                Intent intent = new Intent(this, HowToActivity.class);
+                intent.putExtra(getString(R.string.a_howto_intent_from_help), true);
+                startActivity(intent);
+
                 break;
             }
 

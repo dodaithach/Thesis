@@ -10,9 +10,10 @@
 
     <LinearLayout
         android:id="@+id/howto_dots"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal"></LinearLayout>
 
     <View
@@ -29,8 +30,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="@null"
-        android:text="Skip"
-        android:textColor="@color/themeLight"/>
+        android:text="@string/a_howto_btn_skip"
+        android:textColor="@drawable/a_howto_btn_text"/>
 
     <Button
         android:id="@+id/howto_btnAction"
@@ -39,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:text="Next"
-        android:textColor="@color/themeLight"/>
+        android:text="@string/a_howto_btn_next"
+        android:textColor="@drawable/a_howto_btn_text"/>
 
 </RelativeLayout>

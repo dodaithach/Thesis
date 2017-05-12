@@ -15,13 +15,16 @@ import k2013.fit.hcmus.thesis.id539621.R;
  */
 
 public class HowToViewPagerAdapter extends PagerAdapter {
-    private int[] mColors;
-    private int[] mImgs;
-    private int[] mMsgs;
+    private int[] mImgs = { R.drawable.introslider,
+                            R.drawable.introslider,
+                            R.drawable.introslider,
+                            R.drawable.introslider };
+    private int[] mQuotes;
+    private int[] mDetails;
 
     @Override
     public int getCount() {
-        return 4;
+        return mImgs.length;
     }
 
     @Override
