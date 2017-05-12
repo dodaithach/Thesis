@@ -15,7 +15,7 @@ import k2013.fit.hcmus.thesis.id539621.R;
 
 public class HowToViewPagerAdapter extends PagerAdapter {
     private int[] mImgs = { R.drawable.a_howto_headphone,
-                            R.drawable.a_howto_headphone,
+                            R.drawable.a_howto_listen,
                             R.drawable.a_howto_headphone,
                             R.drawable.a_howto_headphone,
                             R.drawable.a_howto_headphone,
