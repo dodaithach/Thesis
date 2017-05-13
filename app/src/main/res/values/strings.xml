@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Find It</string>
+    <string name="app_name">FIND.it</string>
 
     <string name="a_main_title">FIND . it</string>
     <string name="a_main_btn_play">Play</string>
@@ -30,14 +30,14 @@
     <string name="a_howto_btn_gotit">Got it</string>
     <string name="a_howto_intent_from_help">FROM_HELP</string>
     <string name="a_howto_quote_1">Wear your headphone</string>
-    <string name="a_howto_quote_2">Listen to target sound</string>
+    <string name="a_howto_quote_2">Listen</string>
     <string name="a_howto_quote_3">Switch game mode</string>
     <string name="a_howto_quote_4">Touch mode</string>
     <string name="a_howto_quote_5">Motion mode</string>
     <string name="a_howto_quote_6">Select</string>
     <string name="a_howto_quote_7">Enjoy the game</string>
     <string name="a_howto_detail_1">You need to wear headphone to locate\nwhere the sound is</string>
-    <string name="a_howto_detail_2">Listen carefully you need to find it</string>
+    <string name="a_howto_detail_2">Listen carefully, you need to find this sound</string>
     <string name="a_howto_detail_3">Tap the button to switch between touch mode\nand motion mode</string>
     <string name="a_howto_detail_4">Dragging the screen to locate the sound</string>
     <string name="a_howto_detail_5">Moving your device to locate the sound</string>
