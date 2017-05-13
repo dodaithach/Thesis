@@ -223,7 +223,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         Random r = new Random();
         int randomPos = r.nextInt(backgroundImageList.length);
         Log.d("randomPos", "pos: " + randomPos);
-        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/drawable/" + backgroundImageList[randomPos]);
+        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/raw/" + backgroundImageList[randomPos]);
 
         //Set target sound
         int targetDistance = r.nextInt(11) + 5;
