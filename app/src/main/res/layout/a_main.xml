@@ -8,42 +8,42 @@
     android:background="@drawable/background_gradient_default">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/main_title"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:text="@string/a_main_title"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/themeLight"
-            android:textSize="40sp"
-            android:textAlignment="center"/>
+            android:textSize="40sp" />
 
         <View
             android:layout_width="100dp"
             android:layout_height="1dp"
             android:layout_margin="0dp"
-            android:background="@color/themeLight"/>
+            android:background="@color/themeLight" />
 
         <Button
             android:id="@+id/main_btn_play"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_marginTop="64dp"
+            android:background="@drawable/a_main_btn_play"
+            android:onClick="mainOnClick"
+            android:stateListAnimator="@null"
             android:text="@string/a_main_btn_play"
             android:textAllCaps="false"
             android:textColor="@drawable/a_main_text_play"
-            android:textSize="16sp"
-            android:background="@drawable/a_main_btn_play"
-            android:stateListAnimator="@null"
-            android:onClick="mainOnClick"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,20 +51,20 @@
             android:layout_marginTop="24dp"
             android:text="@string/a_main_hint"
             android:textColor="@color/themeLight"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/main_btn_help"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/a_main_btn_help"
+            android:onClick="mainOnClick"
+            android:stateListAnimator="@null"
             android:text="@string/a_main_btn_help"
             android:textAllCaps="false"
             android:textColor="@color/themeLight"
-            android:textSize="16sp"
-            android:background="@drawable/a_main_btn_help"
-            android:stateListAnimator="@null"
-            android:onClick="mainOnClick"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 

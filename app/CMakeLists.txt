@@ -8,6 +8,10 @@ add_library( native-lib
              src/main/cpp/BinauralSound.h
              src/main/cpp/BinauralSound.cpp )
 
+add_library( native-lib-openal
+             SHARED
+             src/main/cpp/native-lib-openal.cpp )
+
 find_library( log-lib
               log )
 
