@@ -42,6 +42,8 @@
         <activity android:name=".dialog.DialogPregame"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Pregame"/>
+        <activity android:name=".activity.GameResultActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

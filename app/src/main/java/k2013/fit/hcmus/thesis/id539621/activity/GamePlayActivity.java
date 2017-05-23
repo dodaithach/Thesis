@@ -70,6 +70,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private int mBackgroundSound;
     private Vector<Integer> mDistractSounds;
     private String targetSoundPath;
+    private String mImgPath;
 
     private int totalTime = 0;
 
@@ -223,7 +224,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         Random r = new Random();
         int randomPos = r.nextInt(backgroundImageList.length);
         Log.d("randomPos", "pos: " + randomPos);
-        params.setBackgroundImg("android.resource://k2013.fit.hcmus.thesis.id539621/raw/" + backgroundImageList[randomPos]);
+        mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/" + backgroundImageList[randomPos];
+        params.setBackgroundImg(mImgPath);
 
         //Set target sound
         int targetDistance = r.nextInt(11) + 5;
@@ -386,6 +388,20 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 break;
             }
 
+            case GameResultActivity.REQ_CODE: {
+                int res = data.getIntExtra(GameResultActivity.RES_CODE, GameResultActivity.CODE_CANCEL);
+
+                if (res == GameResultActivity.CODE_CANCEL) {
+                    // STORE game state here...
+
+                    finish();
+                } else {
+                    nextAction();
+                }
+
+                break;
+            }
+
             case DialogHelper.REQ_CODE_DIALOG_PREGAME: {
                 hasShowDemo = true;
                 break;
@@ -454,11 +470,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
         boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
 
-        if (isCorrect) {
-            showCustomDialog(DialogHelper.REQ_CODE_DIALOG_GAME_SUCCESS);
-        } else {
-            showCustomDialog(DialogHelper.REQ_CODE_DIALOG_GAME_FAILED);
-        }
+        Intent intent = new Intent(this, GameResultActivity.class);
+        intent.putExtra(GameResultActivity.GAME_RES, isCorrect);
+        intent.putExtra(GameResultActivity.IMG_PATH, mImgPath);
+        intent.putExtra(GameResultActivity.SOUND_ID, mTargetSound);
+
+        startActivityForResult(intent, GameResultActivity.REQ_CODE);
     }
 
     public void nextAction() {

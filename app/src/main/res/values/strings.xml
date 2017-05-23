@@ -1,4 +1,10 @@
 <resources>
+    <!-- ACRONYM
+        - a:    activity
+        - d:    dialog
+        - sp:   shared preference
+     -->
+
     <string name="app_name">Tinnitus Treatment</string>
 
     <string name="a_main_title">Tinnitus Treatment</string>
@@ -44,4 +50,9 @@
     <string name="a_howto_detail_6">Tap this button to select the sound position</string>
     <string name="a_howto_detail_7">Now you know how to play. Let\'s play!</string>
 
+    <string name="a_gameresult_btn_cancel">Cancel</string>
+    <string name="a_gameresult_btn_next">Next</string>
+    <string name="a_gameresult_btn_replay">Replay</string>
+    <string name="a_gameresult_msg_success">Congrats! Good job.</string>
+    <string name="a_gameresult_msg_failed">Sorry! You are wrong.</string>
 </resources>
