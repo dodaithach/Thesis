@@ -49,35 +49,36 @@ public class GameResultActivity extends BaseActivity {
     private int mSoundId;
     private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
 
+    private Target mTarget;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameresult);
 
-        mVRLibrary = createVRLibrary();
+        Intent intent = getIntent();
+        mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
+        mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
+        mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
 
-//        Intent intent = getIntent();
-//        mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
-//        mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
-//        mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
+        Log.d("mylog", "image path: " + mImgPath);
 
-//        Log.d("mylog", "image path: " + mImgPath);
-//
-//        Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
-//        TextView title = (TextView) findViewById(R.id.gameresult_title);
-//
-//        if (mGameResult) {
-//            btnAction.setText(R.string.a_gameresult_btn_next);
-//            title.setText(R.string.a_gameresult_msg_success);
-//        } else {
-//            btnAction.setText(R.string.a_gameresult_btn_replay);
-//            title.setText(R.string.a_gameresult_msg_failed);
-//        }
+        Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
+        TextView title = (TextView) findViewById(R.id.gameresult_title);
+
+        if (mGameResult) {
+            btnAction.setText(R.string.a_gameresult_btn_next);
+            title.setText(R.string.a_gameresult_msg_success);
+        } else {
+            btnAction.setText(R.string.a_gameresult_btn_replay);
+            title.setText(R.string.a_gameresult_msg_failed);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mVRLibrary = createVRLibrary();
     }
 
     @Override
@@ -153,7 +154,7 @@ public class GameResultActivity extends BaseActivity {
     private void loadImage(Uri uri, final MD360BitmapTexture.Callback callback) {
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
 
-        Target target = new Target() {
+        mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 // notify if size changed
@@ -174,7 +175,7 @@ public class GameResultActivity extends BaseActivity {
             }
         };
         Picasso.with(getApplicationContext()).load(uri).resize(3072, 2048)
-                .centerInside().memoryPolicy(NO_CACHE, NO_STORE).into(target);
+                .centerInside().into(mTarget);
     }
 
     private Uri getUri() {

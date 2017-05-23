@@ -181,7 +181,7 @@ public class GameOperation {
             }
         };
         Picasso.with(getActivity().getApplicationContext()).load(uri).resize(3072, 2048)
-                .centerInside().memoryPolicy(NO_CACHE, NO_STORE).into(mTarget);
+                .centerInside().into(mTarget);
     }
 
     private Uri getUri() {
