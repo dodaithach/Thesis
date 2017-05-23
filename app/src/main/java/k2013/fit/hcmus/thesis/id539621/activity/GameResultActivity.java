@@ -1,7 +1,9 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,11 +16,16 @@ import android.widget.TextView;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
+import com.custom.HandlerSingleton;
+import com.custom.OnScrollCallback;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
+import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
+import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 
 import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
 import static com.squareup.picasso.MemoryPolicy.NO_STORE;
@@ -38,34 +45,39 @@ public class GameResultActivity extends BaseActivity {
 
     private MDVRLibrary mVRLibrary;
 
-    private boolean mGameResult;
+    private boolean mGameResult = true;
     private int mSoundId;
-    private String mImgPath;
+    private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameresult);
 
-        Intent intent = getIntent();
-        mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
-        mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
-        mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
-
-        Log.d("mylog", "image path: " + mImgPath);
-
-        Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
-        TextView title = (TextView) findViewById(R.id.gameresult_title);
-
-        if (mGameResult) {
-            btnAction.setText(R.string.a_gameresult_btn_next);
-            title.setText(R.string.a_gameresult_msg_success);
-        } else {
-            btnAction.setText(R.string.a_gameresult_btn_replay);
-            title.setText(R.string.a_gameresult_msg_failed);
-        }
-
         mVRLibrary = createVRLibrary();
+
+//        Intent intent = getIntent();
+//        mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
+//        mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
+//        mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
+
+//        Log.d("mylog", "image path: " + mImgPath);
+//
+//        Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
+//        TextView title = (TextView) findViewById(R.id.gameresult_title);
+//
+//        if (mGameResult) {
+//            btnAction.setText(R.string.a_gameresult_btn_next);
+//            title.setText(R.string.a_gameresult_msg_success);
+//        } else {
+//            btnAction.setText(R.string.a_gameresult_btn_replay);
+//            title.setText(R.string.a_gameresult_msg_failed);
+//        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -153,12 +165,12 @@ public class GameResultActivity extends BaseActivity {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
+                Log.d("mylog", "onBitmapFailed");
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+                Log.d("mylog", "onPrepareLoad");
             }
         };
         Picasso.with(getApplicationContext()).load(uri).resize(3072, 2048)
