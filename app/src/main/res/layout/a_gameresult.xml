@@ -14,6 +14,39 @@
         android:layout_height="match_parent"
         android:onClick="gameResultOnClick"/>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:background="@drawable/background_circle_accent"
+            android:alpha="0.5"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/a_gameresult_icon_location"/>
+
+            <View
+                android:layout_width="15dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/themeAccent"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/gameresult_container"
         android:layout_width="260dp"
@@ -75,26 +108,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="64dp"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <View
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/a_gameresult_icon_location"/>
-
-        <View
-            android:layout_width="15dp"
-            android:layout_height="3dp"
-            android:layout_marginTop="3dp"
-            android:background="@color/themeAccent"/>
-
-    </LinearLayout>
 
 </FrameLayout>
