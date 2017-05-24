@@ -67,6 +67,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private float[] mTempMatrix = new float[16];
 
     private int mTargetSound;
+    Position mTtargetPosition;
     private int mBackgroundSound;
     private Vector<Integer> mDistractSounds;
     private String targetSoundPath;
@@ -231,19 +232,19 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         int targetDistance = r.nextInt(11) + 5;
         int targetAlpha = r.nextInt(361);
 
-        Position targetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
+        mTtargetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
                 targetDistance * Math.cos(Math.toRadians(targetAlpha)));
 
         if(level.isHas_horizontal()) {
             float y = r.nextFloat()*2 - 1;
-            targetPosition.setY(y);
+            mTtargetPosition.setY(y);
         }
 
         List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
         int targetSoundPosition = r.nextInt(files.size());
 
         targetSoundPath = files.get(targetSoundPosition).getPath();
-        params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, targetPosition));
+        params.setTargetSound(new Sound(files.get(targetSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, mTtargetPosition));
 
         //SET background sound
         if(level.isHas_background_sound()){
@@ -474,6 +475,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         intent.putExtra(GameResultActivity.GAME_RES, isCorrect);
         intent.putExtra(GameResultActivity.IMG_PATH, mImgPath);
         intent.putExtra(GameResultActivity.SOUND_ID, mTargetSound);
+        intent.putExtra(GameResultActivity.POS_X, mTtargetPosition.getX());
+        intent.putExtra(GameResultActivity.POS_Y, mTtargetPosition.getZ());
 
         startActivityForResult(intent, GameResultActivity.REQ_CODE);
     }

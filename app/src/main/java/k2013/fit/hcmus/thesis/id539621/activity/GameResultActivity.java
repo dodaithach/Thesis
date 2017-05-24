@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,6 +39,8 @@ public class GameResultActivity extends BaseActivity {
     public static final String IMG_PATH = "IMG_PATH";
     public static final String GAME_RES = "GAME_RES";
     public static final String SOUND_ID = "SOUND_ID";
+    public static final String POS_X = "POS_X";
+    public static final String POS_Y = "POS_Y";
     public static final int REQ_CODE = 1111;
     public static final String RES_CODE = "RES_CODE";
     public static final int CODE_CANCEL = 0;
@@ -48,8 +51,12 @@ public class GameResultActivity extends BaseActivity {
     private boolean mGameResult = true;
     private int mSoundId;
     private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
+    private double mPosX;
+    private double mPosY;
 
     private Target mTarget;
+
+    private final int SCALE = 100;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +67,8 @@ public class GameResultActivity extends BaseActivity {
         mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
         mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
         mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
+        mPosX = intent.getDoubleExtra(GameResultActivity.POS_X, 0.0f);
+        mPosY = intent.getDoubleExtra(GameResultActivity.POS_Y, 0.0f);
 
         Log.d("mylog", "image path: " + mImgPath);
 
@@ -79,6 +88,9 @@ public class GameResultActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         mVRLibrary = createVRLibrary();
+
+        float density = Resources.getSystem().getDisplayMetrics().density;
+        mVRLibrary.testScroll((int) (mPosX * density) * SCALE, (int) (mPosY * density) * SCALE);
     }
 
     @Override

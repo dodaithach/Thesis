@@ -125,7 +125,6 @@ public class GameOperation {
             isCorrect = calcResult();
         }
 
-        scrollToPosition(0,0);
         stop(context);
 
         storeGameResult(isCorrect);
@@ -242,10 +241,6 @@ public class GameOperation {
             editor.commit();
 
         }
-    }
-
-    public void scrollToPosition(double delX, double delY) {
-        mVRLibrary.testScroll(delX, delY);
     }
 
     public void switchMode(int mode){

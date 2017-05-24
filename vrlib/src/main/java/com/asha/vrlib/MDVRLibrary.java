@@ -660,10 +660,7 @@ public class MDVRLibrary {
         int DEFAULT = VIDEO;
     }
 
-    public void testScroll(double delX, double delY) {
-        for (MD360Director director : mProjectionModeManager.getDirectors()){
-            director.setDeltaX(director.getDeltaX() - (int) delX / Resources.getSystem().getDisplayMetrics().density * 0.2f);
-            director.setDeltaY(director.getDeltaY() - (int) delY/ Resources.getSystem().getDisplayMetrics().density * 0.2f);
-        }
+    public void testScroll(int delX, int delY) {
+        mInteractiveModeManager.handleDrag(delX, delY);
     }
 }
