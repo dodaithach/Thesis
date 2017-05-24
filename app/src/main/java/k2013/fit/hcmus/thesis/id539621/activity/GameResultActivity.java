@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
+import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
 
 /**
  * Created by cpu60011-local on 23/05/2017.
@@ -41,7 +42,7 @@ public class GameResultActivity extends BaseActivity {
 
     private MDVRLibrary mVRLibrary;
 
-    private boolean mGameResult = true;
+    private int mGameResult = GameOperation.GAME_FAILED;
     private int mSoundId;
     private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
     private int mDelX;
@@ -60,7 +61,7 @@ public class GameResultActivity extends BaseActivity {
         setContentView(R.layout.a_gameresult);
 
         Intent intent = getIntent();
-        mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
+        mGameResult = intent.getIntExtra(GameResultActivity.GAME_RES, GameOperation.GAME_FAILED);
         mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
         mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
         mDelX = intent.getIntExtra(GameResultActivity.POS_X, 0);
@@ -73,9 +74,14 @@ public class GameResultActivity extends BaseActivity {
         TextView title = (TextView) findViewById(R.id.gameresult_title);
         RelativeLayout container = (RelativeLayout) findViewById(R.id.gameresult_container);
 
-        if (!mGameResult) {
+        if (mGameResult == GameOperation.GAME_FAILED || mGameResult == GameOperation.TIME_UP) {
             btnAction.setText(R.string.a_gameresult_btn_replay);
-            title.setText(R.string.a_gameresult_msg_failed);
+
+            if (mGameResult == GameOperation.GAME_FAILED) {
+                title.setText(R.string.a_gameresult_msg_failed);
+            } else {
+                title.setText(R.string.a_gameresult_msg_timeup);
+            }
             container.setBackgroundResource(R.drawable.d_gamefailed_background);
 
             btnCancel.setBackgroundResource(R.drawable.d_gamefailed_btn_cancel);

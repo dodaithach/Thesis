@@ -210,8 +210,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
     }
 
-    public void getCorrectPos(boolean isCorrect) {
-        if (isCorrect)
+    public void getCorrectPos(int result) {
+        if (result == GameOperation.GAME_SUCCESS)
             return;
 
         Log.d("gameresult", "getCorrectPos");
@@ -496,13 +496,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     public void showGameResult() {
         // Retrieve data from GameOperation
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+        int result = sp.getInt(GameOperation.SP_IS_CORRECT, GameOperation.GAME_FAILED);
 
         pauseSound();
-        getCorrectPos(isCorrect);
+        getCorrectPos(result);
 
         Intent intent = new Intent(this, GameResultActivity.class);
-        intent.putExtra(GameResultActivity.GAME_RES, isCorrect);
+        intent.putExtra(GameResultActivity.GAME_RES, result);
         intent.putExtra(GameResultActivity.IMG_PATH, mImgPath);
         intent.putExtra(GameResultActivity.SOUND_ID, mTargetSound);
         intent.putExtra(GameResultActivity.POS_X, mDelX);
@@ -514,7 +514,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     public void nextAction() {
         // Retrieve data from GameOperation
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
-        boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+        int result = sp.getInt(GameOperation.SP_IS_CORRECT, GameOperation.GAME_FAILED);
+        boolean isCorrect = (result == GameOperation.GAME_SUCCESS);
         clearSharedPreference();
 
         if (isCorrect) {

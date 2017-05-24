@@ -33,8 +33,11 @@ public class GameOperation {
     int mTargetSound;
     Vector<Integer> mDistractSounds;
 
-    public static final int TIME_TICK = 500;
+    public static final int GAME_FAILED = 0;
+    public static final int GAME_SUCCESS = 1;
+    public static final int TIME_UP = -1;
 
+    public static final int TIME_TICK = 500;
     public static final String SP_IS_CORRECT = "IS_CORRECT";
 
     private GamePlayParams mParams;
@@ -123,11 +126,17 @@ public class GameOperation {
         if (!isTimeUp) {
             // calculate result
             isCorrect = calcResult();
+
+            if (isCorrect) {
+                storeGameResult(GameOperation.GAME_SUCCESS);
+            } else {
+                storeGameResult(GameOperation.GAME_FAILED);
+            }
+        } else {
+            storeGameResult(GameOperation.TIME_UP);
         }
 
         stop(context);
-
-        storeGameResult(isCorrect);
 
         GamePlayActivity activity = getActivity();
         if (!activity.isDestroyed() && !activity.isFinishing()) {
@@ -232,12 +241,12 @@ public class GameOperation {
         return false;
     }
 
-    private void storeGameResult(boolean isCorrect) {
+    private void storeGameResult(int result) {
         GamePlayActivity activity = getActivity();
         if (!activity.isDestroyed() && !activity.isFinishing()) {
             SharedPreferences.Editor editor = activity.getPreferences(Context.MODE_PRIVATE).edit();
 
-            editor.putBoolean(SP_IS_CORRECT, isCorrect);
+            editor.putInt(SP_IS_CORRECT, result);
             editor.commit();
         }
     }
