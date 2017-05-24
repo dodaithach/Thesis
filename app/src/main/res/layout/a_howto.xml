@@ -18,10 +18,9 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:alpha="0.75"
+        android:layout_height="3dp"
         android:layout_above="@id/howto_dots"
-        android:background="@color/themeLight"/>
+        android:background="@color/themeDark"/>
 
     <Button
         android:id="@+id/howto_btnSkip"
