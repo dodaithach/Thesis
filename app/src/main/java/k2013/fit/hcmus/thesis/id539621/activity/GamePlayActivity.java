@@ -218,7 +218,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         boolean isFound = false;
 
         for (int i = 0; i < 360; i+=10) {
-            for (int j = -180; j <= 180; j+=10) {
+            for (int j = -90; j <= 90; j+=10) {
                 changeListenerOrientation(-j, -i, 0);
 
                 isFound = mGame.calcResult();
