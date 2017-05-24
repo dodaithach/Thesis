@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.asha.vrlib.MDVRLibrary;
@@ -73,14 +75,42 @@ public class GameResultActivity extends BaseActivity {
         Log.d("mylog", "image path: " + mImgPath);
 
         Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
+        Button btnCancel = (Button) findViewById(R.id.gameresult_btncancel);
         TextView title = (TextView) findViewById(R.id.gameresult_title);
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.gameresult_container);
 
-        if (mGameResult) {
-            btnAction.setText(R.string.a_gameresult_btn_next);
-            title.setText(R.string.a_gameresult_msg_success);
-        } else {
+        if (!mGameResult) {
             btnAction.setText(R.string.a_gameresult_btn_replay);
             title.setText(R.string.a_gameresult_msg_failed);
+            container.setBackgroundResource(R.drawable.d_gamefailed_background);
+
+            btnCancel.setBackgroundResource(R.drawable.d_gamefailed_btn_cancel);
+
+            ColorStateList btnCancelColors = new ColorStateList(
+                    new int[][] {
+                            new int[] {android.R.attr.state_pressed},
+                            new int[] {}
+                    },
+                    new int[] {
+                            getResources().getColor(R.color.themeLight),
+                            getResources().getColor(R.color.themeLight)
+                    }
+            );
+            btnCancel.setTextColor(btnCancelColors);
+
+            btnAction.setBackgroundResource(R.drawable.d_game_failed_btn_action);
+
+            ColorStateList btnActionColors = new ColorStateList(
+                    new int[][] {
+                            new int[] {android.R.attr.state_pressed},
+                            new int[] {}
+                    },
+                    new int[] {
+                            getResources().getColor(R.color.themeLight),
+                            getResources().getColor(R.color.themeLightAccent)
+                    }
+            );
+            btnAction.setTextColor(btnActionColors);
         }
     }
 
