@@ -14,7 +14,7 @@
 
     <string name="d_btn_cancel">Cancel</string>
 
-    <string name="d_gamefailed_msg">Sorry! You are wrong.</string>
+    <string name="d_gamefailed_msg">Sorry! You failed.</string>
     <string name="d_gamefailed_btn_action">Replay</string>
 
     <string name="d_gamesuccess_msg">Congrats! Good job.</string>
@@ -54,5 +54,5 @@
     <string name="a_gameresult_btn_next">Next</string>
     <string name="a_gameresult_btn_replay">Replay</string>
     <string name="a_gameresult_msg_success">Congrats! Good job.</string>
-    <string name="a_gameresult_msg_failed">Sorry! You are wrong.</string>
+    <string name="a_gameresult_msg_failed">Sorry! You failed.</string>
 </resources>
