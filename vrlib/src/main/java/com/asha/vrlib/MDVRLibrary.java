@@ -661,6 +661,6 @@ public class MDVRLibrary {
     }
 
     public void testScroll(int delX, int delY) {
-        mInteractiveModeManager.handleDrag(delX, delY);
+        mInteractiveModeManager.handleDrag(-delX, -delY);
     }
 }

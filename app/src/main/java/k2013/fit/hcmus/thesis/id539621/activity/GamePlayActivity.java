@@ -162,6 +162,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
             Log.d("mylog", "dX: " + delX + " dY: " + delY);
 
+            mDelX = (int) delX;
+            mDelY = (int) delY;
             changeListenerOrientation(-delY, -delX, 0);
         }
     }
@@ -184,8 +186,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
     }
 
-    private void changeListenerOrientation(double horizontal, double vertical, double z){
-
+    private void changeListenerOrientation(double horizontal, double vertical, double z) {
         Matrix.setIdentityM(mViewMatrix, 0);
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
         Matrix.setIdentityM(mCurrentRotation, 0);
@@ -209,12 +210,16 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
     }
 
-    public void getCorrectPos() {
+    public void getCorrectPos(boolean isCorrect) {
+        if (isCorrect)
+            return;
+
+        Log.d("gameresult", "getCorrectPos");
         boolean isFound = false;
 
         for (int i = 0; i < 360; i+=10) {
             for (int j = -180; j <= 180; j+=10) {
-                changeListenerOrientation(j, i, 0);
+                changeListenerOrientation(-j, -i, 0);
 
                 isFound = mGame.calcResult();
                 if (isFound) {
@@ -489,12 +494,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void showGameResult() {
-        pauseSound();
-        getCorrectPos();
-
         // Retrieve data from GameOperation
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
         boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
+
+        pauseSound();
+        getCorrectPos(isCorrect);
 
         Intent intent = new Intent(this, GameResultActivity.class);
         intent.putExtra(GameResultActivity.GAME_RES, isCorrect);

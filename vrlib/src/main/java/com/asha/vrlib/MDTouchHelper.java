@@ -58,8 +58,8 @@ public class MDTouchHelper {
                 m.what = CustomHandler.TOUCH;
 
                 double params[] = new double[2];
-                params[0] = distanceX;
-                params[1] = distanceY;
+                params[0] = distanceX / mGlobalScale;
+                params[1] = distanceY / mGlobalScale;
 
                 Bundle data = new Bundle();
                 data.putDoubleArray(CustomHandler.TOUCH_PARAMS, params);

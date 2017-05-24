@@ -49,9 +49,10 @@ public class GameResultActivity extends BaseActivity {
 
     private Target mTarget;
 
-    private final int PX_PER_W_DEG = 1;
-    private final int PX_PER_H_DEG = 1;
+    private final int PX_PER_W_DEG = 6;
+    private final int PX_PER_H_DEG = 9;
     private final float mDensity = Resources.getSystem().getDisplayMetrics().density;
+    private final float mScale = 0.8f;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class GameResultActivity extends BaseActivity {
         mVRLibrary = createVRLibrary();
 
         Log.d("gameresult", "delX: " + mDelX + " - delY: " + mDelY);
-        mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG), (int) (mDensity * mDelY * PX_PER_H_DEG));
+        mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG * mScale), (int) (mDensity * mDelY * PX_PER_H_DEG * mScale));
     }
 
     @Override
