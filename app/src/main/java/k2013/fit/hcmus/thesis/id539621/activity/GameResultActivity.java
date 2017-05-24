@@ -19,19 +19,10 @@ import android.widget.TextView;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
-import com.custom.HandlerSingleton;
-import com.custom.OnScrollCallback;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
-import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
-import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
-
-import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
-import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 
 /**
  * Created by cpu60011-local on 23/05/2017.
@@ -53,12 +44,14 @@ public class GameResultActivity extends BaseActivity {
     private boolean mGameResult = true;
     private int mSoundId;
     private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
-    private double mPosX;
-    private double mPosY;
+    private int mDelX;
+    private int mDelY;
 
     private Target mTarget;
 
-    private final int SCALE = 100;
+    private final int PX_PER_W_DEG = 1;
+    private final int PX_PER_H_DEG = 1;
+    private final float mDensity = Resources.getSystem().getDisplayMetrics().density;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +62,8 @@ public class GameResultActivity extends BaseActivity {
         mGameResult = intent.getBooleanExtra(GameResultActivity.GAME_RES, false);
         mImgPath = intent.getStringExtra(GameResultActivity.IMG_PATH);
         mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
-        mPosX = intent.getDoubleExtra(GameResultActivity.POS_X, 0.0f);
-        mPosY = intent.getDoubleExtra(GameResultActivity.POS_Y, 0.0f);
+        mDelX = intent.getIntExtra(GameResultActivity.POS_X, 0);
+        mDelY = intent.getIntExtra(GameResultActivity.POS_Y, 0);
 
         Log.d("mylog", "image path: " + mImgPath);
 
@@ -119,8 +112,8 @@ public class GameResultActivity extends BaseActivity {
         super.onStart();
         mVRLibrary = createVRLibrary();
 
-        float density = Resources.getSystem().getDisplayMetrics().density;
-        mVRLibrary.testScroll((int) (mPosX * density) * SCALE, (int) (mPosY * density) * SCALE);
+        Log.d("gameresult", "delX: " + mDelX + " - delY: " + mDelY);
+        mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG), (int) (mDensity * mDelY * PX_PER_H_DEG));
     }
 
     @Override

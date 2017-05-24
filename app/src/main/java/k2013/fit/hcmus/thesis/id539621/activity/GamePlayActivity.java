@@ -75,6 +75,9 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     private int totalTime = 0;
 
+    private int mDelX = 0;
+    private int mDelY = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,12 +142,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     protected void onPause() {
         super.onPause();
 
-        BinauralSound.pauseSound(mTargetSound);
-        BinauralSound.pauseSound(mBackgroundSound);
-        for (int distractsound: mDistractSounds){
-            BinauralSound.pauseSound(distractsound);
-        }
-
+        pauseSound();
         mGame.pause(this);
     }
 
@@ -162,7 +160,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             delX = delX - ((int) velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
             delY = delY - ((int) velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-            //Log.d("", "dX: " + delX + " dY: " + delY);
+            Log.d("mylog", "dX: " + delX + " dY: " + delY);
 
             changeListenerOrientation(-delY, -delX, 0);
         }
@@ -202,18 +200,34 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mCurrentRotationPost, 0);
 
         Matrix.multiplyMM(mCurrentRotation, 0, mTempMatrix, 0, mCurrentRotationZ, 0);
-        //System.arraycopy(mTempMatrix, 0, mCurrentRotation, 0, 16);
 
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mCurrentRotation, 0);
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
 
-        //Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-        //        mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
-
         mGame.updateLookAt(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
+    }
 
+    public void getCorrectPos() {
+        boolean isFound = false;
+
+        for (int i = 0; i < 360; i+=10) {
+            for (int j = -180; j <= 180; j+=10) {
+                changeListenerOrientation(j, i, 0);
+
+                isFound = mGame.calcResult();
+                if (isFound) {
+                    mDelX = i;
+                    mDelY = j;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                break;
+            }
+        }
     }
 
     private void setupGameParam(){
@@ -453,6 +467,14 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         animator.start();
     }
 
+    private void pauseSound() {
+        BinauralSound.pauseSound(mTargetSound);
+        BinauralSound.pauseSound(mBackgroundSound);
+        for (int distractsound: mDistractSounds){
+            BinauralSound.pauseSound(distractsound);
+        }
+    }
+
     /*************************************** GAMEPLAY FUNCTIONS ***********************************/
     public void timeTick() {
         totalTime += GameOperation.TIME_TICK;
@@ -467,6 +489,9 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     }
 
     public void showGameResult() {
+        pauseSound();
+        getCorrectPos();
+
         // Retrieve data from GameOperation
         SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
         boolean isCorrect = sp.getBoolean(GameOperation.SP_IS_CORRECT, false);
@@ -475,8 +500,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         intent.putExtra(GameResultActivity.GAME_RES, isCorrect);
         intent.putExtra(GameResultActivity.IMG_PATH, mImgPath);
         intent.putExtra(GameResultActivity.SOUND_ID, mTargetSound);
-        intent.putExtra(GameResultActivity.POS_X, mTtargetPosition.getX());
-        intent.putExtra(GameResultActivity.POS_Y, mTtargetPosition.getZ());
+        intent.putExtra(GameResultActivity.POS_X, mDelX);
+        intent.putExtra(GameResultActivity.POS_Y, mDelY);
 
         startActivityForResult(intent, GameResultActivity.REQ_CODE);
     }

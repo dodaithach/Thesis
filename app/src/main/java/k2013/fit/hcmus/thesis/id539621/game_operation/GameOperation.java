@@ -208,7 +208,7 @@ public class GameOperation {
         return mIsInited;
     }
 
-    private boolean calcResult() {
+    public boolean calcResult() {
 
         double a1 = mParams.getTargetSound().getPosition().getX();
         double a2 = mParams.getTargetSound().getPosition().getY();
@@ -224,7 +224,7 @@ public class GameOperation {
         Log.d("calcResult",String.format("alpha: %f", alpha));
 
 
-        if(Math.toDegrees(alpha) >= -20 && Math.toDegrees(alpha) <= 20) {
+        if(Math.toDegrees(alpha) >= -10 && Math.toDegrees(alpha) <= 10) {
             Log.d("calResult", "true");
             return true;
         }
@@ -239,7 +239,6 @@ public class GameOperation {
 
             editor.putBoolean(SP_IS_CORRECT, isCorrect);
             editor.commit();
-
         }
     }
 
