@@ -41,6 +41,14 @@ import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
     public static final String IS_CREATED = "IS_CREATED";
+    public static final String GAME_MODE = "GAME_MODE";
+    public static final String HAS_SHOW_DEMO = "HAS_SHOW_DEMO";
+    public static final String HAS_SENSOR = "HAS_SENSOR";
+    public static final String IMG_PATH = "IMG_PATH";
+    public static final String TARGET_SOUND = "TARGET_SOUND";
+    public static final String BACKGROUND_SOUND = "BACKGROUND_SOUND";
+    public static final String DISTRACT_SOUND = "DISTRACT_SOUND";
+    public static final String TOTAL_TIME = "TOTAL_TIME";
 
     private GameOperation mGame;
     private GameLevel[] levels;
@@ -73,6 +81,10 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private Vector<Integer> mDistractSounds;
     private String targetSoundPath;
     private String mImgPath;
+
+    private Sound targetSound;
+    private Sound backgroundSound;
+    private ArrayList<Sound> distractSound;
 
     private int totalTime = 0;
 
@@ -110,6 +122,80 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             setupGameParam();
         } else {
             // Read param from savedInstance...
+            hasShowDemo = savedInstanceState.getBoolean(GamePlayActivity.HAS_SHOW_DEMO);
+            modeGame = savedInstanceState.getInt(GamePlayActivity.GAME_MODE);
+            hasSensor = savedInstanceState.getBoolean(GamePlayActivity.HAS_SENSOR);
+            totalTime = savedInstanceState.getInt(GamePlayActivity.TOTAL_TIME);
+
+            SharedPreferences sharedPreferences = this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+            if (sharedPreferences != null) {
+                String gameLevelsString = sharedPreferences.getString("gameLevels", "");
+                Gson gson = new Gson();
+                levels = gson.fromJson(gameLevelsString, GameLevel[].class);
+            }
+
+            levelIndex = getIntent().getIntExtra("LevelIndex", 0);
+            level = levels[levelIndex];
+            //timeleft
+            mImgPath = savedInstanceState.getString(GamePlayActivity.IMG_PATH);
+
+
+            targetSound = savedInstanceState.getParcelable(GamePlayActivity.TARGET_SOUND);
+            backgroundSound = savedInstanceState.getParcelable(GamePlayActivity.BACKGROUND_SOUND);
+            distractSound = savedInstanceState.getParcelableArrayList(GamePlayActivity.DISTRACT_SOUND);
+
+            if (mGame == null) {
+                GamePlayParams params = new GamePlayParams();
+                params.setTime(level.getTime()*1000 - totalTime);
+                params.setMode(modeGame);
+                params.setTargetSound(targetSound);
+                params.setBackgroundSound(backgroundSound);
+                params.setDistractSounds(distractSound);
+                params.setBackgroundImg(mImgPath);
+
+                mGame = new GameOperation(this, params);
+            }
+
+            //Load target sound
+            if(targetSound != null){
+                mTargetSound = BinauralSound.addSource(targetSound.getSoundPath());
+                BinauralSound.setPosition(mTargetSound, targetSound.getPosition() );
+                if(targetSound.getType() == Sound.TYPE_REPEAT){
+                    BinauralSound.setLoop(mTargetSound, true);
+                }
+                else {
+                    BinauralSound.setLoop(mTargetSound, false);
+                }
+            }
+
+            //Load background sound
+            if(backgroundSound != null){
+                mBackgroundSound = BinauralSound.addSource(backgroundSound.getSoundPath());
+                BinauralSound.setLoop(mBackgroundSound, true);
+            }
+
+            //Load distract sound
+            mDistractSounds = new Vector<>();
+            if(distractSound != null){
+                for (Sound sound: distractSound) {
+                    int soundTemp = BinauralSound.addSource(sound.getSoundPath());
+                    BinauralSound.setPosition(soundTemp, sound.getPosition());
+                    mDistractSounds.add(soundTemp);
+                    if(sound.getType() == Sound.TYPE_REPEAT){
+                        BinauralSound.setLoop(soundTemp, true);
+                    }
+                    else {
+                        BinauralSound.setLoop(soundTemp, false);
+                    }
+                }
+            }
+
+
+                BinauralSound.playSound(mTargetSound);
+                BinauralSound.playSound(mBackgroundSound);
+                for (int distractsound : mDistractSounds) {
+                    BinauralSound.playSound(distractsound);
+                }
 
         }
     }
@@ -158,6 +244,14 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(GamePlayActivity.IS_CREATED, true);
+
+        outState.putInt(GamePlayActivity.TOTAL_TIME, totalTime);
+        outState.putInt(GamePlayActivity.GAME_MODE, modeGame);
+        outState.putBoolean(GamePlayActivity.HAS_SENSOR,hasSensor);
+        outState.putString(GamePlayActivity.IMG_PATH, mImgPath);
+        outState.putParcelable(GamePlayActivity.TARGET_SOUND, targetSound);
+        outState.putParcelable(GamePlayActivity.BACKGROUND_SOUND,backgroundSound);
+        outState.putParcelableArrayList(GamePlayActivity.DISTRACT_SOUND,distractSound);
 
         super.onSaveInstanceState(outState);
     }
@@ -300,6 +394,11 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         if (mGame == null) {
             mGame = new GameOperation(this, params);
         }
+
+        targetSound = params.getTargetSound();
+        backgroundSound = params.getBackgroundSound();
+        distractSound = params.getDistractSounds();
+
 
         //Load target sound
         if(params.getTargetSound() != null){
@@ -575,5 +674,12 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private void switchGameMode(){
         modeGame = (modeGame == GamePlayParams.MODE_TOUCH)?GamePlayParams.MODE_SENSOR:GamePlayParams.MODE_TOUCH;
         mGame.switchMode(modeGame);
+
+        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("gameMode", modeGame);
+        editor.apply();
     }
 }
