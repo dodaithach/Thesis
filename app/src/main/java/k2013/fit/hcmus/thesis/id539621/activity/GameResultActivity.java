@@ -55,6 +55,8 @@ public class GameResultActivity extends BaseActivity {
     private final float mDensity = Resources.getSystem().getDisplayMetrics().density;
     private final float mScale = 0.8f;
 
+    private boolean mIsInited = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,10 +119,13 @@ public class GameResultActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mVRLibrary = createVRLibrary();
+        if (!mIsInited) {
+            mIsInited = true;
 
-        Log.d("gameresult", "delX: " + mDelX + " - delY: " + mDelY);
-        mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG * mScale), (int) (mDensity * mDelY * PX_PER_H_DEG * mScale));
+            mVRLibrary = createVRLibrary();
+            Log.d("gameresult", "delX: " + mDelX + " - delY: " + mDelY);
+            mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG * mScale), (int) (mDensity * mDelY * PX_PER_H_DEG * mScale));
+        }
     }
 
     @Override
