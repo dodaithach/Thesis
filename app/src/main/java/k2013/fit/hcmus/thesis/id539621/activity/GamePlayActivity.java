@@ -351,7 +351,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         params.setBackgroundImg(mImgPath);
 
         //Set target sound
-        int targetDistance = r.nextInt(11) + 5;
+        int targetDistance = r.nextInt(5) + 5;
         int targetAlpha = r.nextInt(361);
 
         mTtargetPosition = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), 0,
@@ -609,7 +609,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         intent.putExtra(GameResultActivity.SOUND_ID, mTargetSound);
         intent.putExtra(GameResultActivity.POS_X, mDelX);
         intent.putExtra(GameResultActivity.POS_Y, mDelY);
-
+        intent.putExtra(GameResultActivity.TARGET_SOUND, targetSound.getSoundPath());
+        intent.putExtra(GameResultActivity.TARGET_POSITION, targetSound.getPosition());
         startActivityForResult(intent, GameResultActivity.REQ_CODE);
     }
 

@@ -24,6 +24,8 @@ import com.squareup.picasso.Target;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GameOperation;
+import k2013.fit.hcmus.thesis.id539621.model.Position;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 /**
  * Created by cpu60011-local on 23/05/2017.
@@ -35,6 +37,8 @@ public class GameResultActivity extends BaseActivity {
     public static final String SOUND_ID = "SOUND_ID";
     public static final String POS_X = "POS_X";
     public static final String POS_Y = "POS_Y";
+    public static final String TARGET_SOUND = "TARGET_SOUND";
+    public static final String TARGET_POSITION = "TARGET_POSITION";
     public static final int REQ_CODE = 1111;
     public static final String RES_CODE = "RES_CODE";
     public static final int CODE_CANCEL = 0;
@@ -43,12 +47,14 @@ public class GameResultActivity extends BaseActivity {
     private MDVRLibrary mVRLibrary;
 
     private int mGameResult = GameOperation.GAME_FAILED;
-    private int mSoundId;
     private String mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/bergsjostolen";
     private int mDelX;
     private int mDelY;
 
     private Target mTarget;
+    private String mTargetSound;
+    private int mSoundId;
+    private Position mTargetPosition;
 
     private final int PX_PER_W_DEG = 6;
     private final int PX_PER_H_DEG = 9;
@@ -68,6 +74,8 @@ public class GameResultActivity extends BaseActivity {
         mSoundId = intent.getIntExtra(GameResultActivity.SOUND_ID, -1);
         mDelX = intent.getIntExtra(GameResultActivity.POS_X, 0);
         mDelY = intent.getIntExtra(GameResultActivity.POS_Y, 0);
+        mTargetSound = intent.getStringExtra(GameResultActivity.TARGET_SOUND);
+        mTargetPosition = intent.getParcelableExtra(GameResultActivity.TARGET_POSITION);
 
         Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
         Button btnCancel = (Button) findViewById(R.id.gameresult_btncancel);
@@ -130,6 +138,17 @@ public class GameResultActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mVRLibrary.onResume(this);
+
+        if (mTargetSound != null) {
+            mSoundId = BinauralSound.addSource(mTargetSound);
+            double distance = -Math.sqrt(mTargetPosition.getX() * mTargetPosition.getX() +
+                                            mTargetPosition.getY() * mTargetPosition.getY() +
+                                            mTargetPosition.getZ() * mTargetPosition.getZ());
+            BinauralSound.setPosition(mSoundId, 0, 0, (float) distance);
+            BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
+            BinauralSound.setLoop(mSoundId, true);
+            BinauralSound.playSound(mSoundId);
+        }
     }
 
     @Override
@@ -142,6 +161,10 @@ public class GameResultActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         mVRLibrary.onPause(this);
+
+        if (mSoundId != 0) {
+            BinauralSound.pauseSound(mSoundId);
+        }
     }
 
     @Override
