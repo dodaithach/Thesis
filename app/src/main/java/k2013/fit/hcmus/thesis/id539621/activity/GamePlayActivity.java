@@ -40,6 +40,8 @@ import k2013.fit.hcmus.thesis.id539621.sensor.OrientationCallback;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GamePlayActivity extends BaseActivity implements OnScrollCallback, OrientationCallback {
+    public static final String IS_CREATED = "IS_CREATED";
+
     private GameOperation mGame;
     private GameLevel[] levels;
     private int levelIndex;
@@ -82,34 +84,46 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameplay);
 
-        hasShowDemo = false;
+        if (savedInstanceState == null) {
+            hasShowDemo = false;
 
-        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
-        if (sharedPreferences != null){
-            modeGame = sharedPreferences.getInt("gameMode", GamePlayParams.MODE_TOUCH);
-            hasSensor = sharedPreferences.getBoolean("hasSensor", false);
+            SharedPreferences sharedPreferences = this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+            if (sharedPreferences != null) {
+                modeGame = sharedPreferences.getInt("gameMode", GamePlayParams.MODE_TOUCH);
+                hasSensor = sharedPreferences.getBoolean("hasSensor", false);
 
-            if (modeGame == GamePlayParams.MODE_TOUCH) {
-                findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_touch);
-            } else {
-                findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
+                if (modeGame == GamePlayParams.MODE_TOUCH) {
+                    findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_touch);
+                } else {
+                    findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
+                }
+
+                String gameLevelsString = sharedPreferences.getString("gameLevels", "");
+                Gson gson = new Gson();
+                levels = gson.fromJson(gameLevelsString, GameLevel[].class);
             }
+            HandlerSingleton.init(this, null);
 
-            String gameLevelsString = sharedPreferences.getString("gameLevels", "");
-            Gson gson = new Gson();
-            levels = gson.fromJson(gameLevelsString,GameLevel[].class);
+            levelIndex = getIntent().getIntExtra("LevelIndex", 0);
+            level = levels[levelIndex];
+
+            setupGameParam();
+        } else {
+            // Read param from savedInstance...
+
         }
-        HandlerSingleton.init(this, null);
-
-        levelIndex = getIntent().getIntExtra("LevelIndex",0);
-        level = levels[levelIndex];
-
-        setupGameParam();
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            boolean isCreated = savedInstanceState.getBoolean(GamePlayActivity.IS_CREATED, true);
+            if (isCreated) {
+                return;
+            }
+        }
 
         pregame();
     }
@@ -139,6 +153,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         pauseSound();
         mGame.pause(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(GamePlayActivity.IS_CREATED, true);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
