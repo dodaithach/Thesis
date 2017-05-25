@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -27,12 +26,9 @@ public class GameSelectionActivity extends BaseActivity {
 
 
         String intentString = getIntent().getStringExtra("GameLevels");
-        Log.d("GameSelection",intentString);
 
         Gson gson = new Gson();
         GameLevel[] levels = gson.fromJson(intentString,GameLevel[].class);
-
-        Log.d("GameSelection","lv count: " + levels.length);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.gameselection_recyclerview);
 
@@ -41,13 +37,10 @@ public class GameSelectionActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(false);
 
-
-
         mAdapter = new GameSelectionAdapter(levels);
-
         mRecyclerView.setAdapter(mAdapter);
-
     }
+
     public void gameSelectionOnClick(View v) {
         switch (v.getId()) {
             case R.id.gameselection_btn_close: {

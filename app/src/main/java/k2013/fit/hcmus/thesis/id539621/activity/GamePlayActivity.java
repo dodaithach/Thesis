@@ -9,7 +9,6 @@ import android.opengl.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
@@ -100,10 +99,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             Gson gson = new Gson();
             levels = gson.fromJson(gameLevelsString,GameLevel[].class);
         }
-
-        //modeGame = GamePlayParams.MODE_TOUCH;
-
-
         HandlerSingleton.init(this, null);
 
         levelIndex = getIntent().getIntExtra("LevelIndex",0);
@@ -160,8 +155,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             delX = delX - ((int) velocityX) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
             delY = delY - ((int) velocityY) / Resources.getSystem().getDisplayMetrics().density * 0.2f;
 
-            Log.d("mylog", "dX: " + delX + " dY: " + delY);
-
             mDelX = (int) delX;
             mDelY = (int) delY;
             changeListenerOrientation(-delY, -delX, 0);
@@ -177,9 +170,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, rotationMatrix, 0);
 
         System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
-
-        //Log.d("Test matrix",String.format("%f %f %f %f %f %f", -mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
-        //        mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]));
 
         mGame.updateLookAt(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
@@ -214,7 +204,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         if (result == GameOperation.GAME_SUCCESS)
             return;
 
-        Log.d("gameresult", "getCorrectPos");
         boolean isFound = false;
 
         for (int i = 0; i < 360; i+=10) {
@@ -243,7 +232,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         Random r = new Random();
         int randomPos = r.nextInt(backgroundImageList.length);
-        Log.d("randomPos", "pos: " + randomPos);
         mImgPath = "android.resource://k2013.fit.hcmus.thesis.id539621/raw/" + backgroundImageList[randomPos];
         params.setBackgroundImg(mImgPath);
 
@@ -280,8 +268,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 int distractDistance = r.nextInt(11) + 5;
                 int distractAlpha = r.nextInt(361);
 
-                Position distractPos = new Position(targetDistance * Math.sin(Math.toRadians(targetAlpha)), r.nextFloat()*2 - 1,
-                        targetDistance * Math.cos(Math.toRadians(targetAlpha)));
+                Position distractPos = new Position(distractDistance * Math.sin(Math.toRadians(distractAlpha)), r.nextFloat()*2 - 1,
+                        distractDistance * Math.cos(Math.toRadians(distractAlpha)));
 
                 array.add(new Sound(distractFiles.get(i).getPath(),20, Sound.TYPE_REPEAT, distractPos));
             }
@@ -291,9 +279,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         if (mGame == null) {
             mGame = new GameOperation(this, params);
         }
-
-
-        //Sound
 
         //Load target sound
         if(params.getTargetSound() != null){
@@ -310,8 +295,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         //Load background sound
         if(params.getBackgroundSound() != null){
             mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
-            Log.d("621Sound", "background sound: " + mBackgroundSound);
-            //BinauralSound.setPosition(mBackgroundSound, params.getBackgroundSound().getPosition() );
             BinauralSound.setLoop(mBackgroundSound, true);
         }
 
@@ -345,7 +328,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             }
 
             case R.id.gameplay_btnSwitch: {
-                Log.d("Trieu", "has sensor: " + hasSensor);
                 if(hasSensor){
                     if (modeGame == GamePlayParams.MODE_TOUCH) {
                         findViewById(R.id.gameplay_btnSwitch).setBackgroundResource(R.drawable.a_gameplay_icon_motion);
@@ -571,8 +553,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
     private void switchGameMode(){
         modeGame = (modeGame == GamePlayParams.MODE_TOUCH)?GamePlayParams.MODE_SENSOR:GamePlayParams.MODE_TOUCH;
-        Log.d("gameMode","mode: " + modeGame);
         mGame.switchMode(modeGame);
     }
-
 }

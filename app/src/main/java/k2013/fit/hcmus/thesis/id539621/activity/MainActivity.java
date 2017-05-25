@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity {
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1232;
     private GameLevel[] levels;
 
-    private boolean hasStoreData = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,7 @@ public class MainActivity extends BaseActivity {
         File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/FindItData");
         File output = new File(rootDirApp, ".nomedia");
         try {
-            boolean fileCreated = output.createNewFile();
+            output.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,7 +177,6 @@ public class MainActivity extends BaseActivity {
                     Gson gson = new Gson();
                     String jsonString = gson.toJson(levels);
                     intent.putExtra("GameLevels", jsonString);
-                    Log.d("intent", jsonString);
                     startActivity(intent);
                 }
                 break;

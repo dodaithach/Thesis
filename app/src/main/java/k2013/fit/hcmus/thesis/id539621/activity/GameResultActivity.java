@@ -69,8 +69,6 @@ public class GameResultActivity extends BaseActivity {
         mDelX = intent.getIntExtra(GameResultActivity.POS_X, 0);
         mDelY = intent.getIntExtra(GameResultActivity.POS_Y, 0);
 
-        Log.d("mylog", "image path: " + mImgPath);
-
         Button btnAction = (Button) findViewById(R.id.gameresult_btnaction);
         Button btnCancel = (Button) findViewById(R.id.gameresult_btncancel);
         TextView title = (TextView) findViewById(R.id.gameresult_title);
@@ -213,12 +211,10 @@ public class GameResultActivity extends BaseActivity {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                Log.d("mylog", "onBitmapFailed");
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
-                Log.d("mylog", "onPrepareLoad");
             }
         };
         Picasso.with(getApplicationContext()).load(uri).resize(3072, 2048)

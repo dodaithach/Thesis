@@ -1,6 +1,5 @@
 package k2013.fit.hcmus.thesis.id539621.sensor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -8,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.opengl.Matrix;
-import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -31,7 +29,6 @@ public class OrientationListener implements SensorEventListener {
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senOrientation = senSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         this.context = context;
-        //senSensorManager.registerListener(this, senOrientation, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -40,7 +37,6 @@ public class OrientationListener implements SensorEventListener {
 
         if (mySensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             System.arraycopy(event.values, 0, mOrientationReading, 0, mOrientationReading.length);
-
 
             if(callback!=null){
                 WindowManager windowManager =  (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

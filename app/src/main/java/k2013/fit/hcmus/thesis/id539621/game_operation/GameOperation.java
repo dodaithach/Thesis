@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.texture.MD360BitmapTexture;
@@ -14,25 +13,17 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
-import java.util.Vector;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.model.Position;
 import k2013.fit.hcmus.thesis.id539621.sensor.OrientationListener;
 
-import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
-import static com.squareup.picasso.MemoryPolicy.NO_STORE;
-
 /**
  * Created by cpu60011-local on 11/04/2017.
  */
 
 public class GameOperation {
-
-    int mTargetSound;
-    Vector<Integer> mDistractSounds;
-
     public static final int GAME_FAILED = 0;
     public static final int GAME_SUCCESS = 1;
     public static final int TIME_UP = -1;
@@ -103,7 +94,6 @@ public class GameOperation {
             @Override
             public void onTick(long millisUntilFinished) {
                 mRemainingTime = millisUntilFinished;
-                Log.d("mRemainingTime", String.format("remaining: %d", mRemainingTime));
                 getActivity().timeTick();
             }
 
@@ -226,18 +216,12 @@ public class GameOperation {
         double b2 = mCurLookAt.getY();
         double b3 = mCurLookAt.getZ();
 
-        Log.d("calcResult",String.format("a1: %f, a2: %f, a3: %f, b1: %f, b2: %f, b3: %f", a1,a2,a3,b1,b2,b3));
-
         double alpha = Math.acos((a1*b1 + a2*b2 + a3*b3)/(Math.sqrt(a1*a1 + a2*a2 + a3*a3)*Math.sqrt(b1*b1 + b2*b2 + b3*b3)));
 
-        Log.d("calcResult",String.format("alpha: %f", alpha));
-
-
         if(Math.toDegrees(alpha) >= -10 && Math.toDegrees(alpha) <= 10) {
-            Log.d("calResult", "true");
             return true;
         }
-        Log.d("calResult", "false");
+
         return false;
     }
 

@@ -20,7 +20,6 @@ public class JSONResourceReader {
     private String jsonString;
     private static final String LOGTAG = JSONResourceReader.class.getSimpleName();
 
-
     public JSONResourceReader(Resources resources, int id) {
         InputStream resourceReader = resources.openRawResource(id);
         Writer writer = new StringWriter();

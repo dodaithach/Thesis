@@ -15,7 +15,6 @@ import java.lang.ref.WeakReference;
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.activity.GamePlayActivity;
 import k2013.fit.hcmus.thesis.id539621.activity.GameSelectionActivity;
-import k2013.fit.hcmus.thesis.id539621.activity.MainActivity;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 
 /**

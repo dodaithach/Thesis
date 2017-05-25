@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -27,9 +26,7 @@ public class DialogPregame extends BaseDialog {
 
         Intent intent = getIntent();
         mTargetSoundPath = intent.getStringExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID);
-        //BinauralSound.openDevice();
         mTargetSound = BinauralSound.addSource(mTargetSoundPath);
-
 
         this.enableBtnAction(true);
         this.enableBtnCancel(true);
@@ -87,48 +84,11 @@ public class DialogPregame extends BaseDialog {
             return;
         }
 
-        Log.d("myLog", "PlaySoundInDialog");
-
-        //enableBtnCancel(false);
-        //enableBtnAction(false);
-
         BinauralSound.setLoop(mTargetSound, false);
         BinauralSound.playSound(mTargetSound);
-
-        //new CheckIsPlayingAsync(this).execute();
     }
 
     public int getTargetSound() {
         return mTargetSound;
-    }
-
-    static class CheckIsPlayingAsync extends AsyncTask<Void, Void, Void> {
-        private WeakReference<DialogPregame> mWeakReference;
-
-        public CheckIsPlayingAsync(DialogPregame dialog) {
-            mWeakReference = new WeakReference<DialogPregame>(dialog);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            while (true) {
-                Log.d("mylog", "CheckIsPlayingAsync...");
-                DialogPregame dialog = mWeakReference.get();
-
-                if (dialog == null || dialog.isDestroyed() || dialog.isFinishing()) {
-                    return null;
-                }
-
-                Log.d("myLog", "sound: " + dialog.getTargetSound());
-                boolean isPlaying = BinauralSound.isPlayingSound(dialog.getTargetSound());
-                Log.d("mylog", "isPlaying: " + isPlaying);
-                if (!isPlaying) {
-                    dialog.enableBtnAction(true);
-                    dialog.enableBtnCancel(true);
-
-                    return null;
-                }
-            }
-        }
     }
 }
