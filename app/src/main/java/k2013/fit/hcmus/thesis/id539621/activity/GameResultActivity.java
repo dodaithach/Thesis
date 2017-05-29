@@ -1,9 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -119,6 +117,8 @@ public class GameResultActivity extends BaseActivity {
                     }
             );
             btnAction.setTextColor(btnActionColors);
+
+            updateZoneColor(false);
         }
     }
 
@@ -251,6 +251,18 @@ public class GameResultActivity extends BaseActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    private void updateZoneColor(boolean isCorrect) {
+        View zone = findViewById(R.id.gameresult_zone);
+        View iconAbove = findViewById(R.id.a_gameresult_icon_above);
+        View iconBelow = findViewById(R.id.a_gameresult_icon_below);
+
+        if (!isCorrect) {
+            zone.setBackgroundResource(R.drawable.background_circle_accent);
+            iconAbove.setBackgroundResource(R.drawable.a_gameresult_icon_location_accent);
+            iconBelow.setBackgroundColor(getResources().getColor(R.color.themeAccent));
         }
     }
 }

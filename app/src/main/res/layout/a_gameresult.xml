@@ -21,9 +21,10 @@
         android:layout_gravity="center">
 
         <View
+            android:id="@+id/gameresult_zone"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:background="@drawable/background_circle_accent"
+            android:background="@drawable/background_circle_primary"
             android:alpha="0.5"/>
 
         <LinearLayout
@@ -40,16 +41,18 @@
                 android:textColor="@color/themeLight"/>
 
             <View
+                android:id="@+id/a_gameresult_icon_above"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/a_gameresult_icon_location"/>
+                android:background="@drawable/a_gameresult_icon_location_light"/>
 
             <View
+                android:id="@+id/a_gameresult_icon_below"
                 android:layout_width="15dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="3dp"
-                android:background="@color/themeAccent"/>
+                android:background="@color/themeLight"/>
 
         </LinearLayout>
 
