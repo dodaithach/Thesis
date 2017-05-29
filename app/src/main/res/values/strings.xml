@@ -23,7 +23,7 @@
     <string name="d_gamepause_msg">Game paused.</string>
     <string name="d_gamepause_btn_action">Resume</string>
 
-    <string name="d_pregame_msg">Remember this sound and find it.</string>
+    <string name="d_pregame_msg">Remember this sound and find it</string>
     <string name="d_pregame_btn_cancel">Go</string>
     <string name="d_pregame_btn_action">Again</string>
 
