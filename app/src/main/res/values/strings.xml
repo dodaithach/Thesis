@@ -27,7 +27,11 @@
     <string name="d_pregame_btn_cancel">Go</string>
     <string name="d_pregame_btn_action">Again</string>
 
+    <string name="a_gameselection_recycleritem_level">Level</string>
+    <string name="a_gameselection_recycleritem_btn_play">Play</string>
+
     <string name="a_gameplay_msg_no_sensor">Sorry! Your device does not have motion sensor.</string>
+    <string name="a_gameplay_btn_select">Select</string>
 
     <string name="sp_is_opened">IS_OPENED</string>
 
@@ -56,4 +60,5 @@
     <string name="a_gameresult_msg_success">Congrats! Good job.</string>
     <string name="a_gameresult_msg_failed">Sorry! You failed.</string>
     <string name="a_gameresult_msg_timeup">Sorry! Time up.</string>
+    <string name="a_gameresult_msg_target">Target is here</string>
 </resources>

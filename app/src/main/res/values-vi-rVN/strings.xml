@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ACRONYM
+        - a:    activity
+        - d:    dialog
+        - sp:   shared preference
+     -->
+
+    <string name="app_name">Giảm Ù Tai</string>
+
+    <string name="a_main_title">Giảm Ù Tai</string>
+    <string name="a_main_btn_play">Chơi</string>
+    <string name="a_main_btn_help">Hướng dẫn</string>
+    <string name="a_main_hint">Xem hướng dẫn cách chơi</string>
+
+    <string name="d_btn_cancel">Thoát</string>
+
+    <string name="d_gamefailed_msg">Bạn sai rồi! Chia buồn.</string>
+    <string name="d_gamefailed_btn_action">Chơi lại</string>
+
+    <string name="d_gamesuccess_msg">Chính xác! Chúc mừng bạn.</string>
+    <string name="d_gamesuccess_btn_action">Chơi tiếp</string>
+
+    <string name="d_gamepause_msg">Tạm dừng</string>
+    <string name="d_gamepause_btn_action">Tiếp tục</string>
+
+    <string name="d_pregame_msg">Nghe kỹ âm thanh này và tìm nó</string>
+    <string name="d_pregame_btn_cancel">Chơi</string>
+    <string name="d_pregame_btn_action">Nghe lại</string>
+
+    <string name="a_gameselection_recycleritem_level">Level</string>
+    <string name="a_gameselection_recycleritem_btn_play">Chơi</string>
+
+    <string name="a_gameplay_msg_no_sensor">Xin lỗi! Thiết bị của bạn không hỗ trợ tính năng này</string>
+    <string name="a_gameplay_btn_select">Chọn</string>
+
+    <string name="sp_is_opened">IS_OPENED</string>
+
+    <string name="a_howto_btn_skip">Bỏ qua</string>
+    <string name="a_howto_btn_next">Tiếp</string>
+    <string name="a_howto_btn_gotit">Đã hiểu</string>
+    <string name="a_howto_intent_from_help">FROM_HELP</string>
+    <string name="a_howto_quote_1">Đeo tai nghe vào</string>
+    <string name="a_howto_quote_2">Nghe âm thanh mẫu</string>
+    <string name="a_howto_quote_3">Chuyển đổi cách chơi</string>
+    <string name="a_howto_quote_4">Vuốt màn hình</string>
+    <string name="a_howto_quote_5">Sử dụng cảm biến</string>
+    <string name="a_howto_quote_6">Chọn vị trí</string>
+    <string name="a_howto_quote_7">Chơi thôi</string>
+    <string name="a_howto_detail_1">Bạn cần đeo tai nghe để xác định\nvị trí âm thanh phát ra</string>
+    <string name="a_howto_detail_2">Nghe thật kỹ, bạn sẽ phải tìm vị trí của âm thanh này</string>
+    <string name="a_howto_detail_3">Nhấn vào nút này để chuyển đổi giữa hai chế độ chơi</string>
+    <string name="a_howto_detail_4">Chơi bằng cách vuốt màn hình</string>
+    <string name="a_howto_detail_5">Chơi bằng cách xoay điện thoại qua lại</string>
+    <string name="a_howto_detail_6">Bấm nút này để xác nhận vị trí hiện tại là nơi phát ra âm thanh</string>
+    <string name="a_howto_detail_7">Giờ bạn đã biết cách chơi. Vào chơi thôi!</string>
+
+    <string name="a_gameresult_btn_cancel">Thoát</string>
+    <string name="a_gameresult_btn_next">Chơi tiếp</string>
+    <string name="a_gameresult_btn_replay">Chơi lại</string>
+    <string name="a_gameresult_msg_success">Chính xác! Chúc mừng bạn.</string>
+    <string name="a_gameresult_msg_failed">Bạn sai rồi! Chia buồn.</string>
+    <string name="a_gameresult_msg_timeup">Hết giờ rồi! Chia buồn.</string>
+    <string name="a_gameresult_msg_target">Vị trí đúng ở đây</string>
+</resources>

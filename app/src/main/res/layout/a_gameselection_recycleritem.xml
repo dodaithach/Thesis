@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Level"
+                    android:text="@string/a_gameselection_recycleritem_level"
                     android:textColor="@color/themePrimary"
                     android:textAlignment="center"
                     android:textStyle="bold"/>
@@ -47,7 +47,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/a_gameselection_recycleritem_btn_play"
-                android:text="Play"
+                android:text="@string/a_gameselection_recycleritem_btn_play"
                 android:textAllCaps="false"
                 android:textColor="@drawable/a_gameselection_recycleritem_text_play"
                 android:stateListAnimator="@null"/>

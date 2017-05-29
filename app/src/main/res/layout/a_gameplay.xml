@@ -35,7 +35,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/a_gameplay_icon_select"
             android:stateListAnimator="@null"
-            android:text="Select"
+            android:text="@string/a_gameplay_btn_select"
             android:textAllCaps="false"
             android:textColor="@drawable/a_gameplay_text_select" />
 
