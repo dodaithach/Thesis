@@ -28,7 +28,7 @@
     <string name="d_pregame_btn_cancel">Chơi</string>
     <string name="d_pregame_btn_action">Nghe lại</string>
 
-    <string name="a_gameselection_recycleritem_level">Level</string>
+    <string name="a_gameselection_recycleritem_level">Màn</string>
     <string name="a_gameselection_recycleritem_btn_play">Chơi</string>
 
     <string name="a_gameplay_msg_no_sensor">Xin lỗi! Thiết bị của bạn không hỗ trợ tính năng này</string>
