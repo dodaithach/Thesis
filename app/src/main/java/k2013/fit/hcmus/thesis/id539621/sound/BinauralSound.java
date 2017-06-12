@@ -22,6 +22,7 @@ public class BinauralSound {
     public static native void setLoop(int source, boolean isLoop);
     public static native void playSound(int source);
     public static native void pauseSound(int source);
+    public static native void setVolume(int source, float volume);
     public static native void setListenerOrientation(float atX, float atY, float atZ, float upX, float up, float upZ);
     public static native boolean isPlayingSound(int source);
     public static native void clearAll();

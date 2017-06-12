@@ -176,6 +176,10 @@ void BinauralSound::pauseSound(ALuint source){
     alSourcePause(source);
 }
 
+void BinauralSound::setVolume(ALuint source, float volume) {
+    alSourcef(source, AL_GAIN, volume);
+}
+
 void BinauralSound::setListenerOrientation(float atX, float atY, float atZ, float upX, float upY,
                                            float upZ) {
     float listenerOri[6];

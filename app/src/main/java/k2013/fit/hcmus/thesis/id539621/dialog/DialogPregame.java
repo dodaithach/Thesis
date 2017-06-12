@@ -27,7 +27,7 @@ public class DialogPregame extends BaseDialog {
         Intent intent = getIntent();
         mTargetSoundPath = intent.getStringExtra(DialogHelper.REQ_TITLE_DIALOG_PREGAME_SOUND_ID);
         mTargetSound = BinauralSound.addSource(mTargetSoundPath);
-
+        BinauralSound.setVolume(mTargetSound, 0.7f);
         this.enableBtnAction(true);
         this.enableBtnCancel(true);
     }

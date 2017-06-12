@@ -65,6 +65,15 @@ Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_pauseSound(
 
 extern "C"
 JNIEXPORT void JNICALL
+Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setVolume(
+        JNIEnv *env,
+        jobject /* this */, int source, float volume) {
+    BinauralSound::getInstance().setVolume(source, volume);
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setListenerOrientation(
         JNIEnv *env,
         jobject /* this */, float atX, float atY, float atZ, float upX, float upY,

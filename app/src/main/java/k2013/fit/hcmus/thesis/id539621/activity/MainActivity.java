@@ -67,9 +67,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void storeData(){
+    public static void storeData(Context context){
 
-        File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/FindItData");
+        File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief");
         File output = new File(rootDirApp, ".nomedia");
         try {
             output.createNewFile();
@@ -80,25 +80,26 @@ public class MainActivity extends BaseActivity {
         final int[] mDatas = new int[] { R.raw.bird, R.raw.cat, R.raw.dog, R.raw.mosquito, R.raw.lion, R.raw.owl, R.raw.pig };
         for (int i = 0; i < mDatas.length; i++) {
             try {
-                String path = Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target";
+                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/Target";
                 File dir = new File(path);
                 if (dir.mkdirs() || dir.isDirectory()) {
                     String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(mDatas[i], path + File.separator + str_song_name);
+                    CopyRAWtoSDCard(context, mDatas[i], path + File.separator + str_song_name);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        final int[] mBackgroundSoundDatas = new int[] { R.raw.backgroundrain, R.raw.backgroundocean };
+        final int[] mBackgroundSoundDatas = new int[] { R.raw.backgroundrain, R.raw.backgroundocean, R.raw.bgsound01, R.raw.bgsound02,
+        R.raw.bgsound03, R.raw.bgsound04, R.raw.bgsound05, R.raw.bgsound06, R.raw.bgsound07, R.raw.bgsound08, R.raw.bgsound09, R.raw.bgsound10};
         for (int i = 0; i < mBackgroundSoundDatas.length; i++) {
             try {
-                String path = Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound";
+                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/BackgroundSound";
                 File dir = new File(path);
                 if (dir.mkdirs() || dir.isDirectory()) {
                     String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(mBackgroundSoundDatas[i], path + File.separator + str_song_name);
+                    CopyRAWtoSDCard(context, mBackgroundSoundDatas[i], path + File.separator + str_song_name);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -108,11 +109,11 @@ public class MainActivity extends BaseActivity {
         final int[] mDistractDatas = new int[] { R.raw.cow, R.raw.bee, R.raw.duck, R.raw.elephant };
         for (int i = 0; i < mDistractDatas.length; i++) {
             try {
-                String path = Environment.getExternalStorageDirectory() + "/FindItData/Package1/DistractSound";
+                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/DistractSound";
                 File dir = new File(path);
                 if (dir.mkdirs() || dir.isDirectory()) {
                     String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(mDistractDatas[i], path + File.separator + str_song_name);
+                    CopyRAWtoSDCard(context, mDistractDatas[i], path + File.separator + str_song_name);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActivity {
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             } else {
                 if(hasData == false){
-                    storeData();
+                    storeData(this);
                 }
                 hasData = true;
             }
@@ -218,7 +219,7 @@ public class MainActivity extends BaseActivity {
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    storeData();
+                    storeData(this);
 
                     SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
 
@@ -235,8 +236,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void CopyRAWtoSDCard(int id, String path) throws IOException {
-        InputStream in = getResources().openRawResource(id);
+    private static void CopyRAWtoSDCard(Context context ,int id, String path) throws IOException {
+        InputStream in = context.getResources().openRawResource(id);
         FileOutputStream out = new FileOutputStream(path);
         byte[] buff = new byte[1024];
         int read = 0;

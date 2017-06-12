@@ -15,6 +15,10 @@ add_library( native-lib-openal
 find_library( log-lib
               log )
 
+target_link_libraries( native-lib-openal
+                       OpenAL
+                       ${log-lib} )
+
 target_link_libraries( native-lib
                        OpenAL
                        ${log-lib} )

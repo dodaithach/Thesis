@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 import com.google.gson.Gson;
+import com.squareup.haha.perflib.Main;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -362,7 +363,8 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             mTtargetPosition.setY(y);
         }
 
-        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/Target"));
+        List<File> files = getListFiles(new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/Target"));
+
         int targetSoundPosition = r.nextInt(files.size());
 
         targetSoundPath = files.get(targetSoundPosition).getPath();
@@ -370,13 +372,13 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
 
         //SET background sound
         if(level.isHas_background_sound()){
-            List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/BackgroundSound"));
+            List<File> backgroundSoundFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/BackgroundSound"));
             int backgroundSoundPosition = r.nextInt(backgroundSoundFiles.size());
             params.setBackgroundSound(new Sound(backgroundSoundFiles.get(backgroundSoundPosition).getPath(), 20, Sound.TYPE_REPEAT, new Position(0,0,0)));
         }
 
         if(level.getDistract_sound() > 0){
-            List<File> distractFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/FindItData/Package1/DistractSound"));
+            List<File> distractFiles = getListFiles(new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/DistractSound"));
             Collections.shuffle(distractFiles);
             ArrayList<Sound> array = new ArrayList<>();
             for(int i = 0; i < level.getDistract_sound() && i < distractFiles.size(); i++) {
@@ -415,6 +417,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         //Load background sound
         if(params.getBackgroundSound() != null){
             mBackgroundSound = BinauralSound.addSource(params.getBackgroundSound().getSoundPath());
+            BinauralSound.setVolume(mBackgroundSound, 0.7f);
             BinauralSound.setLoop(mBackgroundSound, true);
         }
 
@@ -660,6 +663,14 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
     private List<File> getListFiles(File parentDir) {
         ArrayList<File> inFiles = new ArrayList<File>();
         File[] files = parentDir.listFiles();
+
+        if(files == null){
+            MainActivity.storeData(this);
+            files = parentDir.listFiles();
+            if(files == null){
+                return inFiles;
+            }
+        }
         for (File file : files) {
             if (file.isDirectory()) {
                 inFiles.addAll(getListFiles(file));
