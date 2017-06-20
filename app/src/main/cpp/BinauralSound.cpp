@@ -74,13 +74,13 @@ char* readWAV(char* filename,BasicWAVEHeader* header, chunk_t &chunk){
             }
 
             __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header valid", filename);
-            buffer = (char*)malloc(chunk.size);
+            buffer = new char[chunk.size];
             if (buffer){
                 if (fread(buffer,chunk.size,1,file)){
                     fclose(file);
                     return buffer;
                 }
-                free(buffer);
+                delete buffer;
             }
         } else {
             __android_log_print(ANDROID_LOG_DEBUG, "readWav", "file %s header invalid", filename);
@@ -134,7 +134,7 @@ ALuint BinauralSound::addSource(std::string filename) {
         buffer = createBufferFromWave(data,header, chunk);
         if (!buffer){
             __android_log_print(ANDROID_LOG_DEBUG, "addSource", "cant creat buffer from wave");
-            free(data);
+            delete data;
             return 0;
         }
         __android_log_print(ANDROID_LOG_DEBUG, "addSource", "create ok");

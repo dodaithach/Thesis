@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.custom.HandlerSingleton;
 import com.custom.OnScrollCallback;
 import com.google.gson.Gson;
-import com.squareup.haha.perflib.Main;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -139,8 +138,6 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
             level = levels[levelIndex];
             //timeleft
             mImgPath = savedInstanceState.getString(GamePlayActivity.IMG_PATH);
-
-
             targetSound = savedInstanceState.getParcelable(GamePlayActivity.TARGET_SOUND);
             backgroundSound = savedInstanceState.getParcelable(GamePlayActivity.BACKGROUND_SOUND);
             distractSound = savedInstanceState.getParcelableArrayList(GamePlayActivity.DISTRACT_SOUND);
@@ -191,13 +188,11 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
                 }
             }
 
-
-                BinauralSound.playSound(mTargetSound);
-                BinauralSound.playSound(mBackgroundSound);
-                for (int distractsound : mDistractSounds) {
-                    BinauralSound.playSound(distractsound);
-                }
-
+            BinauralSound.playSound(mTargetSound);
+            BinauralSound.playSound(mBackgroundSound);
+            for (int distractsound : mDistractSounds) {
+                BinauralSound.playSound(distractsound);
+            }
         }
     }
 

@@ -1,12 +1,9 @@
 package k2013.fit.hcmus.thesis.id539621.dialog;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-
-import java.lang.ref.WeakReference;
 
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;

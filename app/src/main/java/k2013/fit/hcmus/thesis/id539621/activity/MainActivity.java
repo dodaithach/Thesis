@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,8 +24,6 @@ import java.io.InputStream;
 
 import k2013.fit.hcmus.thesis.id539621.util.JSONResourceReader;
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
-import k2013.fit.hcmus.thesis.id539621.dialog.DialogPregame;
 import k2013.fit.hcmus.thesis.id539621.game_operation.GamePlayParams;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
@@ -158,7 +155,6 @@ public class MainActivity extends BaseActivity {
             editor.putBoolean("gameData", hasData);
             editor.apply();
         }
-
     }
 
     public void mainOnClick(View v) {
@@ -173,7 +169,6 @@ public class MainActivity extends BaseActivity {
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 } else {
-
                     Intent intent = new Intent(this, GameSelectionActivity.class);
                     Gson gson = new Gson();
                     String jsonString = gson.toJson(levels);
@@ -204,33 +199,25 @@ public class MainActivity extends BaseActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     Intent intent = new Intent(this, GamePlayActivity.class);
                     Gson gson = new Gson();
                     String jsonString = gson.toJson(levels);
                     intent.putExtra("GameLevels", jsonString);
                     startActivity(intent);
-
-                } else {
-
                 }
+
                 return;
             }
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     storeData(this);
-
                     SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
-
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-
                     editor.putBoolean("gameData", true);
                     editor.apply();
-
-                } else {
-
                 }
+
                 return;
             }
         }
