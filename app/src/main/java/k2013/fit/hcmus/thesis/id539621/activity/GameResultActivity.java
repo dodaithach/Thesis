@@ -129,7 +129,6 @@ public class GameResultActivity extends BaseActivity {
             mIsInited = true;
 
             mVRLibrary = createVRLibrary();
-            Log.d("gameresult", "delX: " + mDelX + " - delY: " + mDelY);
             mVRLibrary.testScroll((int) (mDensity * mDelX * PX_PER_W_DEG * mScale), (int) (mDensity * mDelY * PX_PER_H_DEG * mScale));
         }
     }
@@ -144,7 +143,7 @@ public class GameResultActivity extends BaseActivity {
             double distance = -Math.sqrt(mTargetPosition.getX() * mTargetPosition.getX() +
                                             mTargetPosition.getY() * mTargetPosition.getY() +
                                             mTargetPosition.getZ() * mTargetPosition.getZ());
-            BinauralSound.setPosition(mSoundId, 0, 0, (float) distance);
+            BinauralSound.setPosition(mSoundId, new Position(0,0,distance));
             BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
             BinauralSound.setLoop(mSoundId, true);
             BinauralSound.playSound(mSoundId);

@@ -32,9 +32,15 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setPosition(
         JNIEnv *env,
-        jobject /* this */, int source, float x, float y, float z) {
+        jobject /* this */, int source, jobject positon) {
+    jclass positionClass = env->GetObjectClass(positon);
+    jmethodID getX = env->GetMethodID(positionClass,"getX","()D");
+    jmethodID getY = env->GetMethodID(positionClass,"getY","()D");
+    jmethodID getZ = env->GetMethodID(positionClass,"getZ","()D");
+    double x = env->CallDoubleMethod(positon,getX);
+    double y = env->CallDoubleMethod(positon,getY);
+    double z = env->CallDoubleMethod(positon,getZ);
     BinauralSound::getInstance().setPosition(source,x,y,z);
-
 }
 
 extern "C"
@@ -76,8 +82,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_k2013_fit_hcmus_thesis_id539621_sound_BinauralSound_setListenerOrientation(
         JNIEnv *env,
-        jobject /* this */, float atX, float atY, float atZ, float upX, float upY,
-                            float upZ) {
+        jobject /* this */, float atX, float atY, float atZ, float upX, float upY, float upZ) {
     BinauralSound::getInstance().setListenerOrientation(atX, atY, atZ, upX, upY, upZ);
 }
 

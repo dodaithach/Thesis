@@ -9,6 +9,7 @@ import android.opengl.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
@@ -285,6 +286,7 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         mGame.updateLookAt(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10]);
         BinauralSound.setListenerOrientation(mViewMatrix[8], -mViewMatrix[9], -mViewMatrix[10],
                 mViewMatrix[4], mViewMatrix[5], mViewMatrix[6]);
+
     }
 
     private void changeListenerOrientation(double horizontal, double vertical, double z) {

@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -22,7 +23,7 @@ public class OrientationListener implements SensorEventListener {
     public OrientationCallback callback;
 
     private final float[] mOrientationReading = new float[3];
-
+    private final float[] mQuaternion = new float[4];
     private final float[] mRotationMatrix = new float[16];
 
     public OrientationListener(Context context){
@@ -44,6 +45,8 @@ public class OrientationListener implements SensorEventListener {
                 Configuration config = context.getResources().getConfiguration();
 
                 int rotation = windowManager.getDefaultDisplay().getRotation();
+                SensorManager.getQuaternionFromVector(mQuaternion,mOrientationReading);
+                Log.d("TestTrieu",String.format("%f %f %f %f", mQuaternion[0],  mQuaternion[1],  mQuaternion[2], mQuaternion[3]));
                 sensorRotationVector2Matrix(mOrientationReading, rotation, mRotationMatrix);
 
                 callback.onOrientationChanged(mRotationMatrix);

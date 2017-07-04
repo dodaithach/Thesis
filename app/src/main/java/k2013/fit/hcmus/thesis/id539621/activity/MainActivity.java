@@ -169,11 +169,20 @@ public class MainActivity extends BaseActivity {
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 } else {
+
+                    //TODO
+                    //TEST SOUND
+                    Intent intent = new Intent(this, MusicActivity.class);
+                    startActivity(intent);
+                    //ENDTEST
+
+                    /*
                     Intent intent = new Intent(this, GameSelectionActivity.class);
                     Gson gson = new Gson();
                     String jsonString = gson.toJson(levels);
                     intent.putExtra("GameLevels", jsonString);
                     startActivity(intent);
+                    */
                 }
                 break;
             }

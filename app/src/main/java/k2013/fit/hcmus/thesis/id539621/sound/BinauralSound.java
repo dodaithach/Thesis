@@ -12,13 +12,11 @@ public class BinauralSound {
         System.loadLibrary("native-lib");
     }
 
-    public static void setPosition(int source, Position p){
-        setPosition(source, (float)p.getX(), (float)p.getY(), (float)p.getZ());
-    }
+    public static native void setPosition(int source, Position p);
 
     public static native void openDevice();
     public static native int addSource(String filename);
-    public static native void setPosition(int source, float x, float y, float z);
+    //public static native void setPosition(int source, float x, float y, float z);
     public static native void setLoop(int source, boolean isLoop);
     public static native void playSound(int source);
     public static native void pauseSound(int source);
