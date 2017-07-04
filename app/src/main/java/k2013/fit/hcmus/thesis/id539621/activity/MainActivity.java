@@ -1,6 +1,7 @@
 package k2013.fit.hcmus.thesis.id539621.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,9 +9,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 import k2013.fit.hcmus.thesis.id539621.util.JSONResourceReader;
 import k2013.fit.hcmus.thesis.id539621.R;
@@ -65,57 +69,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public static void storeData(Context context){
-
-        File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief");
-        File output = new File(rootDirApp, ".nomedia");
-        try {
-            output.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        final int[] mDatas = new int[] { R.raw.bird, R.raw.cat, R.raw.dog, R.raw.mosquito, R.raw.lion, R.raw.owl, R.raw.pig };
-        for (int i = 0; i < mDatas.length; i++) {
-            try {
-                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/Target";
-                File dir = new File(path);
-                if (dir.mkdirs() || dir.isDirectory()) {
-                    String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(context, mDatas[i], path + File.separator + str_song_name);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        final int[] mBackgroundSoundDatas = new int[] { R.raw.backgroundrain, R.raw.backgroundocean, R.raw.bgsound01, R.raw.bgsound02,
-        R.raw.bgsound03, R.raw.bgsound04, R.raw.bgsound05, R.raw.bgsound06, R.raw.bgsound07, R.raw.bgsound08, R.raw.bgsound09, R.raw.bgsound10};
-        for (int i = 0; i < mBackgroundSoundDatas.length; i++) {
-            try {
-                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/BackgroundSound";
-                File dir = new File(path);
-                if (dir.mkdirs() || dir.isDirectory()) {
-                    String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(context, mBackgroundSoundDatas[i], path + File.separator + str_song_name);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        final int[] mDistractDatas = new int[] { R.raw.cow, R.raw.bee, R.raw.duck, R.raw.elephant };
-        for (int i = 0; i < mDistractDatas.length; i++) {
-            try {
-                String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/DistractSound";
-                File dir = new File(path);
-                if (dir.mkdirs() || dir.isDirectory()) {
-                    String str_song_name = i + ".wav";
-                    CopyRAWtoSDCard(context, mDistractDatas[i], path + File.separator + str_song_name);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        new StoreDataAsyncTask(context).execute();
     }
 
     private void loadGameSetting()  {
@@ -251,5 +205,128 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         BinauralSound.closeDevice();
+    }
+
+
+    public static class StoreDataAsyncTask extends AsyncTask<Void, Void, Void> {
+        ProgressDialog pDialog;
+        WeakReference<Context> appContext;
+
+        public StoreDataAsyncTask(Context ctx) {
+            appContext = new WeakReference<Context>(ctx);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(appContext == null){
+                return;
+            }
+            pDialog = new ProgressDialog(appContext.get());
+            pDialog.setCanceledOnTouchOutside(false);
+            pDialog.setCancelable(false);
+            pDialog.setMessage("Please Wait ...");
+            pDialog.show();
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                File rootDirApp = new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief");
+                File output = new File(rootDirApp, ".nomedia");
+                try {
+                    output.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                final int[] mDatas = new int[] { R.raw.bird, R.raw.cat, R.raw.dog, R.raw.mosquito, R.raw.lion, R.raw.owl, R.raw.pig };
+                for (int i = 0; i < mDatas.length; i++) {
+                    try {
+                        String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/Target";
+                        File dir = new File(path);
+                        if (dir.mkdirs() || dir.isDirectory()) {
+                            String str_song_name = i + ".wav";
+                            if(appContext.get() != null) {
+                                CopyRAWtoSDCard(appContext.get(), mDatas[i], path + File.separator + str_song_name);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                final int[] mBackgroundSoundDatas = new int[] { R.raw.backgroundrain, R.raw.backgroundocean, R.raw.bgsound01, R.raw.bgsound02,
+                        R.raw.bgsound03, R.raw.bgsound04, R.raw.bgsound05, R.raw.bgsound06, R.raw.bgsound07, R.raw.bgsound08, R.raw.bgsound09, R.raw.bgsound10};
+                for (int i = 0; i < mBackgroundSoundDatas.length; i++) {
+                    try {
+                        String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/BackgroundSound";
+                        File dir = new File(path);
+                        if (dir.mkdirs() || dir.isDirectory()) {
+                            String str_song_name = i + ".wav";
+                            CopyRAWtoSDCard(appContext.get(), mBackgroundSoundDatas[i], path + File.separator + str_song_name);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                final int[] mDistractDatas = new int[] { R.raw.cow, R.raw.bee, R.raw.duck, R.raw.elephant };
+                for (int i = 0; i < mDistractDatas.length; i++) {
+                    try {
+                        String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Package1/DistractSound";
+                        File dir = new File(path);
+                        if (dir.mkdirs() || dir.isDirectory()) {
+                            String str_song_name = i + ".wav";
+                            if(appContext.get() != null) {
+                                CopyRAWtoSDCard(appContext.get(), mDistractDatas[i], path + File.separator + str_song_name);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                final int[] mSoundDatas = new int[] { R.raw.afternoon, R.raw.brook, R.raw.choir, R.raw.crickets, R.raw.deep_woods, R.raw.ocean_surf, R.raw.pedal_guitar, R.raw.piano_tempo, R.raw.rain };
+                for (int i = 0; i < mDistractDatas.length; i++) {
+                    try {
+                        String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Sounds";
+                        File dir = new File(path);
+                        if (dir.mkdirs() || dir.isDirectory()) {
+                            String str_song_name = i + ".ogg";
+                            if(appContext.get() != null) {
+                                CopyRAWtoSDCard(appContext.get(), mSoundDatas[i], path + File.separator + str_song_name);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (pDialog.isShowing()) {
+                    pDialog.dismiss();
+                }
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            super.onPostExecute(aVoid);
+
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+
+        }
     }
 }
