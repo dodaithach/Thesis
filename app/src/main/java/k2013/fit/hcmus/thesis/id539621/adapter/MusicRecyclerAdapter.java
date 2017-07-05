@@ -55,7 +55,7 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
             holder.mSongTitle.setTextColor(holder.mSongTitle.getResources().getColor(R.color.themeAccent));
             holder.mSongTitle.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.mSongTitle.setTextColor(holder.mSongTitle.getResources().getColor(android.R.color.primary_text_dark));
+            holder.mSongTitle.setTextColor(holder.mSongTitle.getResources().getColor(android.R.color.primary_text_light));
             holder.mSongTitle.setTypeface(null, Typeface.NORMAL);
         }
 
