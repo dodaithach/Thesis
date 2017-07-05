@@ -219,6 +219,11 @@ public class GamePlayActivity extends BaseActivity implements OnScrollCallback, 
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // do nothing
+    }
+
     protected void onResume() {
         super.onResume();
         mGame.resume(this);

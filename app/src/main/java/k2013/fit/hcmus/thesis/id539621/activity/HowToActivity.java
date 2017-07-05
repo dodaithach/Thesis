@@ -82,6 +82,11 @@ public class HowToActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // do nothing
+    }
+
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

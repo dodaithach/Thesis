@@ -61,4 +61,9 @@
     <string name="a_gameresult_msg_failed">Sorry! You failed.</string>
     <string name="a_gameresult_msg_timeup">Sorry! Time up.</string>
     <string name="a_gameresult_msg_target">Target is here</string>
+
+    <string name="d_music_txt_title">Set time to turn off the sound</string>
+    <string name="d_music_txt_use_timer">Use timer</string>
+    <string name="d_music_txt_minute">minutes</string>
+
 </resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="k2013.fit.hcmus.thesis.id539621.activity.MusicActivity"
+    android:background="@drawable/background_gradient_default"
+    android:gravity="center_horizontal"
+    android:padding="16dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/a_music_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/background_rounded"/>
+
+    <LinearLayout
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:background="@drawable/background_rounded">
+
+        <SeekBar
+            android:id="@+id/music_seek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/music_btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/a_music_btn_back"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+            <Button
+                android:id="@+id/music_btnTimer"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="32dp"
+                android:background="@drawable/a_music_btn_clock"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+            <Button
+                android:id="@+id/music_btnPrev"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="32dp"
+                android:background="@drawable/a_music_btn_prev"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+            <Button
+                android:id="@+id/music_btnPlayPause"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/a_music_btn_play"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+            <Button
+                android:id="@+id/music_btnNext"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/a_music_btn_next"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+            <Button
+                android:id="@+id/music_btnRepeat"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/a_music_btn_repeat_all"
+                android:stateListAnimator="@null"
+                android:onClick="musicOnClick"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -125,24 +125,17 @@ public class MainActivity extends BaseActivity {
                 } else {
 
                     //TODO
-                    //TEST SOUND
-                    Intent intent = new Intent(this, MusicActivity.class);
-                    startActivity(intent);
-                    //ENDTEST
-
-                    /*
                     Intent intent = new Intent(this, GameSelectionActivity.class);
                     Gson gson = new Gson();
                     String jsonString = gson.toJson(levels);
                     intent.putExtra("GameLevels", jsonString);
                     startActivity(intent);
-                    */
                 }
                 break;
             }
 
             case R.id.main_btn_help: {
-                Intent intent = new Intent(this, HowToActivity.class);
+                Intent intent = new Intent(this, MusicActivity.class);
                 intent.putExtra(getString(R.string.a_howto_intent_from_help), true);
                 startActivity(intent);
 

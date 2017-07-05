@@ -10,13 +10,13 @@ import android.view.View;
 import com.google.gson.Gson;
 
 import k2013.fit.hcmus.thesis.id539621.R;
-import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionAdapter;
+import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionRecyclerAdapter;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
 
 public class GameSelectionActivity extends BaseActivity {
 
-    private GameSelectionAdapter mAdapter;
+    private GameSelectionRecyclerAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -37,7 +37,7 @@ public class GameSelectionActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(false);
 
-        mAdapter = new GameSelectionAdapter(levels);
+        mAdapter = new GameSelectionRecyclerAdapter(levels);
         mRecyclerView.setAdapter(mAdapter);
     }
 

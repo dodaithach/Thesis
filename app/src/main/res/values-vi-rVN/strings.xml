@@ -62,4 +62,9 @@
     <string name="a_gameresult_msg_failed">Bạn sai rồi! Chia buồn.</string>
     <string name="a_gameresult_msg_timeup">Hết giờ rồi! Chia buồn.</string>
     <string name="a_gameresult_msg_target">Vị trí đúng ở đây</string>
+
+    <string name="d_music_txt_title">Hẹn giờ tắt nhạc</string>
+    <string name="d_music_txt_use_timer">Sử dụng hẹn giờ</string>
+    <string name="d_music_txt_minute">phút</string>
+
 </resources>

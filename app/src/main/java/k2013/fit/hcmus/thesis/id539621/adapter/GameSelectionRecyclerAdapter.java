@@ -21,9 +21,9 @@ import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
  * Created by cpu60011-local on 25/04/2017.
  */
 
-public class GameSelectionAdapter extends RecyclerView.Adapter<GameSelectionAdapter.ViewHolder> {
+public class GameSelectionRecyclerAdapter extends RecyclerView.Adapter<GameSelectionRecyclerAdapter.ViewHolder> {
     private GameLevel[] levels;
-    public GameSelectionAdapter(GameLevel[] levels){
+    public GameSelectionRecyclerAdapter(GameLevel[] levels){
         this.levels = levels;
     }
 
