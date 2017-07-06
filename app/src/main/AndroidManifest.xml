@@ -52,6 +52,8 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".activity.MusicActivity"
             android:screenOrientation="landscape"></activity>
+
+        <service android:name=".sound.SoundManager" android:enabled="true"></service>
     </application>
 
 </manifest>

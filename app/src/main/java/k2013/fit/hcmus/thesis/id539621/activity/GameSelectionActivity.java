@@ -13,6 +13,7 @@ import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionRecyclerAdapter;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
+import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GameSelectionActivity extends BaseActivity {
 
@@ -24,6 +25,8 @@ public class GameSelectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_gameselection);
 
+        BinauralSound.openDevice();
+        BinauralSound.setListenerOrientation(0,0,-1,0,1,0);
 
         String intentString = getIntent().getStringExtra("GameLevels");
 
@@ -62,5 +65,11 @@ public class GameSelectionActivity extends BaseActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BinauralSound.closeDevice();
     }
 }

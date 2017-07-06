@@ -1,8 +1,14 @@
 package k2013.fit.hcmus.thesis.id539621.sound;
 
 
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.Environment;
+import android.os.IBinder;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,9 +18,10 @@ import java.util.List;
  * Created by Trieu on 4/7/2017.
  */
 
-public class SoundManager {
+public class SoundManager extends Service {
 
     private MediaPlayer mediaPlayer;
+    private final IBinder musicBind = new MusicBinder();
     private boolean isPaused = false;
     private int pausedPosition = -1;
 
@@ -23,7 +30,24 @@ public class SoundManager {
     private List<File> soundList;
     private int currentPos;
 
-    public SoundManager(){
+    @Override
+    public IBinder onBind(Intent intent) {
+        return musicBind;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent){
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+        return false;
+    }
+
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        Log.d("Trieu","create SoundManager");
         mediaPlayer = new MediaPlayer();
         soundList = getListFiles(new File(Environment.getExternalStorageDirectory() + "/TinnitusRelief/Sounds"));
         currentPos = 0;
@@ -89,6 +113,13 @@ public class SoundManager {
         return false;
     }
 
+    public boolean isPlaying(){
+        if(mediaPlayer != null){
+            return mediaPlayer.isPlaying();
+        }
+        return false;
+    }
+
     private List<File> getListFiles(File parentDir) {
         ArrayList<File> inFiles = new ArrayList<File>();
         File[] files = parentDir.listFiles();
@@ -141,7 +172,11 @@ public class SoundManager {
         }
     }
 
-    public void finish(){
-        mediaPlayer.release();
+
+    public class MusicBinder extends Binder {
+        public SoundManager getService() {
+            return SoundManager.this;
+        }
     }
+
 }
