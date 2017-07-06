@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -51,6 +52,9 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
 
         String[] fakeData = {"Remember the name", "Running", "Despacito"};
         MusicRecyclerAdapter adapter = new MusicRecyclerAdapter(fakeData);
+        mRecyclerView.addOnItemTouchListener(new MusicRecyclerItemClickListener(MusicActivity.this,
+                                                                                mRecyclerView,
+                                                                                MusicActivity.this));
 
         mRecyclerView.setAdapter(adapter);
     }
@@ -131,6 +135,13 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
 
     @Override
     public void onItemClick(View v, int position) {
+        MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
 
+        if (adapter.getSelectedIdx() != position) {
+            adapter.setSelectedIdx(position);
+            adapter.notifyDataSetChanged();
+
+            // Change music
+        }
     }
 }
