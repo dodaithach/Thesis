@@ -11,6 +11,8 @@
     <string name="a_main_title">Giảm Ù Tai</string>
     <string name="a_main_btn_play">Chơi</string>
     <string name="a_main_btn_help">Hướng dẫn</string>
+    <string name="a_main_btn_music">Âm nhạc</string>
+    <string name="a_main_music_title">Thư giãn với âm nhạc!</string>
     <string name="a_main_hint">Xem hướng dẫn cách chơi</string>
 
     <string name="d_btn_cancel">Thoát</string>

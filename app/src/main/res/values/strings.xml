@@ -10,6 +10,8 @@
     <string name="a_main_title">Tinnitus Relief</string>
     <string name="a_main_btn_play">Play</string>
     <string name="a_main_btn_help">Help</string>
+    <string name="a_main_btn_music">Music</string>
+    <string name="a_main_music_title">Relaxing with music!</string>
     <string name="a_main_hint">Take a tour how to play!</string>
 
     <string name="d_btn_cancel">Cancel</string>
