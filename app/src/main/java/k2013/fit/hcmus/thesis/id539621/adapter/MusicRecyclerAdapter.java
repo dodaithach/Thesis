@@ -39,6 +39,10 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
         mSelectedIdx = idx;
     }
 
+    public int getSelectedIdx() {
+        return mSelectedIdx;
+    }
+
     @Override
     public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.a_music_recycleritem, parent, false);
@@ -60,7 +64,7 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
         }
 
         if (position == mSongTitles.length - 1) {
-            holder.mDivider.setVisibility(View.GONE);
+            holder.mDivider.setVisibility(View.INVISIBLE);
         } else {
             holder.mDivider.setVisibility(View.VISIBLE);
         }

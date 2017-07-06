@@ -34,7 +34,7 @@ public class MusicRecyclerItemClickListener implements RecyclerView.OnItemTouchL
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         View child = rv.findChildViewUnder(e.getX(), e.getY());
 
-        if (child != null && mGestureDetector.onTouchEvent(e)) {
+        if (child != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
             mListener.onItemClick(child, rv.getChildPosition(child));
         }
 
