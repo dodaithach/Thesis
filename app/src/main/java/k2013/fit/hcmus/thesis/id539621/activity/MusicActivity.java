@@ -3,21 +3,28 @@ package k2013.fit.hcmus.thesis.id539621.activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Environment;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.adapter.MusicRecyclerAdapter;
 import k2013.fit.hcmus.thesis.id539621.adapter.MusicRecyclerItemClickListener;
+import k2013.fit.hcmus.thesis.id539621.broadcast_receiver.MusicLocalBroadcastReceiver;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogMusicTimer;
-import k2013.fit.hcmus.thesis.id539621.sound.SoundManager;
+import k2013.fit.hcmus.thesis.id539621.service.MusicPlayerService;
 
 public class MusicActivity extends BaseActivity implements DialogMusicTimer.TimerChangedListener,
         MusicRecyclerItemClickListener.OnRecyclerItemClickListener{
@@ -29,15 +36,12 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     private Button mBtnRepeat;
     private RecyclerView mRecyclerView;
 
-    private SoundManager soundManager;
-    private Intent playIntent;
-    //binding
-    private boolean musicBound=false;
-
+    private MusicPlayerService mPlayerService;
+    private boolean mIsBound = false;
+    private MusicLocalBroadcastReceiver mReceiver;
 
     private boolean mIsPlaying = false;
-    private boolean mIsRepeatOne = false;
-
+    private int mRepeatMode = MusicPlayerService.MODE_LOOP_ONE;
     private boolean mIsUsingTimer = false;
     private int mTimer = 0;
 
@@ -59,26 +63,62 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(false);
 
-        String[] fakeData = {"Remember the name", "Running", "Despacito"};
-        MusicRecyclerAdapter adapter = new MusicRecyclerAdapter(fakeData);
+        List<File> soundList = getListFiles(new File(Environment.getExternalStorageDirectory() +
+                                                        "/TinnitusRelief/Sounds"));
+        String fileNames[] = new String[soundList.size()];
+        for (int i = 0; i < soundList.size(); i++) {
+            fileNames[i] = soundList.get(i).getName();
+        }
+
+        MusicRecyclerAdapter adapter = new MusicRecyclerAdapter(fileNames);
         mRecyclerView.addOnItemTouchListener(new MusicRecyclerItemClickListener(MusicActivity.this,
                                                                                 mRecyclerView,
                                                                                 MusicActivity.this));
 
         mRecyclerView.setAdapter(adapter);
+
+        Intent playerIntent = new Intent(this, MusicPlayerService.class);
+        startService(playerIntent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(playIntent==null){
-            playIntent = new Intent(this, SoundManager.class);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
 
-            startService(playIntent);
-            Log.d("Trieu", "playIntent null");
+        if (!mIsBound) {
+            Intent playerIntent = new Intent(this, MusicPlayerService.class);
+            bindService(playerIntent, mMusicConnection, Context.BIND_AUTO_CREATE);
         }
-        Log.d("Trieu","ok");
+
+        mReceiver = new MusicLocalBroadcastReceiver(this);
+        IntentFilter filter = new IntentFilter(MusicLocalBroadcastReceiver.ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Log.d("mylog", "MusicActivity.onDestroy()");
+
+        unbindService(mMusicConnection);
+
+        if (!mPlayerService.getIsPlaying()) {
+            Intent playerIntent = new Intent(this, MusicPlayerService.class);
+            stopService(playerIntent);
+        }
     }
 
     public void musicOnClick(View v) {
@@ -86,26 +126,42 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
             case R.id.music_btnPlayPause: {
                 mIsPlaying = !mIsPlaying;
 
-                if (musicBound && soundManager!= null) {
-                    if (mIsPlaying) {
-                        soundManager.play();
-                        mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
-                    } else {
-                        soundManager.pause();
-                        mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_play);
-                    }
+                if (mIsPlaying) {
+                    mPlayerService.play(mPlayerService.getCurrentSoundIdx());
+
+                    MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
+                    adapter.setSelectedIdx(mPlayerService.getCurrentSoundIdx());
+                    adapter.notifyDataSetChanged();
+                    mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
+                } else {
+                    mPlayerService.pause();
+                    mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_play);
                 }
 
                 break;
             }
 
             case R.id.music_btnPrev: {
-                soundManager.playPrevSoundTrack();
+                mIsPlaying = true;
+                mPlayerService.playPrev();
+
+                MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
+                adapter.setSelectedIdx(mPlayerService.getCurrentSoundIdx());
+                adapter.notifyDataSetChanged();
+                mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
+
                 break;
             }
 
             case R.id.music_btnNext: {
-                soundManager.playNextSoundTrack();
+                mIsPlaying = true;
+                mPlayerService.playNext();
+
+                MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
+                adapter.setSelectedIdx(mPlayerService.getCurrentSoundIdx());
+                adapter.notifyDataSetChanged();
+                mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
+
                 break;
             }
 
@@ -117,14 +173,17 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
             }
 
             case R.id.music_btnRepeat: {
-                mIsRepeatOne = !mIsRepeatOne;
+                mRepeatMode = (mRepeatMode + 1) % MusicPlayerService.TOTAL_MODE;
 
-                if (mIsRepeatOne) {
-
+                if (mRepeatMode == MusicPlayerService.MODE_NOT_LOOP) {
+                    mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_none);
+                } else if (mRepeatMode == MusicPlayerService.MODE_LOOP_ONE){
                     mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_one);
                 } else {
                     mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_all);
                 }
+
+                mPlayerService.setLoopMode(mRepeatMode);
 
                 break;
             }
@@ -138,6 +197,44 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
             default:
                 break;
         }
+    }
+
+    public void onReceiveLocalBroadcast(int idx) {
+        if (idx == -1) {
+            mIsPlaying = false;
+            mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_play);
+        } else {
+            mIsPlaying = true;
+            mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
+        }
+
+        MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.setSelectedIdx(idx);
+        adapter.notifyDataSetChanged();
+    }
+
+    private List<File> getListFiles(File parentDir) {
+        ArrayList<File> inFiles = new ArrayList<File>();
+        File[] files = parentDir.listFiles();
+
+        if(files == null){
+            files = parentDir.listFiles();
+            if(files == null){
+                return inFiles;
+            }
+        }
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                inFiles.addAll(getListFiles(file));
+            } else {
+                if(file.getName().endsWith(".ogg")){
+                    inFiles.add(file);
+                }
+            }
+        }
+
+        return inFiles;
     }
 
     @Override
@@ -164,38 +261,49 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     public void onItemClick(View v, int position) {
         MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
 
-        if (adapter.getSelectedIdx() != position) {
-            adapter.setSelectedIdx(position);
-            adapter.notifyDataSetChanged();
+        adapter.setSelectedIdx(position);
+        adapter.notifyDataSetChanged();
 
-            // Change music
-        }
+        // Change music
+        mIsPlaying = true;
+        mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
+        mPlayerService.play(position);
     }
 
-    private ServiceConnection musicConnection = new ServiceConnection(){
-
+    private ServiceConnection mMusicConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            SoundManager.MusicBinder binder = (SoundManager.MusicBinder)service;
-            //get service
-            soundManager = binder.getService();
-            musicBound = true;
-            if(soundManager == null){
-                Log.d("Trieu", "sound manager null");
+            MusicPlayerService.MusicBinder binder = (MusicPlayerService.MusicBinder)service;
+
+            mPlayerService = binder.getService();
+            mIsBound = true;
+
+            MusicRecyclerAdapter adapter = (MusicRecyclerAdapter) mRecyclerView.getAdapter();
+            mIsPlaying = mPlayerService.getIsPlaying();
+
+            if (mIsPlaying) {
+                adapter.setSelectedIdx(mPlayerService.getCurrentSoundIdx());
+                mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_pause);
             } else {
-                Log.d("Trieu", "Sound manager not null");
+                adapter.setSelectedIdx(-1);
+                mBtnPlayPause.setBackgroundResource(R.drawable.a_music_btn_play);
+            }
+
+            adapter.notifyDataSetChanged();
+
+            mRepeatMode = mPlayerService.getLoopMode();
+
+            if (mRepeatMode == MusicPlayerService.MODE_NOT_LOOP) {
+                mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_none);
+            } else if (mRepeatMode == MusicPlayerService.MODE_LOOP_ONE) {
+                mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_one);
+            } else {
+                mBtnRepeat.setBackgroundResource(R.drawable.a_music_btn_repeat_all);
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            musicBound = false;
         }
     };
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(musicConnection);
-    }
 }

@@ -13,6 +13,7 @@ import k2013.fit.hcmus.thesis.id539621.R;
 import k2013.fit.hcmus.thesis.id539621.adapter.GameSelectionRecyclerAdapter;
 import k2013.fit.hcmus.thesis.id539621.model.GameLevel;
 import k2013.fit.hcmus.thesis.id539621.dialog.DialogHelper;
+import k2013.fit.hcmus.thesis.id539621.service.MusicPlayerService;
 import k2013.fit.hcmus.thesis.id539621.sound.BinauralSound;
 
 public class GameSelectionActivity extends BaseActivity {
@@ -42,6 +43,9 @@ public class GameSelectionActivity extends BaseActivity {
 
         mAdapter = new GameSelectionRecyclerAdapter(levels);
         mRecyclerView.setAdapter(mAdapter);
+
+        Intent playerIntent = new Intent(this, MusicPlayerService.class);
+        stopService(playerIntent);
     }
 
     public void gameSelectionOnClick(View v) {

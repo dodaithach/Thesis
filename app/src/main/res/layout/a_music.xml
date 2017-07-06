@@ -53,7 +53,8 @@
                 android:layout_marginLeft="32dp"
                 android:background="@drawable/a_music_btn_clock"
                 android:stateListAnimator="@null"
-                android:onClick="musicOnClick"/>
+                android:onClick="musicOnClick"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/music_btnPrev"
@@ -87,7 +88,7 @@
                 android:id="@+id/music_btnRepeat"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:background="@drawable/a_music_btn_repeat_all"
+                android:background="@drawable/a_music_btn_repeat_one"
                 android:stateListAnimator="@null"
                 android:onClick="musicOnClick"/>
 

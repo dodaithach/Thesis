@@ -273,7 +273,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }
 
-                final int[] mSoundDatas = new int[] { R.raw.afternoon, R.raw.brook, R.raw.choir, R.raw.crickets, R.raw.deep_woods, R.raw.ocean_surf, R.raw.pedal_guitar, R.raw.piano_tempo, R.raw.rain };
+                final int[] mSoundDatas = new int[] {R.raw.brook, R.raw.crickets, R.raw.deep_woods, R.raw.ocean_surf, R.raw.pedal_guitar, R.raw.piano_tempo, R.raw.rain };
                 for (int i = 0; i < mDistractDatas.length; i++) {
                     try {
                         String path = Environment.getExternalStorageDirectory() + "/TinnitusRelief/Sounds";

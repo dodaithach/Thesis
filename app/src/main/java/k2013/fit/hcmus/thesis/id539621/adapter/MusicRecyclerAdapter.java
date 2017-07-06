@@ -53,7 +53,6 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
     @Override
     public void onBindViewHolder(MusicViewHolder holder, int position) {
         holder.mSongTitle.setText(mSongTitles[position]);
-        Log.d("mylog", mSongTitles[position]);
 
         if (position == mSelectedIdx) {
             holder.mSongTitle.setTextColor(holder.mSongTitle.getResources().getColor(R.color.themeAccent));

@@ -53,7 +53,7 @@
         <activity android:name=".activity.MusicActivity"
             android:screenOrientation="landscape"></activity>
 
-        <service android:name=".sound.SoundManager" android:enabled="true"></service>
+        <service android:name=".service.MusicPlayerService" android:enabled="true"></service>
     </application>
 
 </manifest>
