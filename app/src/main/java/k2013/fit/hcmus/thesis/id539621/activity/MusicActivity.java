@@ -35,6 +35,7 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     private Button mBtnTimer;
     private Button mBtnRepeat;
     private RecyclerView mRecyclerView;
+    private final DialogMusicTimer mDialog = new DialogMusicTimer();
 
     private MusicPlayerService mPlayerService;
     private boolean mIsBound = false;
@@ -103,8 +104,6 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     @Override
     protected void onStop() {
         super.onStop();
-
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -114,6 +113,7 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
         Log.d("mylog", "MusicActivity.onDestroy()");
 
         unbindService(mMusicConnection);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
 
         if (!mPlayerService.getIsPlaying()) {
             Intent playerIntent = new Intent(this, MusicPlayerService.class);
@@ -166,8 +166,7 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
             }
 
             case R.id.music_btnTimer: {
-                DialogMusicTimer dialog = new DialogMusicTimer();
-                dialog.show(getSupportFragmentManager(), DialogMusicTimer.TAG);
+                mDialog.show(getSupportFragmentManager(), DialogMusicTimer.TAG);
 
                 break;
             }
@@ -228,7 +227,7 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
             if (file.isDirectory()) {
                 inFiles.addAll(getListFiles(file));
             } else {
-                if(file.getName().endsWith(".ogg")){
+                if (file.getName().endsWith(".ogg")) {
                     inFiles.add(file);
                 }
             }
@@ -240,6 +239,8 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     @Override
     public void setTimer(int time) {
         mTimer = time;
+
+        mPlayerService.updateTimer(mTimer);
     }
 
     @Override
@@ -250,6 +251,12 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
     @Override
     public void setTimerState(boolean mode) {
         mIsUsingTimer = mode;
+
+        if (!mIsUsingTimer) {
+            mPlayerService.updateTimer(0);
+        } else {
+            mPlayerService.updateTimer(15);
+        }
     }
 
     @Override

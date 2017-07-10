@@ -54,7 +54,7 @@
                 android:background="@drawable/a_music_btn_clock"
                 android:stateListAnimator="@null"
                 android:onClick="musicOnClick"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <Button
                 android:id="@+id/music_btnPrev"

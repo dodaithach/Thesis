@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -26,6 +28,8 @@ public class MusicPlayerService extends Service {
     public static final int MODE_LOOP_ALL = 2;
     public static final int TOTAL_MODE = 3;
 
+    public static final int MSG_WHAT = 1111;
+
     public class MusicBinder extends Binder {
         public MusicPlayerService getService() {
             return MusicPlayerService.this;
@@ -43,6 +47,26 @@ public class MusicPlayerService extends Service {
     private int mCurrentSoundIdx = 0;
     private boolean mIsPaused = false;
     private int mPausePosition = 0;
+
+    private final Handler mAlarm = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            Log.d("mylog", "MusicPlayerService.mAlarm.handleMessage()");
+
+            if (msg.what == MSG_WHAT) {
+                Log.d("mylog", "MusicPlayerService.stopSelf()");
+
+                stopSelf();
+
+                Intent intent = new Intent(MusicLocalBroadcastReceiver.ACTION);
+                intent.putExtra(MusicLocalBroadcastReceiver.TAG_CLOSE, MusicLocalBroadcastReceiver.VALUE_CLOSE);
+
+                LocalBroadcastManager.getInstance(MusicPlayerService.this).sendBroadcast(intent);
+            }
+        }
+    };
 
     @Override
     public void onCreate(){
@@ -156,7 +180,7 @@ public class MusicPlayerService extends Service {
                                 playNext();
 
                                 Intent intent = new Intent(MusicLocalBroadcastReceiver.ACTION);
-                                intent.putExtra(MusicLocalBroadcastReceiver.TAG, mCurrentSoundIdx);
+                                intent.putExtra(MusicLocalBroadcastReceiver.TAG_UPDATE, mCurrentSoundIdx);
 
                                 LocalBroadcastManager.getInstance(MusicPlayerService.this).sendBroadcast(intent);
 
@@ -169,10 +193,10 @@ public class MusicPlayerService extends Service {
                                 if (mCurrentSoundIdx == mSoundList.size() - 1) {
                                     mMediaPlayer.stop();
                                     mCurrentSoundIdx = 0;
-                                    intent.putExtra(MusicLocalBroadcastReceiver.TAG, -1);
+                                    intent.putExtra(MusicLocalBroadcastReceiver.TAG_UPDATE, -1);
                                 } else {
                                     playNext();
-                                    intent.putExtra(MusicLocalBroadcastReceiver.TAG, mCurrentSoundIdx);
+                                    intent.putExtra(MusicLocalBroadcastReceiver.TAG_UPDATE, mCurrentSoundIdx);
                                 }
 
                                 LocalBroadcastManager.getInstance(MusicPlayerService.this).sendBroadcast(intent);
@@ -234,100 +258,13 @@ public class MusicPlayerService extends Service {
         }
     }
 
-//    private void play(final String fileName) {
-//        if (mMediaPlayer != null) {
-//            if (!mMediaPlayer.isPlaying()) {
-//                try {
-//                    mMediaPlayer.reset();
-//                    mMediaPlayer.setDataSource(fileName);
-//                    mMediaPlayer.prepare();
-//                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                        @Override
-//                        public void onCompletion(MediaPlayer mp) {
-//                            switch (mLoopMode){
-//                                case 1:
-//                                    play(fileName);
-//                                    break;
-//                                case 2:
-//                                    playNextSoundTrack();
-//                                    break;
-//                                default:
-//                                    break;
-//                            }
-//                        }
-//                    });
-//                    mMediaPlayer.start();
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//        }
-//    }
-//
-//    public void pause() {
-//        if(mIsPaused)
-//            return;
-//        if (mMediaPlayer != null) {
-//            if (mMediaPlayer.isPlaying()) {
-//                mMediaPlayer.pause();
-//                mPausedPosition = mMediaPlayer.getCurrentPosition();
-//                mIsPaused = true;
-//            }
-//        }
-//    }
-//
-//    public boolean play() {
-//        if (mMediaPlayer != null) {
-//            if (!mMediaPlayer.isPlaying()) {
-//                if (mIsPaused) {
-//                    mMediaPlayer.seekTo(mPausedPosition);
-//                    mMediaPlayer.start();
-//                    mPausedPosition = -1;
-//                    mIsPaused = false;
-//                    return true;
-//                } else if(!mSoundList.isEmpty()){
-//                    play(mSoundList.get(mCurrentSound).getPath());
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public boolean isPlaying(){
-//        if(mMediaPlayer != null){
-//            return mMediaPlayer.isPlaying();
-//        }
-//        return false;
-//    }
-//
-//    public void playNextSoundTrack() {
-//        if (mSoundList.size() != 0) {
-//            mCurrentSound = (mCurrentSound + 1) % mSoundList.size();
-//            if (mMediaPlayer != null) {
-//                if (mMediaPlayer.isPlaying()) {
-//                    mMediaPlayer.pause();
-//                }
-//            }
-//            play(mSoundList.get(mCurrentSound).getPath());
-//        }
-//    }
-//
-//    public void playPrevSoundTrack() {
-//        if (mSoundList.size() != 0) {
-//            mCurrentSound = (mCurrentSound - 1 + mSoundList.size()) % mSoundList.size();
-//            if (mMediaPlayer != null) {
-//                if (mMediaPlayer.isPlaying()) {
-//                    mMediaPlayer.pause();
-//                }
-//            }
-//            play(mSoundList.get(mCurrentSound).getPath());
-//        }
-//    }
-//
-//    public void setVolume(float volume){
-//        if(mMediaPlayer != null){
-//            mMediaPlayer.setVolume(volume, volume);
-//        }
-//    }
+    public void updateTimer(int minutes) {
+        Log.d("mylog", "updateTimer(): " + minutes);
+
+        mAlarm.removeMessages(MSG_WHAT);
+
+        if (minutes > 0) {
+            mAlarm.sendEmptyMessageDelayed(MSG_WHAT, minutes * 60 * 1000);
+        }
+    }
 }
