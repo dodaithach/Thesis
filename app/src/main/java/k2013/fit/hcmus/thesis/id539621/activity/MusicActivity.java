@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.media.MediaMetadataRetriever;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.Bundle;
@@ -67,8 +68,13 @@ public class MusicActivity extends BaseActivity implements DialogMusicTimer.Time
         List<File> soundList = getListFiles(new File(Environment.getExternalStorageDirectory() +
                                                         "/TinnitusRelief/Sounds"));
         String fileNames[] = new String[soundList.size()];
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+
         for (int i = 0; i < soundList.size(); i++) {
-            fileNames[i] = soundList.get(i).getName();
+            retriever.setDataSource(soundList.get(i).getPath());
+            fileNames[i] = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            ;
         }
 
         MusicRecyclerAdapter adapter = new MusicRecyclerAdapter(fileNames);
